@@ -65,21 +65,31 @@ InnerPheromoneMap::InnerPheromoneMap(int size, int xpos, int ypos, BasePheromone
 }
 
 void InnerPheromoneMap::_addPheromone(PheromoneMapParams* p) {
-
+	locker.lock();
 	contains[p->positive] |= p->bitMap;
 	pheromones[p->id][p->positive] += p->strenght;
+	locker.unlock();
 }
 
 bool InnerPheromoneMap::_decayPheromone(PheromoneMapParams* p) {
+
+	locker.lock();
+
+
+	
+
+
 	bool positive = p->positive;
 	if (contains[positive] & p->bitMap) {
 		pheromones[p->id][positive] *= PHEROMONE_DECAY;
 		if (pheromones[p->id][positive] < PHEROMONE_FLOOR) {
 			pheromones[p->id][positive] = 0;
 			contains[positive] &= ~p->bitMap;
+			locker.unlock();
 			return true;
 		}
 	}
+	locker.unlock();
 	return false;
 }
 

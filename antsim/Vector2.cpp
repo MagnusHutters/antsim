@@ -49,6 +49,7 @@ Vector2& Vector2::Rotate(float32 angle)
 
     x = newX;
     y = newY;
+    return *this;
 }
 
 Vector2& Vector2::Normal() { Set(-y, x); return *this; }

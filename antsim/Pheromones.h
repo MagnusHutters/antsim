@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <algorithm> 
 #include "Vector2.h"
+#include <mutex>
 
 
 
@@ -15,7 +16,7 @@
 //#define OUTER_CONTAINS_MAP_RESOLUTION	32
 
 #define PHEROMONE_FLOOR					0.5
-#define PHEROMONE_DECAY					0.99
+#define PHEROMONE_DECAY					0.995
 
 
 
@@ -98,7 +99,7 @@ public:
 
 	//float pheromones[NUMBER_OF_PHEROMONE_PAIRS][2];
 
-	std::vector<std::vector<float>> pheromones;
+	
 	uint32_t contains[2]; //[1]: positive, [0] negative
 	int size;
 	int xpos;
@@ -166,26 +167,50 @@ public:
 
 
 	Vector2 _getPheromoneVector(PheromoneMapParams* p) {
+		locker.lock();
 		if ((contains[p->positive] & p->bitMap) == false) return Vector2();
 		
 		Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
 		float dist = center.DistanceSquared(p->sensor.vector);
 		if (dist < p->sensor.radius2) {
-			return (center - p->origin)*pheromones[p->id][p->positive];
-		}
 
+			Vector2 value= (center - p->origin) * pheromones[p->id][p->positive];
+			locker.unlock();
+			return value;
+		}
+		locker.unlock();
 		return Vector2();
 	}
 
 	float _getPheromoneStrenght(PheromoneMapParams* p) {
-		
+		locker.lock();
 		Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
 		float dist = center.DistanceSquared(p->sensor.vector);
 		if (dist < p->sensor.radius2) {
-			return pheromones[p->id][p->positive];
+			float value= pheromones[p->id][p->positive];
+			locker.unlock();
+			return value;
 		}
-
+		locker.unlock();
+		return 0;
 	}
+
+
+
+	bool getIsChanged() {
+		locker.lock();
+
+
+		return changed;
+		locker.unlock();
+	}
+	std::vector<std::vector<float>> getPheromones() {
+		locker.lock();
+
+
+		locker.unlock();
+	}
+
 
 
 	InnerPheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer);
@@ -195,7 +220,10 @@ public:
 	bool _decayPheromone(PheromoneMapParams* p);
 
 private:
+	std::vector<std::vector<float>> pheromones;
+	bool changed = false;
 
+	std::mutex locker;
 };
 
 class MiddlePheromoneMap : public BasePheromoneMap{

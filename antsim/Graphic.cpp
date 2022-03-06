@@ -70,7 +70,7 @@ void Graphic::drawPheromones()
 	{
 		for (int y = 0; y < size; y++)
 		{
-			float pheromone1 = core->world->pheromoneMap->innerPheromones[x][y]->pheromones[EXPLORED][true];
+			float pheromone1 = 0;// core->world->pheromoneMap->innerPheromones[x][y]->pheromones[EXPLORED][true];
 			if (pheromone1 > 0) {
 				1 + 1;
 			}
