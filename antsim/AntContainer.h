@@ -22,7 +22,7 @@ public:
 
 
 
-	std::vector<Body> getAntBodies();
+	
 
 
 
@@ -35,7 +35,7 @@ public:
 	void deleteAnts(int numAnts);
 
 
-
+	std::vector<Ant*> ants;
 private:
 
 	void createAnt();
@@ -44,7 +44,7 @@ private:
 	int sizeX, sizeY;
 	int antIdCount;
 	int antCount;
-	std::vector<Ant*> ants;
+	
 	PheromoneMap* pheromoneMap;
 
 

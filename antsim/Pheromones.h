@@ -15,7 +15,7 @@
 #define PATH							MAX_NUMBER_OF_TASKS+1
 //#define OUTER_CONTAINS_MAP_RESOLUTION	32
 
-#define PHEROMONE_FLOOR					0.5
+#define PHEROMONE_FLOOR					0.1
 #define PHEROMONE_DECAY					0.995
 
 
@@ -110,6 +110,7 @@ public:
 	BasePheromoneMap* children[4];
 
 
+
 	bool sensorInRange(const PheromoneSensor &sensor) {
 		if ((sensor.x > xpos) && (sensor.x < (xpos + size)) && (sensor.y > ypos) && (sensor.y < (ypos + size))) return true;
 		if( ((sensor.x - (xpos			)) * (sensor.x - (xpos			))) + ((sensor.y - (ypos		)) * (sensor.y - (ypos			))) < sensor.radius2) return true;
@@ -152,6 +153,10 @@ public:
 
 	virtual void registerInner(BasePheromoneMap* inner, int x, int y) {
 
+	}
+
+	virtual float getPheromone(int id, bool positive) {
+		return 0.0;
 	}
 
 };
@@ -218,6 +223,10 @@ public:
 	void _addPheromone(PheromoneMapParams* p);
 
 	bool _decayPheromone(PheromoneMapParams* p);
+
+	float getPheromone(int id, bool positive) {
+		return pheromones[id][positive];
+	}
 
 private:
 	std::vector<std::vector<float>> pheromones;

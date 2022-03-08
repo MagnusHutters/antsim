@@ -23,14 +23,27 @@
 
 
 
+
+
+
 Controller::Controller()
 {
 	core = new Core();
+
+	
+
+
+	core->world = new World("main", 50, 128, 128);
+
+	
 	com = new Commandline();
 	core->commandExecuter = new Command();
-	core->world = new World("main", 50, 128,128);
+	
 
 	window = new Graphic(core, 8);
+
+	
+
 
 
 
@@ -44,7 +57,19 @@ Controller::Controller()
 
 }
 
+void Controller::worldThread()
+{
 
+
+	
+
+	
+
+
+	while (1) {
+
+	}
+}
 
 
 
@@ -52,7 +77,6 @@ Controller::Controller()
 
 void Controller::start()
 {
-	
 	
 	
 
@@ -69,8 +93,7 @@ void Controller::start()
 	}
 
 
-
-
+	
 
 
 
@@ -101,6 +124,8 @@ void Controller::doConsole()
 void Controller::doGraphics()
 {
 }
+
+
 
 
 

@@ -14,21 +14,6 @@ AntContainer::AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pher
 
 }
 
-std::vector<Body> AntContainer::getAntBodies()
-{
-
-
-	std::vector<Body> bodies;
-	bodies.reserve(ants.size());
-
-	for (auto ant : ants)
-	{
-		bodies.push_back(ant->getBody());
-	}
-
-
-	return bodies;
-}
 
 void AntContainer::processAnts()
 {

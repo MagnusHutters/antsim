@@ -17,7 +17,8 @@ Graphic::Graphic(Core* core, int resolutionMultiplier)
 
 	window = new sf::RenderWindow(sf::VideoMode(windowSizeX, windowSizeY), "window");
 
-	int size = core->world->pheromoneMap->size;
+	int size = core->world->getPheromoneSize();
+	pheromoneSize = size;
 	pheromoneTexture.create(size, size);
 	pheromoneImage.create(size, size);
 	pheromoneSprite.setTexture(pheromoneTexture);
@@ -65,26 +66,35 @@ void Graphic::update()
 
 void Graphic::drawPheromones()
 {
-	int size = core->world->pheromoneMap->size;
-	for (int x = 0; x < size; x++)
-	{
-		for (int y = 0; y < size; y++)
+	pheromoneCounter++;
+	if (pheromoneCounter > PHEROMONE_UPDATE_RATE) {
+		int size = pheromoneSize;
+		for (int x = 0; x < size; x++)
 		{
-			float pheromone1 = 0;// core->world->pheromoneMap->innerPheromones[x][y]->pheromones[EXPLORED][true];
-			if (pheromone1 > 0) {
-				1 + 1;
+			for (int y = 0; y < size; y++)
+			{
+				float pheromone1 = core->world->getPheromone(x, y, EXPLORED, 1);
+				if (pheromone1 > 0) {
+					1 + 1;
+				}
+				sf::Uint8 pheromone1Color = 255 - (sqrt(pheromone1) * 70);
+				pheromoneImage.setPixel(x, y, sf::Color(255, pheromone1Color, pheromone1Color));
 			}
-			sf::Uint8 pheromone1Color = 255 - (sqrt(pheromone1) * 70);
-			pheromoneImage.setPixel(x, y, sf::Color(255, pheromone1Color, pheromone1Color));
 		}
+		pheromoneTexture.update(pheromoneImage);
+		pheromoneCounter = 0;
 	}
-	pheromoneTexture.update(pheromoneImage);
+
+	
+
+	
 	window->draw(pheromoneSprite);
 }
 
 void Graphic::drawAnts()
 {
-	std::vector<Body> antBodies = core->world->antContatiner->getAntBodies();
+	
+	std::vector<Body> antBodies = core->world->getAntBodies();
 
 	if (antBodies.size() != antShapes.size()) {
 		ajustAntSize( antBodies.size() );

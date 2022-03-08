@@ -4,6 +4,7 @@
 #include "Core.h"
 #include <string>
 #include <list>
+#include <thread>
 
 #include "Command.h"
 #include "World.h"
@@ -24,6 +25,7 @@ public:
 
 	void doConsole();
 	void doGraphics();
+	void worldThread();
 
 
 	list<string> seperateCommand(string command);
@@ -38,6 +40,11 @@ public:
 private:
 	bool doShutdown = false;
 	Commandline* com;
+
+	atomic_bool worldInitializationDone= false;
+	std::mutex m;
+
+
 
 	Core* core;
 	Graphic* window;

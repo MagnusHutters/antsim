@@ -23,11 +23,16 @@ public:
 
 	int getSizeX();
 	int getSizeY();
+	int getPheromoneSize();
+	float getPheromone(int x, int y, int id, bool positive);
+
+
+	std::vector<Body> getAntBodies();
+
+	void worldThread();
 
 	void update();
 
-	AntContainer* antContatiner;
-	PheromoneMap* pheromoneMap;
 	
 
 private:
@@ -38,8 +43,10 @@ private:
 	int sizeX, sizeY;
 
 
-	
 
+	AntContainer* antContainer;
+	PheromoneMap* pheromoneMap;
+	
 
 	
 

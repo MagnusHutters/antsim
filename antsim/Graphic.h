@@ -9,8 +9,8 @@ class Core;
 
 #include <vector>
 
-#define FRAME_TIME 30
-
+#define FRAME_TIME 60
+#define PHEROMONE_UPDATE_RATE 8
 
 class Graphic
 {
@@ -27,8 +27,9 @@ private:
 	Core* core;
 	sf::RenderWindow* window;
 
-
+	int pheromoneCounter = 0;
 	float elapsedTime;
+	int pheromoneSize;
 	int resolutionMultiplier;
 	int worldSizeX, worldSizeY, windowSizeX, windowSizeY;
 	sf::Texture pheromoneTexture;
