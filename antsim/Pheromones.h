@@ -105,11 +105,24 @@ public:
 	int xpos;
 	int ypos;
 	
+
+	friend class MiddlePheromoneMap;
+	friend class InnerPheromoneMap;
+	friend class PheromoneMap;
+
 	BasePheromoneMap* outer;
+
+
 
 	BasePheromoneMap* children[4];
 
+	virtual void registerInner(BasePheromoneMap* inner, int x, int y) {
 
+	}
+
+	virtual float getPheromone(int id, bool positive) {
+		return 0.0;
+	}
 
 	bool sensorInRange(const PheromoneSensor &sensor) {
 		if ((sensor.x > xpos) && (sensor.x < (xpos + size)) && (sensor.y > ypos) && (sensor.y < (ypos + size))) return true;
@@ -120,7 +133,7 @@ public:
 		return false;
 	}
 
-
+private:
 
 	virtual float _getPheromoneStrenght(PheromoneMapParams* p) {
 		if ((contains[p->positive] & p->bitMap) == false) return 0.0f;
@@ -146,18 +159,13 @@ public:
 		return Vector2();
 	}
 
+	virtual void _setPheromone(PheromoneMapParams* p);
 
 	virtual void _addPheromone(PheromoneMapParams* p);
 
 	virtual bool _decayPheromone(PheromoneMapParams* p);
 
-	virtual void registerInner(BasePheromoneMap* inner, int x, int y) {
-
-	}
-
-	virtual float getPheromone(int id, bool positive) {
-		return 0.0;
-	}
+	
 
 };
 
@@ -170,35 +178,7 @@ public:
 
 	InnerPheromoneMap();
 
-
-	Vector2 _getPheromoneVector(PheromoneMapParams* p) {
-		locker.lock();
-		if ((contains[p->positive] & p->bitMap) == false) return Vector2();
-		
-		Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
-		float dist = center.DistanceSquared(p->sensor.vector);
-		if (dist < p->sensor.radius2) {
-
-			Vector2 value= (center - p->origin) * pheromones[p->id][p->positive];
-			locker.unlock();
-			return value;
-		}
-		locker.unlock();
-		return Vector2();
-	}
-
-	float _getPheromoneStrenght(PheromoneMapParams* p) {
-		locker.lock();
-		Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
-		float dist = center.DistanceSquared(p->sensor.vector);
-		if (dist < p->sensor.radius2) {
-			float value= pheromones[p->id][p->positive];
-			locker.unlock();
-			return value;
-		}
-		locker.unlock();
-		return 0;
-	}
+	
 
 
 
@@ -220,13 +200,23 @@ public:
 
 	InnerPheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer);
 
-	void _addPheromone(PheromoneMapParams* p);
-
-	bool _decayPheromone(PheromoneMapParams* p);
-
 	float getPheromone(int id, bool positive) {
 		return pheromones[id][positive];
 	}
+
+private:
+
+	Vector2 _getPheromoneVector(PheromoneMapParams* p);
+
+	float _getPheromoneStrenght(PheromoneMapParams* p);
+
+	void _addPheromone(PheromoneMapParams* p);
+
+	void _setPheromone(PheromoneMapParams* p);
+
+	bool _decayPheromone(PheromoneMapParams* p);
+
+	
 
 private:
 	std::vector<std::vector<float>> pheromones;
@@ -244,9 +234,10 @@ public:
 	MiddlePheromoneMap();
 	MiddlePheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer);
 
+private:
 	
 	void _addPheromone(PheromoneMapParams* p);
-
+	void _setPheromone(PheromoneMapParams* p);
 	//bool _decayPheromone(PheromoneMapParams* p);
 
 };
@@ -286,6 +277,10 @@ public:
 
 	void doDecayPheromones();
 	void addPheromone(int x, int y, int id, bool positive, float strenght);
+
+private:
+
+	void _setPheromone(PheromoneMapParams* p);
 };
 
 

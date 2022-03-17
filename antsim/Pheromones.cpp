@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 void BasePheromoneMap::_addPheromone(PheromoneMapParams* p) {
 	int halfSize = size / 2;
 	if (p->x < xpos + halfSize) {
@@ -24,7 +25,28 @@ void BasePheromoneMap::_addPheromone(PheromoneMapParams* p) {
 
 	contains[p->positive] |= p->bitMap;
 }
+void BasePheromoneMap::_setPheromone(PheromoneMapParams* p) {
+	int halfSize = size / 2;
+	if (p->x < xpos + halfSize) {
+		if (p->y < ypos + halfSize) {
+			children[0]->_setPheromone(p);
+		}
+		else {
+			children[1]->_setPheromone(p);
+		}
+	}
+	else {
+		if (p->y < ypos + halfSize) {
+			children[2]->_setPheromone(p);
+		}
+		else {
+			children[3]->_setPheromone(p);
+		}
+	}
 
+
+	contains[p->positive] |= p->bitMap;
+}
 
 
 bool BasePheromoneMap::_decayPheromone(PheromoneMapParams* p) {
@@ -52,6 +74,35 @@ InnerPheromoneMap::InnerPheromoneMap() {
 
 }
 
+Vector2 InnerPheromoneMap::_getPheromoneVector(PheromoneMapParams* p) {
+	locker.lock();
+	if ((contains[p->positive] & p->bitMap) == false) return Vector2();
+
+	Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
+	float dist = center.DistanceSquared(p->sensor.vector);
+	if (dist < p->sensor.radius2) {
+
+		Vector2 value = (center - p->origin) * pheromones[p->id][p->positive];
+		locker.unlock();
+		return value;
+	}
+	locker.unlock();
+	return Vector2();
+}
+
+float InnerPheromoneMap::_getPheromoneStrenght(PheromoneMapParams* p) {
+	locker.lock();
+	Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
+	float dist = center.DistanceSquared(p->sensor.vector);
+	if (dist < p->sensor.radius2) {
+		float value = pheromones[p->id][p->positive];
+		locker.unlock();
+		return value;
+	}
+	locker.unlock();
+	return 0;
+}
+
 InnerPheromoneMap::InnerPheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer) {
 	this->size = size;
 	this->xpos = xpos;
@@ -68,6 +119,13 @@ void InnerPheromoneMap::_addPheromone(PheromoneMapParams* p) {
 	locker.lock();
 	contains[p->positive] |= p->bitMap;
 	pheromones[p->id][p->positive] += p->strenght;
+	locker.unlock();
+}
+
+void InnerPheromoneMap::_setPheromone(PheromoneMapParams* p) {
+	locker.lock();
+	contains[p->positive] |= p->bitMap;
+	pheromones[p->id][p->positive] = p->strenght;
 	locker.unlock();
 }
 
@@ -145,6 +203,30 @@ void MiddlePheromoneMap::_addPheromone(PheromoneMapParams* p) {
 	contains[p->positive] |= p->bitMap;
 }
 
+void MiddlePheromoneMap::_setPheromone(PheromoneMapParams* p) {
+
+	int halfSize = size / 2;
+	if (p->x < xpos + halfSize) {
+		if (p->y < ypos + halfSize) {
+			children[0]->_setPheromone(p);
+		}
+		else {
+			children[1]->_setPheromone(p);
+		}
+	}
+	else {
+		if (p->y < ypos + halfSize) {
+			children[2]->_setPheromone(p);
+		}
+		else {
+			children[3]->_setPheromone(p);
+		}
+	}
+
+
+	contains[p->positive] |= p->bitMap;
+}
+
 
 
 
@@ -191,6 +273,11 @@ void PheromoneMap::addPheromone(int x, int y, int id, bool positive, float stren
 
 	delete(params);
 }
+
+void PheromoneMap::_setPheromone(PheromoneMapParams* p)
+{
+}
+
 
 //bool unsetContains(int x, int y, int id, bool positive = true) {
 //	uint32_t bitMap = (uint32_t)1 << id;
