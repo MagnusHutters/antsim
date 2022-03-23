@@ -37,7 +37,7 @@ float32 Vector2::Cross(const Vector2& v) const { return x * v.y + y * v.x; }
 
 float32 Vector2::GetAngle() const
 {
-    return atan2f(y,x);
+    return (atan2f(y,x)*180)/PI;
 }
 
 Vector2& Vector2::Rotate(float32 angle)

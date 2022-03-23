@@ -56,7 +56,9 @@ private:
 
 
 
-	float maxSpeed = 1.0, steerStrenght = 0.5, wanderStrenght = 0.3;
+	Vector2 desiredMotion;
+
+	float maxSpeed = 1.0, steerStrenght = 0.2, wanderStrenght = 0.1;
 	Vector2 velocity, desiredDirection;
 	float toMove, toRotate;
 };

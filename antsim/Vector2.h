@@ -81,6 +81,10 @@ public:
 	inline Vector2& operator -= (float32 v) { x -= v; y -= v; return *this; }
 	inline Vector2& operator *= (float32 v) { x *= v; y *= v; return *this; }
 	inline Vector2& operator /= (float32 v) { x /= v; y /= v; return *this; }
+
+
+	inline float32 operator [](int i) const { return i ? y : x; }
+	inline float32& operator [](int i) { return i ? y : x; }
 };
 
 #endif

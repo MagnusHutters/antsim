@@ -110,7 +110,23 @@ void Graphic::drawAnts()
 		
 
 		window->draw(antShapes[i]);
+
+		Vector2 pos1 = core->world->getSensorLocation(0, i)* resolutionMultiplier;
+		Vector2 pos2 = core->world->getSensorLocation(1, i)* resolutionMultiplier;
+		antSensorLeft[i].setPosition(pos1.x, pos1.y);
+		antSensorRight[i].setPosition(pos2.x, pos2.y);
+
+		
+
+
 		i++;
+	}
+	window->draw(antSensorLeft[0]);
+	window->draw(antSensorRight[0]);
+
+	for (int i = 0; i < antBodies.size(); i++)
+	{
+		
 	}
 }
 
@@ -127,12 +143,25 @@ void Graphic::ajustAntSize(int newSize)
 			antShapes.back().setFillColor(sf::Color::Black);
 			antShapes.back().setOrigin(5,5);
 
+			antSensorLeft.push_back(sf::CircleShape(SENSOR_RADIUS * resolutionMultiplier));
+			antSensorLeft.back().setFillColor(sf::Color::Yellow);
+			antSensorLeft.back().setOrigin(SENSOR_RADIUS * resolutionMultiplier, SENSOR_RADIUS * resolutionMultiplier);
+
+			antSensorRight.push_back(sf::CircleShape(SENSOR_RADIUS * resolutionMultiplier));
+			antSensorRight.back().setFillColor(sf::Color::Cyan);
+			antSensorRight.back().setOrigin(SENSOR_RADIUS * resolutionMultiplier, SENSOR_RADIUS * resolutionMultiplier);
+
+
+
 		}
 	}
 	else {
 		for (int i = 0; i > ajustment; i--)
 		{
 			antShapes.pop_back();
+			antSensorLeft.pop_back();
+			antSensorRight.pop_back();
+
 		}
 	}
 }

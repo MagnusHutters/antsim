@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Body.h"
 #include "Pheromones.h"
+#include "SensorDriver.h"
 
 
 
@@ -22,7 +23,7 @@ public:
 
 
 
-
+	SensorDriver* sensorDriver;
 private:
 
 

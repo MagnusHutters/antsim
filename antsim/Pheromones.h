@@ -23,26 +23,26 @@
 
 
 
-const struct PheromoneSensor {
+const struct PheromoneMapSensor {
 
 	float x, y, radius, radius2;
 	Vector2 vector;
 
-	PheromoneSensor() {
+	PheromoneMapSensor() {
 		x = 0; y = 0; radius = 0; radius2 = 0;
 
 	}
-	PheromoneSensor(float x, float y, float radius) : x(x), y(y), radius(radius), radius2(radius * radius), vector(Vector2(x,y)) {
+	PheromoneMapSensor(float x, float y, float radius) : x(x), y(y), radius(radius), radius2(radius * radius), vector(Vector2(x,y)) {
 
 	}
-	PheromoneSensor(Vector2 vector, float radius) : x(vector.x), y(vector.y), radius(radius), radius2(radius* radius), vector(vector) {
+	PheromoneMapSensor(Vector2 vector, float radius) : x(vector.x), y(vector.y), radius(radius), radius2(radius* radius), vector(vector) {
 
 	}
-	PheromoneSensor setX(float newX) { return PheromoneSensor(newX, y, radius); }
-	PheromoneSensor setY(float newY) { return PheromoneSensor(x, newY, radius); }
-	PheromoneSensor setPos(float newX, float newY) { return PheromoneSensor(newX, newY, radius); }
-	PheromoneSensor setPos(Vector2 vector) { return PheromoneSensor(vector, radius); }
-	PheromoneSensor setRadius(float radius) { return PheromoneSensor(x,y, radius); }
+	PheromoneMapSensor setX(float newX) { return PheromoneMapSensor(newX, y, radius); }
+	PheromoneMapSensor setY(float newY) { return PheromoneMapSensor(x, newY, radius); }
+	PheromoneMapSensor setPos(float newX, float newY) { return PheromoneMapSensor(newX, newY, radius); }
+	PheromoneMapSensor setPos(Vector2 vector) { return PheromoneMapSensor(vector, radius); }
+	PheromoneMapSensor setRadius(float radius) { return PheromoneMapSensor(x,y, radius); }
 
 
 };
@@ -54,7 +54,7 @@ struct PheromoneMapParams {
 	int id;
 	bool positive;
 	float strenght;
-	PheromoneSensor sensor;
+	PheromoneMapSensor sensor;
 	Vector2 origin;
 
 	PheromoneMapParams(int x, int y, uint32_t bitMap, int id, bool positive, float strenght) : 
@@ -64,7 +64,7 @@ struct PheromoneMapParams {
 		id(id), 
 		positive(positive), 
 		strenght(strenght), 
-		sensor(PheromoneSensor()), 
+		sensor(PheromoneMapSensor()), 
 		origin(Vector2())
 	{}
 	
@@ -76,18 +76,18 @@ struct PheromoneMapParams {
 		id(id), 
 		positive(positive), 
 		strenght(0),
-		sensor(PheromoneSensor()),
+		sensor(PheromoneMapSensor()),
 		origin(Vector2())	 
 	{}
 
-	PheromoneMapParams(const Vector2& origin, const PheromoneSensor& sensor, uint32_t bitMap, int id, bool positive) :
+	PheromoneMapParams(const Vector2& origin, const PheromoneMapSensor& sensor, uint32_t bitMap, int id, bool positive) :
 		x(0),
 		y(0),
 		bitMap(bitMap),
 		id(id),
 		positive(positive),
 		strenght(0),
-		sensor(PheromoneSensor()),
+		sensor(sensor),
 		origin(Vector2())
 	{}
 
@@ -124,7 +124,7 @@ public:
 		return 0.0;
 	}
 
-	bool sensorInRange(const PheromoneSensor &sensor) {
+	bool sensorInRange(const PheromoneMapSensor &sensor) {
 		if ((sensor.x > xpos) && (sensor.x < (xpos + size)) && (sensor.y > ypos) && (sensor.y < (ypos + size))) return true;
 		if( ((sensor.x - (xpos			)) * (sensor.x - (xpos			))) + ((sensor.y - (ypos		)) * (sensor.y - (ypos			))) < sensor.radius2) return true;
 		if (((sensor.x - (xpos + size	)) * (sensor.x - (xpos + size	))) + ((sensor.y - (ypos		)) * (sensor.y - (ypos			))) < sensor.radius2) return true;
@@ -135,29 +135,11 @@ public:
 
 private:
 
-	virtual float _getPheromoneStrenght(PheromoneMapParams* p) {
-		if ((contains[p->positive] & p->bitMap) == false) return 0.0f;
-		if (sensorInRange(p->sensor)) {
-			return
-				children[0]->_getPheromoneStrenght(p) +
-				children[1]->_getPheromoneStrenght(p) +
-				children[2]->_getPheromoneStrenght(p) +
-				children[3]->_getPheromoneStrenght(p);
-		}
-		return 0.0f;
-	}
+	virtual float _getPheromoneStrenght(PheromoneMapParams* p);
 
-	virtual Vector2 _getPheromoneVector(PheromoneMapParams* p) {
-		if ((contains[p->positive] & p->bitMap) == false) return Vector2();
-		if (sensorInRange(p->sensor)) {
-			return
-				children[0]->_getPheromoneVector(p) +
-				children[1]->_getPheromoneVector(p) +
-				children[2]->_getPheromoneVector(p) +
-				children[3]->_getPheromoneVector(p);
-		}
-		return Vector2();
-	}
+	virtual Vector2 _getPheromoneStrenghtDual(PheromoneMapParams* p);
+
+	virtual Vector2 _getPheromoneVector(PheromoneMapParams* p);
 
 	virtual void _setPheromone(PheromoneMapParams* p);
 
@@ -209,6 +191,8 @@ private:
 	Vector2 _getPheromoneVector(PheromoneMapParams* p);
 
 	float _getPheromoneStrenght(PheromoneMapParams* p);
+	
+	Vector2 _getPheromoneStrenghtDual(PheromoneMapParams* p);
 
 	void _addPheromone(PheromoneMapParams* p);
 
@@ -251,7 +235,7 @@ public:
 	PheromoneMap(int sizeX, int sizeY);
 
 
-	Vector2& sensePheromonesVector(const Vector2& origin, const PheromoneSensor& sensor, int id, bool positive) {
+	Vector2& sensePheromonesVector(const Vector2& origin, const PheromoneMapSensor& sensor, int id, bool positive) {
 
 		uint32_t bitMap = (uint32_t)1 << id;
 		PheromoneMapParams* params = new PheromoneMapParams(origin, sensor, bitMap, id, positive);
@@ -263,16 +247,10 @@ public:
 		return vector;
 	}
 
-	float sensePheromonesStrenght(const PheromoneSensor& sensor, int id, bool positive) {
-		uint32_t bitMap = (uint32_t)1 << id;
-		PheromoneMapParams* params = new PheromoneMapParams(Vector2(), sensor, bitMap, id, positive);
+	float sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id, bool positive);
 
-		float strenght = _getPheromoneStrenght(params);
+	Vector2 sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id);
 
-		delete(params);
-
-		return strenght;
-	}
 	void registerInner(BasePheromoneMap* inner, int x, int y);
 
 	void doDecayPheromones();

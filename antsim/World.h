@@ -26,6 +26,15 @@ public:
 	int getPheromoneSize();
 	float getPheromone(int x, int y, int id, bool positive);
 
+	Vector2 getSensorLocation(bool side, int ant) {
+		if (side) {
+			return antContainer->ants[ant]->sensorDriver->getSensorFromVector(Vector2(SENSOR_DISTANCE, SENSOR_DISTANCE)).vector;
+		}
+		else {
+			return antContainer->ants[ant]->sensorDriver->getSensorFromVector(Vector2(SENSOR_DISTANCE, -SENSOR_DISTANCE)).vector;
+		}
+	}
+
 
 	std::vector<Body> getAntBodies();
 

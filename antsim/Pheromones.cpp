@@ -25,6 +25,39 @@ void BasePheromoneMap::_addPheromone(PheromoneMapParams* p) {
 
 	contains[p->positive] |= p->bitMap;
 }
+float BasePheromoneMap::_getPheromoneStrenght(PheromoneMapParams* p) {
+	if ((contains[p->positive] & p->bitMap) == false) return 0.0f;
+	if (sensorInRange(p->sensor)) {
+		return
+			children[0]->_getPheromoneStrenght(p) +
+			children[1]->_getPheromoneStrenght(p) +
+			children[2]->_getPheromoneStrenght(p) +
+			children[3]->_getPheromoneStrenght(p);
+	}
+	return 0.0f;
+}
+Vector2 BasePheromoneMap::_getPheromoneStrenghtDual(PheromoneMapParams* p) {
+	if ((contains[0] & p->bitMap) == false && (contains[1] & p->bitMap) == false) return Vector2(0,0);
+	if (sensorInRange(p->sensor)) {
+		return
+			children[0]->_getPheromoneStrenghtDual(p) +
+			children[1]->_getPheromoneStrenghtDual(p) +
+			children[2]->_getPheromoneStrenghtDual(p) +
+			children[3]->_getPheromoneStrenghtDual(p);
+	}
+	return Vector2(0, 0);
+}
+Vector2 BasePheromoneMap::_getPheromoneVector(PheromoneMapParams* p) {
+	if ((contains[p->positive] & p->bitMap) == false) return Vector2();
+	if (sensorInRange(p->sensor)) {
+		return
+			children[0]->_getPheromoneVector(p) +
+			children[1]->_getPheromoneVector(p) +
+			children[2]->_getPheromoneVector(p) +
+			children[3]->_getPheromoneVector(p);
+	}
+	return Vector2();
+}
 void BasePheromoneMap::_setPheromone(PheromoneMapParams* p) {
 	int halfSize = size / 2;
 	if (p->x < xpos + halfSize) {
@@ -101,6 +134,22 @@ float InnerPheromoneMap::_getPheromoneStrenght(PheromoneMapParams* p) {
 	}
 	locker.unlock();
 	return 0;
+}
+
+Vector2 InnerPheromoneMap::_getPheromoneStrenghtDual(PheromoneMapParams* p)
+{
+	locker.lock();
+	Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
+	float dist = center.DistanceSquared(p->sensor.vector);
+	if (dist < p->sensor.radius2) {
+		
+		Vector2 value = Vector2(pheromones[p->id][false], pheromones[p->id][true]);
+
+		locker.unlock();
+		return value;
+	}
+	locker.unlock();
+	return Vector2(0,0);
 }
 
 InnerPheromoneMap::InnerPheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer) {
@@ -245,6 +294,29 @@ PheromoneMap::PheromoneMap(int sizeX, int sizeY) {
 	children[2] = new MiddlePheromoneMap(size / 2, xpos + newSize, ypos, outer);
 	children[3] = new MiddlePheromoneMap(size / 2, xpos + newSize, ypos + newSize, outer);
 
+}
+
+float PheromoneMap::sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id, bool positive) {
+	uint32_t bitMap = (uint32_t)1 << id;
+	PheromoneMapParams* params = new PheromoneMapParams(Vector2(), sensor, bitMap, id, positive);
+
+	float strenght = _getPheromoneStrenght(params);
+
+	delete(params);
+
+	return strenght;
+}
+
+Vector2 PheromoneMap::sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id)
+{
+	uint32_t bitMap = (uint32_t)1 << id;
+	PheromoneMapParams* params = new PheromoneMapParams(Vector2(), sensor, bitMap, id, 0);
+
+	Vector2 strenght = _getPheromoneStrenghtDual(params);
+
+	delete(params);
+
+	return strenght;
 }
 
 void PheromoneMap::registerInner(BasePheromoneMap* inner, int x, int y) {

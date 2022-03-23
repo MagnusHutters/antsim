@@ -10,7 +10,7 @@ class Core;
 #include <vector>
 
 #define FRAME_TIME 60
-#define PHEROMONE_UPDATE_RATE 8
+#define PHEROMONE_UPDATE_RATE 1
 
 class Graphic
 {
@@ -40,6 +40,9 @@ private:
 
 
 	std::vector< sf::CircleShape > antShapes;
+
+	std::vector< sf::CircleShape > antSensorLeft;
+	std::vector< sf::CircleShape > antSensorRight;
 
 
 
