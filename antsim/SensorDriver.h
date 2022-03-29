@@ -3,11 +3,11 @@
 
 #include "Vector2.h"
 #include "Body.h"
-#include "Pheromones.h"
+#include "Pheromones2.h"
+
+#include "Config.h"
 
 
-#define SENSOR_DISTANCE 3
-#define SENSOR_RADIUS 4
 
 class SensorDriver
 {
@@ -17,21 +17,32 @@ public:
 
 	void doSense();
 
+	
+	void resetSensor();
 
-
-
+	//===============GET AND SETTERS======================0
 	inline void doGetComletePheromonePicture() { completePheromoneScan = true; }
 	inline void setSensePheromone(int id) { pheromoneId = id; }
-	inline float getPheromoneSenseFrontLeft(bool positive) {return frontLeftPheromone[positive];}
-	inline float getPheromoneSenseFrontRight(bool positive) {return frontRightPheromone[positive];}
 
-	const PheromoneMapSensor& getSensorFromVector(Vector2 vector);
+	inline void setPrimarySensorAngle(float angle);
 
+
+	//PRIMARY SENSOR
+	inline float sensePrimaryLeft(bool positive) {return primaryLeftPheromone;}
+	inline float sensePrimaryRight(bool positive) {return primaryRightPheromone;}
+	inline float sensePrimaryCenter(bool positive) { return primaryCenterPheromone; }
+	inline const PheromoneMapSensor& getPrimaryRight() { return getSensorFromVector(primaryRightVector); }
+	inline const PheromoneMapSensor& getPrimaryLeft() { return getSensorFromVector(primaryLeftVector); }
+	inline const PheromoneMapSensor& getPrimaryCenter() { return getSensorFromVector(primaryCenterVector); }
+	inline void enablePrimary() { enabledPrimarySensor = true; }
+	inline void disablePrimary() { enabledPrimarySensor = false; }
 
 
 private:
 
-
+	const PheromoneMapSensor& getSensorFromVector(Vector2 vector);
+	const PheromoneMapSensor& getSensorFromAngle(float angle);
+	const Vector2& getSensorVectorFromAngle(float angle);
 
 	BodyDriver* body;
 
@@ -42,8 +53,13 @@ private:
 	int pheromoneId = 0;
 	
 
-	Vector2 frontLeftPheromone, frontRightPheromone;
+	float primaryLeftPheromone, primaryRightPheromone, primaryCenterPheromone;
+	Vector2 primaryLeftVector, primaryRightVector, primaryCenterVector;
+	//Vector2 primaryLeftPheromone, primaryRightPheromone;
+
+
 	bool completePheromoneScan=false;
+	bool enabledPrimarySensor = false;
 
 
 	PheromoneMap* pheromoneMap;

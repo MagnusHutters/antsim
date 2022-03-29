@@ -73,11 +73,12 @@ void Graphic::drawPheromones()
 		{
 			for (int y = 0; y < size; y++)
 			{
-				float pheromone1 = core->world->getPheromone(x, y, EXPLORED, 1);
-				if (pheromone1 > 0) {
-					1 + 1;
-				}
-				sf::Uint8 pheromone1Color = 255 - (sqrt(pheromone1) * 70);
+				float pheromone1 = core->world->getPheromone(x, y, EXPLORED, 1)*0.05;
+				
+
+				float value = sinh(pheromone1) / cosh(pheromone1);
+
+				sf::Uint8 pheromone1Color = 255 - (value*255);
 				pheromoneImage.setPixel(x, y, sf::Color(255, pheromone1Color, pheromone1Color));
 			}
 		}

@@ -1,22 +1,15 @@
+/*
 #pragma once
 #include <vector>
 #include <cstdint>
+#include <cmath> 
 #include <algorithm> 
 #include "Vector2.h"
 #include <mutex>
+#include <math.h>
+#include "Config.h"
 
 
-
-
-#define MAX_NUMBER_OF_TASKS				16
-#define DEFAULT_PHEROMONES_NUMBER		4
-#define NUMBER_OF_PHEROMONE_PAIRS		MAX_NUMBER_OF_TASKS+DEFAULT_PHEROMONES_NUMBER
-#define EXPLORED						MAX_NUMBER_OF_TASKS+0
-#define PATH							MAX_NUMBER_OF_TASKS+1
-//#define OUTER_CONTAINS_MAP_RESOLUTION	32
-
-#define PHEROMONE_FLOOR					0.1
-#define PHEROMONE_DECAY					0.995
 
 
 
@@ -124,12 +117,45 @@ public:
 		return 0.0;
 	}
 
+
+	float squareDistanceToPoint(Vector2 point){ 
+		float x_min = xpos;
+		float y_min = ypos;
+		float x_max = x_min + size;
+		float y_max = y_min + size;
+		
+
+		if (point.x < x_min) {
+			if (point.y < y_min)
+				return pow(x_min - point.x,2)+ pow(y_min - point.y,2);
+			else if (point.y <= y_max)
+				return pow(x_min - point.x,2);
+			else
+				return pow(x_min - point.x, 2) + pow(y_max - point.y, 2);
+
+		}
+		else if (point.x <= x_max) {
+			if (point.y < y_min)
+				return y_min - point.y;
+			else if (point.y <= y_max)
+				return 0;
+			else
+				return point.y - y_max;
+		}
+		else {
+			if (point.y < y_min)
+				return pow(x_max - point.x,2) + (y_min - point.y,2);
+			else if (point.y <= y_max)
+				return pow(point.x - x_max,2);
+			else
+				return pow(x_max - point.x,2) + (y_max - point.y,2);
+		}
+	}
+
 	bool sensorInRange(const PheromoneMapSensor &sensor) {
-		if ((sensor.x > xpos) && (sensor.x < (xpos + size)) && (sensor.y > ypos) && (sensor.y < (ypos + size))) return true;
-		if( ((sensor.x - (xpos			)) * (sensor.x - (xpos			))) + ((sensor.y - (ypos		)) * (sensor.y - (ypos			))) < sensor.radius2) return true;
-		if (((sensor.x - (xpos + size	)) * (sensor.x - (xpos + size	))) + ((sensor.y - (ypos		)) * (sensor.y - (ypos			))) < sensor.radius2) return true;
-		if (((sensor.x - (xpos			)) * (sensor.x - (xpos			))) + ((sensor.y - (ypos + size	)) * (sensor.y - (ypos + size	))) < sensor.radius2) return true;
-		if (((sensor.x - (xpos + size	)) * (sensor.x - (xpos + size	))) + ((sensor.y - (ypos + size	)) * (sensor.y - (ypos + size	))) < sensor.radius2) return true;
+
+		float dist2 = squareDistanceToPoint(sensor.vector);
+		if(dist2< sensor.radius2) return true;
 		return false;
 	}
 
@@ -264,3 +290,4 @@ private:
 
 
 
+*/

@@ -2,16 +2,31 @@
 
 SensorDriver::SensorDriver(BodyDriver* body, PheromoneMap* pheromoneMap) : body(body), pheromoneMap(pheromoneMap)
 {
-	
+	resetSensor();
+
 }
 
 void SensorDriver::doSense()
 {
 
 
-	frontLeftPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(frontLeft), pheromoneId);
-	frontRightPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(frontRight), pheromoneId);
+	primaryLeftPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryLeftVector), pheromoneId, 1);
+	primaryRightPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryRightVector), pheromoneId, 1);
 
+}
+
+void SensorDriver::resetSensor()
+{
+	setPrimarySensorAngle(45);
+
+	enabledPrimarySensor = false;
+}
+
+inline void SensorDriver::setPrimarySensorAngle(float angle)
+{
+	primaryCenterVector = getSensorVectorFromAngle(0);
+	primaryLeftVector = getSensorVectorFromAngle(angle);
+	primaryRightVector = getSensorVectorFromAngle(-angle);
 }
 
 inline const PheromoneMapSensor& SensorDriver::getSensorFromVector(Vector2 vector)
@@ -23,4 +38,18 @@ inline const PheromoneMapSensor& SensorDriver::getSensorFromVector(Vector2 vecto
 	vector += body->body.pos;
 
 	return PheromoneMapSensor(vector, sensorRadius);
+}
+
+const PheromoneMapSensor& SensorDriver::getSensorFromAngle(float angle)
+{
+	Vector2 vector = Vector2::FromAngle(angle);
+	vector *= SENSOR_DISTANCE;
+	return getSensorFromVector(vector);
+}
+
+const Vector2& SensorDriver::getSensorVectorFromAngle(float angle)
+{
+	Vector2 vector = Vector2::FromAngle(angle);
+	vector *= SENSOR_DISTANCE;
+	return vector;
 }

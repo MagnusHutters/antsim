@@ -32,12 +32,12 @@ int World::getSizeY()
 
 int World::getPheromoneSize()
 {
-	return pheromoneMap->size;
+	return MAP_WIDTH;
 }
 
 float World::getPheromone(int x, int y, int id, bool positive)
 {
-	return pheromoneMap->innerPheromones[x][y]->getPheromone(id, positive);
+	return pheromoneMap->getPheromone(x,y,id,positive);
 }
 
 
@@ -71,6 +71,16 @@ void World::update() {
 	pheromoneMap->doDecayPheromones();
 
 	antContainer->processAnts();
+
+	doDebugLogger();
+
 	antContainer->updateAnts();
+
+}
+
+void World::doDebugLogger()
+{
+
+	antLog.push(std::to_string(antContainer->ants[0]->val3));
 
 }

@@ -2,6 +2,10 @@
 #include "Vector2.h"
 
 
+class CollisionMap;
+
+#include "CollisionMap.h"
+
 class Body
 {
 
@@ -40,6 +44,8 @@ public:
 	BodyDriver();
 	BodyDriver(int x, int y, float rot);
 
+
+	void breakMotion();
 	void addDesiredMotion(const Vector2& motion);
 	void addDesiredDirection(const Vector2& motion);
 	void setDesiredMotion(const Vector2& motion);
@@ -58,7 +64,9 @@ private:
 
 	Vector2 desiredMotion;
 
-	float maxSpeed = 1.0, steerStrenght = 0.2, wanderStrenght = 0.1;
+	bool doBreak = false;
+	bool doWander = true;
+	float maxSpeed = 2.0, steerStrenght = 0.3, wanderStrenght = 0.20;
 	Vector2 velocity, desiredDirection;
 	float toMove, toRotate;
 };

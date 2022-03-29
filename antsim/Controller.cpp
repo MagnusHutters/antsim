@@ -6,6 +6,7 @@
 #include "Core.h"
 #include <string>
 #include "commonFuctions.h"
+#include <time.h>
 
 #include "Command.h"
 
@@ -19,6 +20,9 @@
 #include "World.h"
 
 
+#include "Config.h"
+
+
 
 
 
@@ -30,17 +34,17 @@ Controller::Controller()
 {
 	core = new Core();
 
-	
+	srand(time(NULL));
 
 
-	core->world = new World("main", 10, 128, 128);
+	core->world = new World("main", NUM_ANTS, MAP_WIDTH, MAP_HEIGHT);
 
 	
 	com = new Commandline();
 	core->commandExecuter = new Command();
 	
 
-	window = new Graphic(core, 8);
+	window = new Graphic(core, 4);
 
 	
 
@@ -89,7 +93,7 @@ void Controller::start()
 
 
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 
 
@@ -114,6 +118,16 @@ void Controller::doConsole()
 		string message = core->log.front();
 		com->write(message);
 		core->log.pop();
+	}
+	while (core->world->antLog.size() > 0) {
+		string message = std::string("[Ant] ") + core->world->antLog.front();
+		com->write(message);
+		core->world->antLog.pop();
+	}
+	while (core->world->worldLog.size() > 0) {
+		string message = std::string("[World] ")+core->world->worldLog.front();
+		com->write(message);
+		core->world->worldLog.pop();
 	}
 
 	//com->write("this is a message written with com.write");

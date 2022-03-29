@@ -10,7 +10,7 @@ class Core;
 #include <vector>
 
 #define FRAME_TIME 60
-#define PHEROMONE_UPDATE_RATE 1
+#define PHEROMONE_UPDATE_RATE 10
 
 class Graphic
 {

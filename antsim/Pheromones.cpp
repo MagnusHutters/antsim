@@ -1,3 +1,4 @@
+/*
 #include "Pheromones.h"
 #include <iostream>
 
@@ -39,11 +40,13 @@ float BasePheromoneMap::_getPheromoneStrenght(PheromoneMapParams* p) {
 Vector2 BasePheromoneMap::_getPheromoneStrenghtDual(PheromoneMapParams* p) {
 	if ((contains[0] & p->bitMap) == false && (contains[1] & p->bitMap) == false) return Vector2(0,0);
 	if (sensorInRange(p->sensor)) {
-		return
-			children[0]->_getPheromoneStrenghtDual(p) +
-			children[1]->_getPheromoneStrenghtDual(p) +
-			children[2]->_getPheromoneStrenghtDual(p) +
-			children[3]->_getPheromoneStrenghtDual(p);
+		Vector2 value = Vector2();
+		
+		value += children[0]->_getPheromoneStrenghtDual(p);
+		value += children[1]->_getPheromoneStrenghtDual(p);
+		value += children[2]->_getPheromoneStrenghtDual(p);
+		value += children[3]->_getPheromoneStrenghtDual(p);
+		return value;
 	}
 	return Vector2(0, 0);
 }
@@ -139,7 +142,7 @@ float InnerPheromoneMap::_getPheromoneStrenght(PheromoneMapParams* p) {
 Vector2 InnerPheromoneMap::_getPheromoneStrenghtDual(PheromoneMapParams* p)
 {
 	locker.lock();
-	Vector2 center = Vector2((float)xpos + 0.5, (float)xpos + 0.5);
+	Vector2 center = Vector2((float)xpos + 0.5, (float)ypos + 0.5);
 	float dist = center.DistanceSquared(p->sensor.vector);
 	if (dist < p->sensor.radius2) {
 		
@@ -355,3 +358,5 @@ void PheromoneMap::_setPheromone(PheromoneMapParams* p)
 //	uint32_t bitMap = (uint32_t)1 << id;
 //	//return unsetContainsBit(x, y, bitMap, positive);
 //}
+
+*/

@@ -2,16 +2,24 @@
 #include <stdlib.h>
 
 
+
+
 Ant::Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap)
 {
 	this->pheromoneMap = pheromoneMap;
-	
+	this->id = id;
 
 
 	bodyDriver = new BodyDriver(x,y,rot);
 
 	sensorDriver = new SensorDriver(bodyDriver, this->pheromoneMap);
+
+	actionDriver = new ActionDriver(sensorDriver, bodyDriver);
+
 	sensorDriver->setSensePheromone(EXPLORED);
+
+	
+	actionDriver->setAction(new ActionFollowTrail(EXPLORED));
 
 	//body = Body(x, y, rot);
 	
@@ -19,9 +27,18 @@ Ant::Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap)
 
 void Ant::process()
 {
+	if (id == 0) {
+		volatile int a = 1 + 1;
+	}
 	
-	bodyDriver->process();
+
 	sensorDriver->doSense();
+
+	actionDriver->calcAction();
+
+	bodyDriver->process();
+
+
 
 
 }
@@ -32,10 +49,6 @@ void Ant::update()
 	pheromoneMap->addPheromone((int)bodyDriver->body.pos.x, (int)bodyDriver->body.pos.y, EXPLORED, true, 1.0);
 
 
-	float val1 = sensorDriver->getPheromoneSenseFrontLeft(true);
-	float val2 = sensorDriver->getPheromoneSenseFrontRight(true);
-	float val3 = val1 - val2;
-	bodyDriver->addDesiredMotion(Vector2(1, val3));
 
 	/*
 	if (sensorDriver->getPheromoneSenseFrontLeft(true) > sensorDriver->getPheromoneSenseFrontRight(true)) {
@@ -45,6 +58,8 @@ void Ant::update()
 	else {
 		bodyDriver->addDesiredMotion(Vector2(1, -1));
 	}*/
+
+	actionDriver->doAction();
 
 	bodyDriver->update();
 

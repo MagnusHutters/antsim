@@ -2,12 +2,13 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 
 
 
 #include "Ant.h"
 #include "AntContainer.h"
-#include "Pheromones.h"
+#include "Pheromones2.h"
 
 class World
 {
@@ -28,10 +29,10 @@ public:
 
 	Vector2 getSensorLocation(bool side, int ant) {
 		if (side) {
-			return antContainer->ants[ant]->sensorDriver->getSensorFromVector(Vector2(SENSOR_DISTANCE, SENSOR_DISTANCE)).vector;
+			return antContainer->ants[ant]->sensorDriver->getPrimaryLeft().vector;
 		}
 		else {
-			return antContainer->ants[ant]->sensorDriver->getSensorFromVector(Vector2(SENSOR_DISTANCE, -SENSOR_DISTANCE)).vector;
+			return antContainer->ants[ant]->sensorDriver->getPrimaryRight().vector;
 		}
 	}
 
@@ -42,7 +43,10 @@ public:
 
 	void update();
 
-	
+	void doDebugLogger();
+
+	std::queue<std::string> worldLog;
+	std::queue<std::string> antLog;
 
 private:
 	std::string name;

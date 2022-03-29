@@ -3,8 +3,13 @@
 
 #include "Vector2.h"
 #include "Body.h"
-#include "Pheromones.h"
 #include "SensorDriver.h"
+
+#include "ActionDriver.h"
+
+#include "Pheromones2.h"
+
+#include "ActionFollowTrail.h"
 
 
 
@@ -24,14 +29,18 @@ public:
 
 
 	SensorDriver* sensorDriver;
+
+	float val1, val2, val3;
+
+
 private:
 
 
 	PheromoneMap* pheromoneMap;
-
-	
+	int id;
 	
 	BodyDriver* bodyDriver;
+	ActionDriver* actionDriver;
 
 
 	//Body;

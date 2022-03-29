@@ -25,15 +25,15 @@
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{f8b9cd99-cb67-4b07-af68-47ade35440aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Actions">
+      <UniqueIdentifier>{601aa6b3-ec3b-4205-a4e8-ef4773da8ce9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="commandline.cpp">
@@ -69,15 +69,18 @@
     <ClCompile Include="SensorDriver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Pheromones2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core.h">
@@ -125,11 +128,26 @@
     <ClInclude Include="AntContainer.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="ActionDriver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SensorDriver.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pheromones2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionDriver.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionHold.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionFollowTrail.h">
+      <Filter>Header Files\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
