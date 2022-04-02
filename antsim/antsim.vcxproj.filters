@@ -75,6 +75,9 @@
     <ClCompile Include="CollisionMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EntityMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="ActionFollowTrail.h">
       <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityMap.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

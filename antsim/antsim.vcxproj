@@ -135,6 +135,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="commandline.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="EntityMap.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pheromones.cpp" />
     <ClCompile Include="Pheromones2.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="EntityMap.h" />
     <ClInclude Include="event.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="observer.h" />
