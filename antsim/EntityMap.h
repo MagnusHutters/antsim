@@ -46,6 +46,7 @@ class EntityMap
 
 
 
+
 	std::unordered_map<int, Entity*> entityList;
 
 
@@ -67,6 +68,7 @@ class EntityMap
 		}
 
 	}
+	void test();
 
 	inline float getDistanceSquare(Vector2 p1, Vector2 p2) {
 		float difX = fabs(p2.x - p1.x);
