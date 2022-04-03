@@ -65,7 +65,7 @@ private:
 	Vector2 desiredMotion;
 
 	bool doBreak = false;
-	bool doWander = true;
+	bool doWander = false;
 	float maxSpeed = 2.0, steerStrenght = 0.3, wanderStrenght = 0.20;
 	Vector2 velocity, desiredDirection;
 	float toMove, toRotate;

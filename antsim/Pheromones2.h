@@ -104,14 +104,15 @@ public:
 
 
 
-	std::array<std::array<std::array<float, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromones;
-	std::array<std::array<std::array<bool, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromonesIsActive;
+	std::array<std::array<std::array<float, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromones{};
+	std::array<std::array<std::array<bool, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromonesIsActive{};
 	std::list<PheromoneMapIndex> activeCells;
 
 	std::unordered_map<int, std::list<int>> sensorCirles;
+	std::unordered_map<int, std::vector<float>> sensorCirlesDistribution;
+	std::unordered_map<int, std::vector<Vector2>> sensorCirlesVector;
 
-
-	PheromoneMap(int sizeX, int sizeY) {
+	PheromoneMap(int sizeX, int sizeY){
 
 	}
 
@@ -149,6 +150,8 @@ public:
 	void createSensorCirle(int radius) {
 		int radius2 = radius * radius;
 		std::list<int> sensorCirle;
+		std::vector<Vector2> sensorCirleVector;
+		std::vector<float> sensorCirleDistribution;
 
 		for (int y = -radius; y <= radius; y++)
 		{
@@ -156,10 +159,21 @@ public:
 			{
 				if (((x * x) + (y * y)) < radius2) {
 					sensorCirle.push_back(indexFromCoord(x, y));
+					sensorCirleVector.push_back(Vector2(x, y));
+					sensorCirleDistribution.push_back(Vector2(x, y).GetNormalFunction(radius * 0.5));
 				}
 			}
 		}
 		sensorCirles[radius] = sensorCirle;
+		sensorCirlesVector[radius] = sensorCirleVector;
+		sensorCirlesDistribution[radius] = sensorCirleDistribution;
+	}
+
+	void ensureSensorCircleExists(int sensorSize) {
+		auto search = sensorCirles.find(sensorSize);
+		if (search == sensorCirles.end()) {
+			createSensorCirle(sensorSize);
+		}
 	}
 
 	Vector2 sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id) {
@@ -168,14 +182,8 @@ public:
 		int y = sensor.y;
 		int index = indexFromCoord(x, y);
 		int iterIndex = 0;
-		
-		
 
-		auto search = sensorCirles.find(sensorSize);
-		if (search == sensorCirles.end()) {
-			createSensorCirle(sensorSize);
-		}
-
+		ensureSensorCircleExists(sensorSize);
 
 		//std::list<int> &sensorCirle = sensorCirles[sensorSize];
 		float a = 0;
@@ -201,12 +209,7 @@ public:
 		int index = indexFromCoord(x, y);
 		int iterIndex = 0;
 
-
-
-		auto search = sensorCirles.find(sensorSize);
-		if (search == sensorCirles.end()) {
-			createSensorCirle(sensorSize);
-		}
+		ensureSensorCircleExists(sensorSize);
 
 
 		//std::list<int> &sensorCirle = sensorCirles[sensorSize];
@@ -223,6 +226,45 @@ public:
 		}
 		return a;
 
+	}
+
+
+	Vector2 sensePheromonesStrenghtDirection(const PheromoneMapSensor& sensor, Vector2 origin, int id, bool positive) {
+		int sensorSize = sensor.radius;
+		int x = sensor.x;
+		int y = sensor.y;
+		int index = indexFromCoord(x, y);
+		int iterIndex = 0;
+
+
+		ensureSensorCircleExists(sensorSize);
+
+
+		//std::list<int> &sensorCirle = sensorCirles[sensorSize];
+		//float a = 0;
+		//float b = 0;
+
+		Vector2 value=Vector2(0,0);
+		float strenght = 0;
+
+
+		int i = 0;
+		for (auto const& circleIndex : sensorCirles[sensorSize]) {
+			iterIndex = index + circleIndex;
+			iterIndex = bound(iterIndex);
+
+
+			strenght += pheromones[positive][id][iterIndex];
+			value +=
+				sensorCirlesVector[sensorSize][i] *
+				sensorCirlesDistribution[sensorSize][i] *
+				pheromones[positive][id][iterIndex];
+			//b += pheromones[1][id][iterIndex];
+			i++;
+
+		}
+		//value.Normalize();
+		return value*strenght* strenght;
 
 	}
 

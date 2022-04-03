@@ -13,7 +13,7 @@ public:
 
 	
 
-	Action() {}
+	Action() : body(nullptr), sensor(nullptr) {}
 
 	virtual void init() {
 
@@ -28,6 +28,7 @@ private:
 	friend class ActionDriver;
 	friend class ActionFollowTrail;
 	friend class ActionHold;
+	friend class ActionExplore;
 
 	SensorDriver* sensor;
 	BodyDriver* body;

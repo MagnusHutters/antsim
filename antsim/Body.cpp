@@ -29,6 +29,7 @@ void BodyDriver::addDesiredMotion(const Vector2& motion)
 
 void BodyDriver::addDesiredDirection(const Vector2& motion)
 {
+	desiredDirection += motion;
 }
 
 void BodyDriver::process()

@@ -21,6 +21,12 @@ Vector2 Vector2::RandomUnitVector()
     return Vector2(cos(rad), sin(rad));
 }
 
+Vector2 Vector2::RandomWithinMap() {
+    int x = rand() % MAP_WIDTH;
+    int y = rand() % MAP_HEIGHT;
+    return Vector2(x, y);
+}
+
 
 //DECONSTRUCTOR
 Vector2::~Vector2(void) { }

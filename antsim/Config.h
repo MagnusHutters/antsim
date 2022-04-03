@@ -3,7 +3,7 @@
 
 //MAP
 
-#define NUM_ANTS 1500
+#define NUM_ANTS 500
 #define MAP_WIDTH 256
 #define MAP_HEIGHT 256
 #define MAP_CELLS MAP_WIDTH*MAP_HEIGHT
@@ -13,6 +13,7 @@
 
 #define SENSOR_DISTANCE 8
 #define SENSOR_RADIUS 4
+#define SENSOR_DIRECTION_RADIUS 8
 
 
 //BODY

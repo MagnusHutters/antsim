@@ -3,7 +3,8 @@
 #include <math.h>
 #include "Body.h"
 
-Graphic::Graphic(Core* core, int resolutionMultiplier)
+
+Graphic::Graphic(Core* core, int resolutionMultiplier) : elapsedTime(0)
 {
 	this->core = core;
 	worldSizeX = core->world->getSizeX();
@@ -59,6 +60,7 @@ void Graphic::update()
 
 	drawPheromones();
 	drawAnts();
+	drawJobs();
 	//window->draw(shape);
 	window->display();
 }
@@ -66,6 +68,10 @@ void Graphic::update()
 
 void Graphic::drawPheromones()
 {
+	int pheromone1 = EXPLORED;
+	int pheromone2 = 0;
+	int pheromone3 = 1;
+
 	pheromoneCounter++;
 	if (pheromoneCounter > PHEROMONE_UPDATE_RATE) {
 		int size = pheromoneSize;
@@ -73,13 +79,23 @@ void Graphic::drawPheromones()
 		{
 			for (int y = 0; y < size; y++)
 			{
-				float pheromone1 = core->world->getPheromone(x, y, EXPLORED, 1)*0.05;
+				float pheromone1Result = core->world->getPheromone(x, y, pheromone1, 1) * 0.1;
+				float pheromone2Result = core->world->getPheromone(x, y, pheromone2, 1) * 0.1;
+				float pheromone3Result = core->world->getPheromone(x, y, pheromone3, 1) * 0.1;
 				
 
-				float value = sinh(pheromone1) / cosh(pheromone1);
+				float value1 = sinh(pheromone1Result) / cosh(pheromone1Result);
+				float value2 = sinh(pheromone2Result) / cosh(pheromone2Result);
+				float value3 = sinh(pheromone3Result) / cosh(pheromone3Result);
+				if (x==50 && y==50) {
+					volatile int a = 1 + 1;
+				}
+				value3 = Vector2(x - 50, y - 50).GetNormalFunction(5)*100;
+				sf::Uint8 pheromone1Color = 255 - (((value1+ value2)*0.5) * 255);
+				sf::Uint8 pheromone2Color = 255 - (((value2+ value3)*0.5) * 255);
+				sf::Uint8 pheromone3Color = 255 - (((value3+ value1)*0.5) * 255);
 
-				sf::Uint8 pheromone1Color = 255 - (value*255);
-				pheromoneImage.setPixel(x, y, sf::Color(255, pheromone1Color, pheromone1Color));
+				pheromoneImage.setPixel(x, y, sf::Color(pheromone1Color, pheromone2Color, pheromone3Color));
 			}
 		}
 		pheromoneTexture.update(pheromoneImage);
@@ -129,6 +145,35 @@ void Graphic::drawAnts()
 	{
 		
 	}
+}
+
+void Graphic::drawJobs()
+{
+	std::unordered_map<int, EntityMap<Job>::Entity*> jobs = core->world->getJobPositions();
+	if (jobs.size() != jobShapes.size()) {
+		jobShapes.resize(jobs.size(), sf::CircleShape(10));
+		for (int i = 0; i < jobShapes.size(); i++)
+		{
+			jobShapes[i].setFillColor(sf::Color::Magenta);
+			jobShapes[i].setOrigin(10, 10);
+		}
+	}
+	int i = 0;
+	for (std::pair<int, EntityMap<Job>::Entity*> element : jobs) {
+		int x = element.second->pos.x* resolutionMultiplier;
+		int y = element.second->pos.y* resolutionMultiplier;
+		jobShapes[i].setPosition(x, y);
+
+		window->draw(jobShapes[i]);
+
+		i++;
+	}
+	for (int i = 0; i < jobs.size(); i++)
+	{
+		//int x = jobs[i]
+		//jobShapes[i].setPosition
+	}
+
 }
 
 void Graphic::ajustAntSize(int newSize)

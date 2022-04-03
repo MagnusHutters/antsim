@@ -24,6 +24,7 @@ public:
 	void init() {
 		sensor->resetSensor();
 
+		sensor->setPrimarySensorPheromone(EXPLORED);
 		sensor->setPrimarySensorAngle(45);
 		sensor->enablePrimary();
 	}

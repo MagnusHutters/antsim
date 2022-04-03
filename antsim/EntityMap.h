@@ -27,6 +27,7 @@
 template <typename T>
 class EntityMap
 {
+public:
 
 	struct Entity {
 		int x;
@@ -50,9 +51,29 @@ class EntityMap
 	std::unordered_map<int, Entity*> entityList;
 
 
-	int registerEntity(T* object, Vector2 pos);
 
-	void setPosition(int handle, Vector2 pos);
+
+	int registerEntity(T* object, Vector2 pos) {
+
+		Entity* newEntity = new Entity(object, pos);
+
+
+		int handle = newId;
+		entityList[handle] = newEntity;
+
+		newId++;
+
+		return handle;
+	}
+
+	void setPosition(int handle, Vector2 pos) {
+		entityList[handle]->pos = pos;
+
+	}
+
+	const std::unordered_map<int, Entity*>& getEntities() {
+		return entityList;
+	}
 
 	const Entity& getClosest(Vector2 point) {
 
@@ -68,7 +89,6 @@ class EntityMap
 		}
 
 	}
-	void test();
 
 	inline float getDistanceSquare(Vector2 p1, Vector2 p2) {
 		float difX = fabs(p2.x - p1.x);

@@ -9,12 +9,16 @@ World::World(std::string name, int numAnts, int sizeX, int sizeY)
 {
 
 	pheromoneMap = new PheromoneMap(sizeX, sizeY);
-	antContainer = new AntContainer(numAnts, sizeX, sizeY, pheromoneMap);
+
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
 	this->name = name;
+	jobMap = new EntityMap<Job>();
+	jobFactory = new JobFactory(jobMap);
 
+	jobFactory->createRandomSimpleJob(5);
 
+	antContainer = new AntContainer(numAnts, sizeX, sizeY, pheromoneMap, jobMap);
 
 	
 
@@ -39,6 +43,8 @@ float World::getPheromone(int x, int y, int id, bool positive)
 {
 	return pheromoneMap->getPheromone(x,y,id,positive);
 }
+
+
 
 
 std::vector<Body> World::getAntBodies()

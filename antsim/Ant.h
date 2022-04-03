@@ -10,7 +10,9 @@
 #include "Pheromones2.h"
 
 #include "ActionFollowTrail.h"
-
+#include "ActionExplore.h"
+#include "EntityMap.h"
+#include "Job.h"
 
 
 
@@ -18,7 +20,7 @@ class Ant
 {
 
 public:
-	Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap);
+	Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap);
 
 	void process();
 	void update();
@@ -35,7 +37,7 @@ public:
 
 private:
 
-
+	EntityMap<Job>* jobMap;
 	PheromoneMap* pheromoneMap;
 	int id;
 	

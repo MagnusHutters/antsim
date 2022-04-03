@@ -9,6 +9,8 @@
 class Ant;
 
 #include "Ant.h"
+#include "EntityMap.h"
+#include "Job.h"
 
 
 class AntContainer
@@ -17,7 +19,7 @@ class AntContainer
 
 
 public:
-	AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pheromoneMap);
+	AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap);
 
 
 
@@ -45,6 +47,7 @@ private:
 	int antIdCount;
 	int antCount;
 	
+	EntityMap<Job>* jobMap;
 	PheromoneMap* pheromoneMap;
 
 

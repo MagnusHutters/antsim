@@ -136,6 +136,8 @@
     <ClCompile Include="commandline.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="EntityMap.cpp" />
+    <ClCompile Include="Job.cpp" />
+    <ClCompile Include="JobFactory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pheromones.cpp" />
     <ClCompile Include="Pheromones2.cpp" />
@@ -146,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionDriver.h" />
+    <ClInclude Include="ActionExplore.h" />
     <ClInclude Include="ActionFollowTrail.h" />
     <ClInclude Include="ActionHold.h" />
     <ClInclude Include="Ant.h" />
@@ -161,6 +164,8 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="EntityMap.h" />
     <ClInclude Include="event.h" />
+    <ClInclude Include="Job.h" />
+    <ClInclude Include="JobFactory.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="observer.h" />
     <ClInclude Include="Pheromones.h" />

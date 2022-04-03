@@ -13,25 +13,6 @@
 
 
 
-template<typename T>
-int EntityMap<T>::registerEntity(T* object, Vector2 pos) {
-
-	Entity* newEntity = new Entity(object, pos);
-
-
-	int handle = newId;
-	entityList[handle] = newEntity;
-
-	newId++;
-
-	return handle;
-}
-
-template<typename T>
-inline void EntityMap<T>::setPosition(int handle, Vector2 pos) {
-	entityList[handle]->pos = pos;
-
-}
 
 
 

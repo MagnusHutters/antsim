@@ -21,9 +21,9 @@ struct commandStruct {
 		this->description = description;
 	}
 	commandStruct() {
-		//this->key = key;
-		//this->function = function;
-		//this->description = description;
+		this->key = std::string(" ");
+		this->function = nullptr;
+		this->description = std::string(" ");
 	}
 
 

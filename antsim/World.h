@@ -9,6 +9,9 @@
 #include "Ant.h"
 #include "AntContainer.h"
 #include "Pheromones2.h"
+#include "JobFactory.h"
+#include "Job.h"
+#include "EntityMap.h"
 
 class World
 {
@@ -26,6 +29,10 @@ public:
 	int getSizeY();
 	int getPheromoneSize();
 	float getPheromone(int x, int y, int id, bool positive);
+	const std::unordered_map<int, EntityMap<Job>::Entity*>& getJobPositions() {
+		return jobMap->getEntities();
+	}
+
 
 	Vector2 getSensorLocation(bool side, int ant) {
 		if (side) {
@@ -56,7 +63,8 @@ private:
 	int sizeX, sizeY;
 
 
-
+	EntityMap<Job>* jobMap;
+	JobFactory* jobFactory;
 	AntContainer* antContainer;
 	PheromoneMap* pheromoneMap;
 	

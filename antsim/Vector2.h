@@ -4,6 +4,7 @@
 
 //INCLUDES
 #include <math.h>
+#include "Config.h"
 
 
 #define PI 3.14159265
@@ -31,6 +32,7 @@ public:
 
 	static Vector2 FromAngle(float32 angle);
 	static Vector2 RandomUnitVector();
+	static Vector2 RandomWithinMap();
 	//DECONSTRUCTOR
 	~Vector2(void);
 
@@ -44,6 +46,24 @@ public:
 	float32 Dot(const Vector2& v) const;
 	float32 Cross(const Vector2& v) const;
 	float32 GetAngle() const;
+	float32 GetNormalFunction(float stdDeviation) {
+		float correlation = 0;
+
+		float xOverDeviation = x / stdDeviation;
+		float yOverDeviation = y / stdDeviation;
+		float xOverDeviation2 = xOverDeviation * xOverDeviation;
+		float yOverDeviation2 = yOverDeviation * yOverDeviation;
+
+		float expansion = xOverDeviation2 - (2 * correlation * xOverDeviation * yOverDeviation) + yOverDeviation2;
+		float preExpansion = -(1 / (2 * (1 - (correlation * correlation))));
+		float exponent = expf(expansion * preExpansion);
+		
+		float divider = 2 * PI * stdDeviation * stdDeviation * sqrtf(1 - (correlation * correlation));
+
+		float result = (1 / divider) * exponent;
+		return result;
+		
+	}
 
 
 	Vector2& Rotate(float32 angle);

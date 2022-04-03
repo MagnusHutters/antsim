@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "EntityMap.h"
+#include "Job.h"
+
 
 
 class Core;
@@ -8,6 +11,7 @@ class Core;
 #include "Core.h"
 
 #include <vector>
+#include <unordered_map>
 
 #define FRAME_TIME 60
 #define PHEROMONE_UPDATE_RATE 10
@@ -40,6 +44,7 @@ private:
 
 
 	std::vector< sf::CircleShape > antShapes;
+	std::vector< sf::CircleShape > jobShapes;
 
 	std::vector< sf::CircleShape > antSensorLeft;
 	std::vector< sf::CircleShape > antSensorRight;
@@ -48,6 +53,7 @@ private:
 
 	void drawPheromones();
 	void drawAnts();
+	void drawJobs();
 	void ajustAntSize(int newSize);
 
 };

@@ -21,7 +21,7 @@ public:
 
 
 
-	Core() {
+	Core() : commandExecuter(nullptr), world(nullptr) {
 
 	}
 

@@ -1,6 +1,6 @@
 #include "SensorDriver.h"
 
-SensorDriver::SensorDriver(BodyDriver* body, PheromoneMap* pheromoneMap) : body(body), pheromoneMap(pheromoneMap)
+SensorDriver::SensorDriver(BodyDriver* body, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap) : body(body), pheromoneMap(pheromoneMap), jobMap(jobMap)
 {
 	resetSensor();
 
@@ -8,10 +8,14 @@ SensorDriver::SensorDriver(BodyDriver* body, PheromoneMap* pheromoneMap) : body(
 
 void SensorDriver::doSense()
 {
+	if (enabledPrimarySensor) {
+		primaryLeftPheromoneResult = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryLeftVector), primaryPheromoneId, 1);
+		primaryRightPheromoneResult = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryRightVector), primaryPheromoneId, 1);
+	}
+	if (enabledDirectionSensor) {
+		directionSensorResult = pheromoneMap->sensePheromonesStrenghtDirection(getSensorAtBody(SENSOR_DIRECTION_RADIUS), body->body.pos, directionPheromoneId, directionSensorSignum);
+	}
 
-
-	primaryLeftPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryLeftVector), pheromoneId, 1);
-	primaryRightPheromone = pheromoneMap->sensePheromonesStrenght(getSensorFromVector(primaryRightVector), pheromoneId, 1);
 
 }
 
@@ -19,6 +23,10 @@ void SensorDriver::resetSensor()
 {
 	setPrimarySensorAngle(45);
 
+	primaryPheromoneId = -1;
+	directionPheromoneId = -1;
+
+	enabledDirectionSensor = false;
 	enabledPrimarySensor = false;
 }
 
@@ -27,6 +35,11 @@ inline void SensorDriver::setPrimarySensorAngle(float angle)
 	primaryCenterVector = getSensorVectorFromAngle(0);
 	primaryLeftVector = getSensorVectorFromAngle(angle);
 	primaryRightVector = getSensorVectorFromAngle(-angle);
+}
+
+inline const PheromoneMapSensor& SensorDriver::getSensorAtBody(int radius)
+{
+	return PheromoneMapSensor(body->body.pos, radius);
 }
 
 inline const PheromoneMapSensor& SensorDriver::getSensorFromVector(Vector2 vector)
