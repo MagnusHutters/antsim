@@ -9,9 +9,9 @@ AntContainer::AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pher
 	this->pheromoneMap = pheromoneMap;
 	antIdCount = 0;
 	antCount = 0;
+	this->jobMap = jobMap;
 
 	setNumAnts(numAnts);
-	this->jobMap = jobMap;
 
 }
 
@@ -71,9 +71,9 @@ void AntContainer::createAnt()
 	
 	int x = rand() % sizeX;
 	int y = rand() % sizeY;
-	float rot = rand() % 360;
-	x = 10;
-	y = 10;
+	float rot = rand() % 9999;
+	x = 100;
+	y = 100;
 
 
 	ants.push_back(new Ant(antIdCount, x, y, rot, pheromoneMap, jobMap));

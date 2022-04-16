@@ -93,7 +93,7 @@ namespace observe {
         if (auto d = data.lock()) {
           std::lock_guard<std::mutex> lock(d->observerMutex);
           auto it = std::find_if(d->observers.begin(), d->observers.end(),
-                                 [&](auto &o) { return o.id == id; });
+                                 [&](auto &o) { return o.pheromoeId == id; });
           if (it != d->observers.end()) {
             d->observers.erase(it);
           }

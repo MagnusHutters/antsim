@@ -41,10 +41,10 @@ Controller::Controller()
 
 	
 	com = new Commandline();
-	core->commandExecuter = new Command();
+	//core->commandExecuter = new Command();
 	
 
-	window = new Graphic(core, 4);
+	window = new Graphic(core, 3.5);
 
 	
 
@@ -86,6 +86,8 @@ void Controller::start()
 
 	while (doShutdown==false) {
 
+
+
 		doConsole();
 
 		core->world->update();
@@ -93,7 +95,7 @@ void Controller::start()
 
 
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(30));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(30));
 	}
 
 
@@ -115,17 +117,17 @@ void Controller::doConsole()
 	
 
 	while (core->log.size()>0) {
-		string message = core->log.front();
+		std::string message = core->log.front();
 		com->write(message);
 		core->log.pop();
 	}
 	while (core->world->antLog.size() > 0) {
-		string message = std::string("[Ant] ") + core->world->antLog.front();
+		std::string message = std::string("[Ant] ") + core->world->antLog.front();
 		com->write(message);
 		core->world->antLog.pop();
 	}
 	while (core->world->worldLog.size() > 0) {
-		string message = std::string("[World] ")+core->world->worldLog.front();
+		std::string message = std::string("[World] ")+core->world->worldLog.front();
 		com->write(message);
 		core->world->worldLog.pop();
 	}
@@ -144,14 +146,14 @@ void Controller::doGraphics()
 
 
 
-list<string> Controller::seperateCommand(string command) {
+std::list<std::string> Controller::seperateCommand(std::string command) {
 
 	
 	char space_char = ' ';
-	list<string> words{};
+	std::list<std::string> words{};
 
-	stringstream sstream(command);
-	string word;
+	std::stringstream sstream(command);
+	std::string word;
 	while (std::getline(sstream, word, space_char)) {
 		//word.erase(commons::remove_if(word.begin(), word.end(), ispunct), word.end());
 		words.push_back(word);
@@ -161,14 +163,14 @@ list<string> Controller::seperateCommand(string command) {
 
 }
 
-void Controller::parseCommand(string command)
+void Controller::parseCommand(std::string command)
 {
 
-	list<string> words = seperateCommand(command);
+	std::list<std::string> words = seperateCommand(command);
 	/*for (const auto& str : words) {
 		core->log.push(str);
 	}*/
-	core->commandExecuter->executeCommand(core, words);
+	//core->commandExecuter->executeCommand(core, words);
 
 
 

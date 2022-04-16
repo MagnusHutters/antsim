@@ -63,6 +63,11 @@ std::vector<Body> World::getAntBodies()
 	return bodies;
 }
 
+Ant* World::getAnt(int id)
+{
+	return antContainer->ants[id];
+}
+
 void World::worldThread() {
 
 	
@@ -74,19 +79,24 @@ void World::worldThread() {
 
 void World::update() {
 
-	pheromoneMap->doDecayPheromones();
+	pheromoneMap->setReadOnly();
 
 	antContainer->processAnts();
 
 	doDebugLogger();
 
+	pheromoneMap->setWriteOnly();
+
 	antContainer->updateAnts();
+	pheromoneMap->doDecayPheromones();
+
+	pheromoneMap->setReadOnly();
 
 }
 
 void World::doDebugLogger()
 {
 
-	antLog.push(std::to_string(antContainer->ants[0]->val3));
+	//antLog.push(std::to_string(antContainer->ants[0]->val3));
 
 }

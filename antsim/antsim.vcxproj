@@ -136,12 +136,16 @@
     <ClCompile Include="commandline.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="EntityMap.cpp" />
+    <ClCompile Include="GraphicAnt.cpp" />
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="JobFactory.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PheromoneDriver.cpp" />
     <ClCompile Include="Pheromones.cpp" />
     <ClCompile Include="Pheromones2.cpp" />
     <ClCompile Include="SensorDriver.cpp" />
+    <ClCompile Include="TaskDriver.cpp" />
+    <ClCompile Include="TaskList.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="World.cpp" />
@@ -150,6 +154,7 @@
     <ClInclude Include="ActionDriver.h" />
     <ClInclude Include="ActionExplore.h" />
     <ClInclude Include="ActionFollowTrail.h" />
+    <ClInclude Include="ActionGoTowardNearbyTask.h" />
     <ClInclude Include="ActionHold.h" />
     <ClInclude Include="Ant.h" />
     <ClInclude Include="AntContainer.h" />
@@ -164,17 +169,35 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="EntityMap.h" />
     <ClInclude Include="event.h" />
+    <ClInclude Include="GraphicAnt.h" />
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobFactory.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="observer.h" />
+    <ClInclude Include="PheromoneDriver.h" />
     <ClInclude Include="Pheromones.h" />
     <ClInclude Include="Pheromones2.h" />
     <ClInclude Include="SensorDriver.h" />
+    <ClInclude Include="TaskChanger.h" />
+    <ClInclude Include="TaskDriver.h" />
+    <ClInclude Include="TaskFindJob.h" />
+    <ClInclude Include="TaskList.h" />
+    <ClInclude Include="TaskSimpleJob.h" />
     <ClInclude Include="value.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf" />
+    <Font Include="arialbd.ttf" />
+    <Font Include="arialbi.ttf" />
+    <Font Include="ariali.ttf" />
+    <Font Include="ARIALN.TTF" />
+    <Font Include="ARIALNB.TTF" />
+    <Font Include="ARIALNBI.TTF" />
+    <Font Include="ARIALNI.TTF" />
+    <Font Include="ariblk.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

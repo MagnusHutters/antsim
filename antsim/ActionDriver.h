@@ -23,12 +23,12 @@ public:
 		body->breakMotion();
 	}
 	virtual void doAction() {}
-private:
+protected:
 
 	friend class ActionDriver;
-	friend class ActionFollowTrail;
-	friend class ActionHold;
-	friend class ActionExplore;
+	//friend class ActionFollowTrail;
+	//friend class ActionHold;
+	//friend class ActionExplore;
 
 	SensorDriver* sensor;
 	BodyDriver* body;
@@ -52,7 +52,7 @@ public:
 	void doAction();
 
 
-private:
+protected:
 	SensorDriver* sensor;
 	BodyDriver* body;
 

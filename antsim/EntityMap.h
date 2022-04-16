@@ -24,7 +24,7 @@
 
 
 
-template <typename T>
+template <class T>
 class EntityMap
 {
 public:
@@ -32,11 +32,12 @@ public:
 	struct Entity {
 		int x;
 		int y;
+		int handle;
 		Vector2 pos;
 		T* object;
 		//Entity(T* objectPointer, int x, int y) :		object(objectPointer), x(x), y(y) {}
 		//Entity(T* objectPointer, float x, float y) : object(objectPointer), x(x), y(y), pos(Vector2(x,y)) {}
-		Entity(T* objectPointer, Vector2 vec) : object(objectPointer), x(vec.x), y(vec.y), pos(vec) {}
+		Entity(T* objectPointer, Vector2 vec, int handle) : object(objectPointer), x(vec.x), y(vec.y), pos(vec), handle(handle) {}
 
 		inline int operator [](int i) const { return i ? y : x; }
 		inline int& operator [](int i) { return i ? y : x; }
@@ -54,11 +55,11 @@ public:
 
 
 	int registerEntity(T* object, Vector2 pos) {
-
-		Entity* newEntity = new Entity(object, pos);
-
-
 		int handle = newId;
+		Entity* newEntity = new Entity(object, pos, handle);
+
+
+		
 		entityList[handle] = newEntity;
 
 		newId++;
@@ -75,18 +76,25 @@ public:
 		return entityList;
 	}
 
-	const Entity& getClosest(Vector2 point) {
+	const Entity& getClosest(const Vector2& point, int handle_blacklist) {
 
-		float closestDistSquare = MAP_CELLS* MAP_CELLS;
+		float closestDistSquare = (float)(9999* 9999);
 		int closestHandle = -1;
+
+
 		for (std::pair<int, Entity*> element : entityList)
 		{
+			
+			if (handle_blacklist ==element.second->handle) {
+				continue;
+			}
 			float newDistSquare = getDistanceSquare(point, element.second->pos);
 			if (newDistSquare < closestDistSquare) {
 				closestDistSquare = newDistSquare;
 				closestHandle = element.first;
 			}
 		}
+		return *entityList[closestHandle];
 
 	}
 

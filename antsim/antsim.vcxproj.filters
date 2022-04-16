@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Actions">
       <UniqueIdentifier>{601aa6b3-ec3b-4205-a4e8-ef4773da8ce9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tasks">
+      <UniqueIdentifier>{946f84f2-803c-40f9-880d-d430ec871782}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +85,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JobFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PheromoneDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicAnt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -167,8 +182,61 @@
     <ClInclude Include="JobFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TaskDriver.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskFindJob.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
     <ClInclude Include="ActionExplore.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGoTowardNearbyTask.h">
+      <Filter>Header Files\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskSimpleJob.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="PheromoneDriver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TaskChanger.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskList.h">
+      <Filter>Header Files\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicAnt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="arial.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="arialbd.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="arialbi.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ariali.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ARIALN.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ARIALNB.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ARIALNBI.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ARIALNI.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="ariblk.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

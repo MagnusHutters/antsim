@@ -44,17 +44,17 @@ struct PheromoneMapParams {
 	int x;
 	int y;
 	uint32_t bitMap;
-	int id;
+	int pheromoeId;
 	bool positive;
 	float strenght;
 	PheromoneMapSensor sensor;
 	Vector2 origin;
 
-	PheromoneMapParams(int x, int y, uint32_t bitMap, int id, bool positive, float strenght) : 
+	PheromoneMapParams(int x, int y, uint32_t bitMap, int pheromoeId, bool positive, float strenght) : 
 		x(x), 
 		y(y), 
 		bitMap(bitMap), 
-		id(id), 
+		pheromoeId(pheromoeId), 
 		positive(positive), 
 		strenght(strenght), 
 		sensor(PheromoneMapSensor()), 
@@ -62,22 +62,22 @@ struct PheromoneMapParams {
 	{}
 	
 
-	PheromoneMapParams(uint32_t bitMap, int id, bool positive) : 
+	PheromoneMapParams(uint32_t bitMap, int pheromoeId, bool positive) : 
 		x(0), 
 		y(0), 
 		bitMap(bitMap), 
-		id(id), 
+		pheromoeId(pheromoeId), 
 		positive(positive), 
 		strenght(0),
 		sensor(PheromoneMapSensor()),
 		origin(Vector2())	 
 	{}
 
-	PheromoneMapParams(const Vector2& origin, const PheromoneMapSensor& sensor, uint32_t bitMap, int id, bool positive) :
+	PheromoneMapParams(const Vector2& origin, const PheromoneMapSensor& sensor, uint32_t bitMap, int pheromoeId, bool positive) :
 		x(0),
 		y(0),
 		bitMap(bitMap),
-		id(id),
+		pheromoeId(pheromoeId),
 		positive(positive),
 		strenght(0),
 		sensor(sensor),
@@ -113,7 +113,7 @@ public:
 
 	}
 
-	virtual float getPheromone(int id, bool positive) {
+	virtual float getPheromone(int pheromoeId, bool positive) {
 		return 0.0;
 	}
 
@@ -208,8 +208,8 @@ public:
 
 	InnerPheromoneMap(int size, int xpos, int ypos, BasePheromoneMap* outer);
 
-	float getPheromone(int id, bool positive) {
-		return pheromones[id][positive];
+	float getPheromone(int pheromoeId, bool positive) {
+		return pheromones[pheromoeId][positive];
 	}
 
 private:
@@ -261,10 +261,10 @@ public:
 	PheromoneMap(int sizeX, int sizeY);
 
 
-	Vector2& sensePheromonesVector(const Vector2& origin, const PheromoneMapSensor& sensor, int id, bool positive) {
+	Vector2& sensePheromonesVector(const Vector2& origin, const PheromoneMapSensor& sensor, int pheromoeId, bool positive) {
 
-		uint32_t bitMap = (uint32_t)1 << id;
-		PheromoneMapParams* params = new PheromoneMapParams(origin, sensor, bitMap, id, positive);
+		uint32_t bitMap = (uint32_t)1 << pheromoeId;
+		PheromoneMapParams* params = new PheromoneMapParams(origin, sensor, bitMap, pheromoeId, positive);
 
 		Vector2 vector = _getPheromoneVector(params);
 
@@ -273,14 +273,14 @@ public:
 		return vector;
 	}
 
-	float sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id, bool positive);
+	float sensePheromonesStrenght(const PheromoneMapSensor& sensor, int pheromoeId, bool positive);
 
-	Vector2 sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id);
+	Vector2 sensePheromonesStrenght(const PheromoneMapSensor& sensor, int pheromoeId);
 
 	void registerInner(BasePheromoneMap* inner, int x, int y);
 
 	void doDecayPheromones();
-	void addPheromone(int x, int y, int id, bool positive, float strenght);
+	void addPheromone(int x, int y, int pheromoeId, bool positive, float strenght);
 
 private:
 

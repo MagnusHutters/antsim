@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "Config.h"
 
-BodyDriver::BodyDriver(int x, int y, float rot)
+BodyDriver::BodyDriver(int x, int y, float rot, int id)
 {
+	this->id = id;
 	body = Body(x, y, rot);
 
 
@@ -69,7 +70,7 @@ void BodyDriver::process()
 	Vector2 acceleration = steering;
 	acceleration.ClampMagnitude(steerStrenght);
 
-
+	desiredDirection = Vector2(0, 0);
 
 	velocity = velocity + acceleration;
 	velocity.ClampMagnitude(maxSpeed);

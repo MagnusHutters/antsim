@@ -14,17 +14,23 @@ Ant::Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap, EntityMap<
 	this->jobMap = jobMap;
 
 
-	bodyDriver = new BodyDriver(x,y,rot);
+	bodyDriver = new BodyDriver(x,y,rot, id);
+
+	pheromoneDriver = new PheromoneDriver(pheromoneMap, bodyDriver);
 
 	sensorDriver = new SensorDriver(bodyDriver, this->pheromoneMap, this->jobMap);
 
 	actionDriver = new ActionDriver(sensorDriver, bodyDriver);
 
+	taskDriver = new TaskChanger(sensorDriver, actionDriver, bodyDriver, pheromoneDriver);
+
+	//taskDriver->setTask(new TaskFindJob());
+
 	//sensorDriver->setPrimarySensorPheromone(EXPLORED);
 
 	
 	//actionDriver->setAction(new ActionFollowTrail(EXPLORED));
-	actionDriver->setAction(new ActionExplore(EXPLORED));
+	//actionDriver->setAction(new ActionExplore(EXPLORED));
 
 	//body = Body(x, y, rot);
 	
@@ -40,6 +46,7 @@ void Ant::process()
 	sensorDriver->doSense();
 
 	actionDriver->calcAction();
+	taskDriver->calcTask();
 
 	bodyDriver->process();
 
@@ -51,8 +58,8 @@ void Ant::process()
 void Ant::update()
 {
 
-	pheromoneMap->addPheromone((int)bodyDriver->body.pos.x, (int)bodyDriver->body.pos.y, EXPLORED, true, 1.0);
-
+	//pheromoneMap->addPheromone((int)bodyDriver->body.pos.x, (int)bodyDriver->body.pos.y, EXPLORED_PHEROMONE_ID, true, 1.0);
+	
 
 
 	/*
@@ -65,6 +72,8 @@ void Ant::update()
 	}*/
 
 	actionDriver->doAction();
+	taskDriver->doTask();
+	pheromoneDriver->update();
 
 	bodyDriver->update();
 
@@ -75,3 +84,5 @@ Body Ant::getBody()
 {
 	return bodyDriver->body;
 }
+
+

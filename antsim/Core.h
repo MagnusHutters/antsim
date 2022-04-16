@@ -3,14 +3,14 @@
 #include <queue>
 #include <iostream>
 #include <string>
-#include "Command.h"
+//#include "Command.h"
 #include "World.h"
 
 
 
-using namespace std;
+//using namespace std;
 
-class Command;
+//class Command;
 class World;
 
 
@@ -21,12 +21,12 @@ public:
 
 
 
-	Core() : commandExecuter(nullptr), world(nullptr) {
+	Core() : world(nullptr) {
 
 	}
 
-	queue<string> log;
-	Command* commandExecuter;
+	std::queue<std::string> log;
+	//Command* commandExecuter;
 	World* world;
 
 

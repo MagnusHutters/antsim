@@ -22,7 +22,9 @@ public:
 		for (int i = 0; i < number; i++)
 		{
 			Vector2 newPos = Vector2::RandomWithinMap();
-			Job* job = new Job(jobMap, newPos);
+			int newId = freeJobIds.front();
+			freeJobIds.pop_front();
+			Job* job = new Job(jobMap, newPos, newId);
 		}
 	
 	}

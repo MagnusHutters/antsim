@@ -28,9 +28,9 @@ public:
 	void worldThread();
 
 
-	list<string> seperateCommand(string command);
+	std::list<std::string> seperateCommand(std::string command);
 
-	void parseCommand(string command);
+	void parseCommand(std::string command);
 
 
 	void createEvents();
@@ -41,7 +41,7 @@ private:
 	bool doShutdown = false;
 	Commandline* com;
 
-	atomic_bool worldInitializationDone= false;
+	std::atomic_bool worldInitializationDone= false;
 	std::mutex m;
 
 

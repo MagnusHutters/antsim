@@ -20,39 +20,60 @@ public:
 	void doSense();
 
 	
-	void resetSensor();
+	void resetSensorResults();
 
 	//===============GET AND SETTERS======================0
-	inline void doGetComletePheromonePicture() { completePheromoneScan = true; }
+	//inline void doGetComletePheromonePicture() { completePheromoneScan = true; }
+
+
+	float sensePrimaryLeft(int id, float angle, bool positive) {
+
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(angle), id, positive);
+	}
+	float sensePrimaryRight(int id, float angle, bool positive) {
+
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(-angle), id, positive);
+	}
+	float sensePrimaryCenter(int id, float angle, bool positive) {
+
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(0), id, positive);
+	}
+	float senseBelow(int id, bool positive, int radius = SENSOR_RADIUS_MEDIUM)
+	{
+		return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(radius),id,positive);
+	}
+
+
+	inline PheromoneMapSensor getPrimaryRight() { return getSensorFromVector(primaryRightVector); }
+	inline PheromoneMapSensor getPrimaryLeft() { return getSensorFromVector(primaryLeftVector); }
+	inline PheromoneMapSensor getPrimaryCenter() { return getSensorFromVector(primaryCenterVector); }
+
+	Vector2 senseDirection(int id, bool positive);
+	float senseStrenght(int id, bool positive);
 
 
 
-	//PRIMARY SENSOR
-	inline void setPrimarySensorPheromone(int id) { primaryPheromoneId = id; }
-	inline void setPrimarySensorAngle(float angle);
-	inline float sensePrimaryLeft(bool positive) {return primaryLeftPheromoneResult;}
-	inline float sensePrimaryRight(bool positive) {return primaryRightPheromoneResult;}
-	inline float sensePrimaryCenter(bool positive) { return primaryCenterPheromoneResult; }
-	inline const PheromoneMapSensor& getPrimaryRight() { return getSensorFromVector(primaryRightVector); }
-	inline const PheromoneMapSensor& getPrimaryLeft() { return getSensorFromVector(primaryLeftVector); }
-	inline const PheromoneMapSensor& getPrimaryCenter() { return getSensorFromVector(primaryCenterVector); }
-	inline void enablePrimary() { enabledPrimarySensor = true; }
-	inline void disablePrimary() { enabledPrimarySensor = false; }
 
-	//DIRECTION SENSOR
-	inline void setDirectionSensorPheromone(int id) { directionPheromoneId = id; }
-	inline Vector2 senseDirection() { return directionSensorResult; }
-	inline void setDirectionSignumPositive(bool positive) { directionSensorSignum = positive; }
-	inline void enableDirection() { enabledDirectionSensor = true; }
-	inline void disableDirection() { enabledDirectionSensor = false; }
 
+	Vector2 senseJob(int ignoreHandle=-1) {
+		const EntityMap<Job>::Entity entity = jobMap->getClosest(body->body.pos, ignoreHandle);
+		const float distance = entity.pos.Distance(body->body.pos);
+		if (distance <= JOB_SENSOR_RADIUS) {
+			return entity.pos - body->body.pos;
+		}
+		return Vector2(0, 0);
+	}
+	Job* getJob(int ignoreHandle = -1) {
+		const EntityMap<Job>::Entity entity = jobMap->getClosest(body->body.pos, ignoreHandle);
+		return entity.object;
+	}
 
 private:
 
-	const PheromoneMapSensor& getSensorAtBody(int radius);
-	const PheromoneMapSensor& getSensorFromVector(Vector2 vector);
-	const PheromoneMapSensor& getSensorFromAngle(float angle);
-	const Vector2& getSensorVectorFromAngle(float angle);
+	const PheromoneMapSensor getSensorAtBody(int radius);
+	const PheromoneMapSensor getSensorFromVector(Vector2 vector);
+	const PheromoneMapSensor getSensorFromAngle(float angle);
+	const Vector2 getSensorVectorFromAngle(float angle);
 
 	BodyDriver* body;
 	EntityMap<Job>* jobMap;
@@ -72,7 +93,7 @@ private:
 
 	const Vector2 frontLeft = Vector2(SENSOR_DISTANCE, SENSOR_DISTANCE);
 	const Vector2 frontRight = Vector2(SENSOR_DISTANCE, -SENSOR_DISTANCE);
-	const float sensorRadius = SENSOR_RADIUS;
+	const float sensorRadius = SENSOR_RADIUS_MEDIUM;
 	//Vector2 primaryLeftPheromone, primaryRightPheromone;
 
 

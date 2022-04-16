@@ -9,6 +9,10 @@
 
 #include "Pheromones2.h"
 
+#include "TaskChanger.h"
+#include "PheromoneDriver.h"
+//#include "TaskFindJob.h"
+
 #include "ActionFollowTrail.h"
 #include "ActionExplore.h"
 #include "EntityMap.h"
@@ -27,7 +31,10 @@ public:
 
 
 	Body getBody();
-
+	int getState()
+	{
+		return taskDriver->getState();
+	}
 
 
 	SensorDriver* sensorDriver;
@@ -43,6 +50,8 @@ private:
 	
 	BodyDriver* bodyDriver;
 	ActionDriver* actionDriver;
+	TaskChanger* taskDriver;
+	PheromoneDriver* pheromoneDriver;
 
 
 	//Body;

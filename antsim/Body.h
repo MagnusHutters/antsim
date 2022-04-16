@@ -42,7 +42,7 @@ public:
 
 
 	BodyDriver();
-	BodyDriver(int x, int y, float rot);
+	BodyDriver(int x, int y, float rot, int id);
 
 
 	void breakMotion();
@@ -55,18 +55,19 @@ public:
 
 	void process();
 	void update();
+	int getId() { return id; }
 
 	Body body;
 
 private:
 
-
+	int id;
 
 	Vector2 desiredMotion;
 
 	bool doBreak = false;
-	bool doWander = false;
-	float maxSpeed = 2.0, steerStrenght = 0.3, wanderStrenght = 0.20;
+	bool doWander = true;
+	float maxSpeed = 1.0, steerStrenght = 0.4, wanderStrenght = 0.10;
 	Vector2 velocity, desiredDirection;
 	float toMove, toRotate;
 };

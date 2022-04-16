@@ -22,22 +22,27 @@ public:
 	}
 
 	void init() {
-		sensor->resetSensor();
+		sensor->resetSensorResults();
 
 		//sensor->setPrimarySensorPheromone(EXPLORED);
 
 		//sensor->setPrimarySensorAngle(45);
 		//sensor->enablePrimary();
 
-		sensor->enableDirection();
-		sensor->setDirectionSignumPositive(true);
-		sensor->setDirectionSensorPheromone(EXPLORED);
+		//sensor->enableDirection();
+		//sensor->setDirectionSignumPositive(true);
+		//sensor->setDirectionSensorPheromone(EXPLORED);
 	}
 
 	void calcAction() {
 		//body->breakMotion();
+		if (countdown <= 0) {
 
-		direction = sensor->senseDirection();
+			direction = sensor->senseDirection(PheromoneId,true);
+			countdown = (rand() % 8) + 5;
+
+		}
+		countdown--;
 		//sensorLeftStrenght = sensor->sensePrimaryLeft(true);
 		//sensorRightStrenght = sensor->sensePrimaryRight(true);
 		//val3 = val1 - val2;
@@ -51,6 +56,7 @@ public:
 	}
 
 private:
+	int countdown = 0;
 	int PheromoneId;
 	Vector2 direction;
 

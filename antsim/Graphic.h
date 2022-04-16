@@ -4,6 +4,10 @@
 #include "EntityMap.h"
 #include "Job.h"
 
+class GraphicAnt;
+
+#include "GraphicAnt.h"
+
 
 
 class Core;
@@ -22,11 +26,18 @@ class Graphic
 public:
 
 	Graphic();
-	Graphic(Core* core, int resolutionMultiplier);
+	Graphic(Core* core, float resolutionMultiplier);
 
 	void update();
 
 private:
+
+	int numAnts = 0;
+
+	std::list<GraphicAnt*> antsGraphics;
+
+	float deltaTime = 30;
+	float deltaTimeAvgIndex = 0.1;
 
 	Core* core;
 	sf::RenderWindow* window;
@@ -34,7 +45,7 @@ private:
 	int pheromoneCounter = 0;
 	float elapsedTime;
 	int pheromoneSize;
-	int resolutionMultiplier;
+	float resolutionMultiplier;
 	int worldSizeX, worldSizeY, windowSizeX, windowSizeY;
 	sf::Texture pheromoneTexture;
 	sf::Image pheromoneImage;

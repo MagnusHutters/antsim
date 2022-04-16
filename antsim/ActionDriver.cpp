@@ -14,6 +14,10 @@ ActionDriver::ActionDriver(SensorDriver* sensor, BodyDriver* body) : sensor(sens
 
 void ActionDriver::setAction(Action* newAction)
 {
+	if(nextAction!=action)
+	{
+		delete(nextAction);
+	}
 	nextAction = newAction;
 	isNewAction = true;
 }

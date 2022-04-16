@@ -12,6 +12,7 @@
 #include "JobFactory.h"
 #include "Job.h"
 #include "EntityMap.h"
+#include "Graphic.h"
 
 class World
 {
@@ -45,12 +46,17 @@ public:
 
 
 	std::vector<Body> getAntBodies();
+	Ant* getAnt(int id);
 
 	void worldThread();
 
 	void update();
 
 	void doDebugLogger();
+	int getNumAnts()
+	{
+		return antContainer->ants.size();
+	}
 
 	std::queue<std::string> worldLog;
 	std::queue<std::string> antLog;

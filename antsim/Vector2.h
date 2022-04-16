@@ -3,6 +3,7 @@
 #define VECTOR2_H
 
 //INCLUDES
+#include <SFML/Graphics.hpp>
 #include <math.h>
 #include "Config.h"
 
@@ -105,6 +106,8 @@ public:
 
 	inline float32 operator [](int i) const { return i ? y : x; }
 	inline float32& operator [](int i) { return i ? y : x; }
+
+	operator sf::Vector2f() const { return sf::Vector2f(x, y); }
 };
 
 #endif
