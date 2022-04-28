@@ -14,8 +14,9 @@ public:
 		int id;
 		bool positive;
 		float strenght;
-		PheromoneJob(const int id, const bool positive) : id(id), positive(positive), strenght( 1) {}
-		PheromoneJob(const int id, const bool positive, float strenght) : id(id), positive(positive), strenght(strenght) {}
+		float decay;
+		PheromoneJob(const int id, const bool positive) : id(id), positive(positive), strenght( 1), decay(1) {}
+		PheromoneJob(const int id, const bool positive, float strenght, float decay=1) : id(id), positive(positive), strenght(strenght), decay(decay) {}
 	};
 
 	PheromoneDriver(PheromoneMap* pheromoneMap, BodyDriver* bodyDriver) :
@@ -24,8 +25,8 @@ public:
 	{
 		
 	}
-	void setTrail(int id, bool positive=true);
-	void addTrail(int id, bool positive=true);
+	void setTrail(int id, bool positive=true, float strenght = 1, float strenghtDecay = 1);
+	void addTrail(int id, bool positive=true, float strenght = 1, float strenghtDecay = 1);
 	void removeTrail(int id, bool positive=true);
 	void removeTrails();
 

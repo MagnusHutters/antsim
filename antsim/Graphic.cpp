@@ -85,9 +85,9 @@ void Graphic::update()
 
 void Graphic::drawPheromones()
 {
-	int pheromone1 = EXPLORED_PHEROMONE_ID;
-	int pheromone2 = 0;
-	int pheromone3 = 1;
+	int pheromone1 = 0;
+	int pheromone2 = 1;
+	int pheromone3 = 2;
 
 	pheromoneCounter++;
 	if (pheromoneCounter > PHEROMONE_UPDATE_RATE) {
@@ -175,7 +175,7 @@ void Graphic::drawAnts()
 
 void Graphic::drawJobs()
 {
-	std::unordered_map<int, EntityMap<Job>::Entity*> jobs = core->world->getJobPositions();
+	std::unordered_map<int, Job*> jobs = core->world->getJobPositions();
 	if (jobs.size() != jobShapes.size()) {
 		jobShapes.resize(jobs.size(), sf::CircleShape(4));
 		for (int i = 0; i < jobShapes.size(); i++)
@@ -185,7 +185,7 @@ void Graphic::drawJobs()
 		}
 	}
 	int i = 0;
-	for (std::pair<int, EntityMap<Job>::Entity*> element : jobs) {
+	for (std::pair<int, Job*> element : jobs) {
 		int x = element.second->pos.x* 1;
 		int y = element.second->pos.y* 1;
 		jobShapes[i].setPosition(x, y);

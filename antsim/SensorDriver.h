@@ -55,17 +55,18 @@ public:
 
 
 
-	Vector2 senseJob(int ignoreHandle=-1) {
-		const EntityMap<Job>::Entity entity = jobMap->getClosest(body->body.pos, ignoreHandle);
-		const float distance = entity.pos.Distance(body->body.pos);
+	Vector2 senseJob(const Conditions& conditions = Conditions()) {
+		Job* entity = jobMap->getClosest(body->body.pos, conditions);
+		const float distance = entity->pos.Distance(body->body.pos);
 		if (distance <= JOB_SENSOR_RADIUS) {
-			return entity.pos - body->body.pos;
+			return entity->pos - body->body.pos;
+			
 		}
 		return Vector2(0, 0);
 	}
-	Job* getJob(int ignoreHandle = -1) {
-		const EntityMap<Job>::Entity entity = jobMap->getClosest(body->body.pos, ignoreHandle);
-		return entity.object;
+	Job* getJob(const Conditions& conditions=Conditions()) {
+		Job* entity = jobMap->getClosest(body->body.pos, conditions);
+		return entity;
 	}
 
 private:

@@ -22,6 +22,8 @@
 #define JOB_INTERACT_RADIUS 10
 
 
+
+
 //BODY
 
 #define COLLISION_GROUP_SIZE 8
@@ -32,6 +34,11 @@
 
 #define TASK_SUCCESS_THRESHOLD 5
 //#define TASK_
+
+//====================JOBS====================
+
+#define JOB_MAX_AMOUNT	100
+#define PACKET_SIZE		1
 
 
 //=======================PHEROMONES===================
@@ -46,4 +53,5 @@
 //#define OUTER_CONTAINS_MAP_RESOLUTION	32
 
 #define PHEROMONE_FLOOR					0.2
-#define PHEROMONE_DECAY					0.995
+#define PHEROMONE_DECAY					0.997
+#define PHEROMONE_DECAY_FAST			PHEROMONE_DECAY * PHEROMONE_DECAY * PHEROMONE_DECAY

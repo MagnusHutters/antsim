@@ -11,7 +11,9 @@
 #include "Pheromones2.h"
 #include "JobFactory.h"
 #include "Job.h"
-#include "EntityMap.h"
+#include "Entity.h"
+//#include "EntityMap.h"
+#include "JobMap.h"
 #include "Graphic.h"
 
 class World
@@ -30,7 +32,7 @@ public:
 	int getSizeY();
 	int getPheromoneSize();
 	float getPheromone(int x, int y, int id, bool positive);
-	const std::unordered_map<int, EntityMap<Job>::Entity*>& getJobPositions() {
+	const std::unordered_map<int, Job*>& getJobPositions() {
 		return jobMap->getEntities();
 	}
 
@@ -69,7 +71,7 @@ private:
 	int sizeX, sizeY;
 
 
-	EntityMap<Job>* jobMap;
+	JobMap* jobMap;
 	JobFactory* jobFactory;
 	AntContainer* antContainer;
 	PheromoneMap* pheromoneMap;

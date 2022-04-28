@@ -1,4 +1,5 @@
 #pragma once
+#include "Packet.h"
 #include "Vector2.h"
 
 
@@ -59,7 +60,10 @@ public:
 
 	Body body;
 
+	Packet* packet;
+	bool hasPacket=false;
 private:
+
 
 	int id;
 

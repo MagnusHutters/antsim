@@ -50,8 +50,8 @@ protected:
 
 	TaskReport report = TaskReport();
 
-	inline bool findJobPoint() {
-		Vector2 jobPoint = sensor->senseJob(avoidJobHandle);
+	bool findJobPoint(const Conditions& conditions = Conditions()) {
+		Vector2 jobPoint = sensor->senseJob(conditions);
 		return (jobPoint.LengthSquared() > 0.1);
 	}
 

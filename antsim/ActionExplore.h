@@ -39,7 +39,7 @@ public:
 		if (countdown <= 0) {
 
 			direction = sensor->senseDirection(PheromoneId,true);
-			countdown = (rand() % 8) + 5;
+			countdown = rand() % 8 + 5;
 
 		}
 		countdown--;

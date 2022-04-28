@@ -10,7 +10,7 @@
 #include "ActionFollowTrail.h"
 #include "ActionGoTowardNearbyTask.h"
 #include "Job.h"
-
+#include "Conditions.h"
 
 
 class TaskFindJob : public Task {
@@ -25,8 +25,8 @@ public:
     
 
 	void init() {
-        state = states::Explore;
-        pheromone->removeTrails();
+        doStateExplore();
+        
 	}
 
     
@@ -56,100 +56,171 @@ public:
             stateDeclareJob();
             break;
         default:
-            state = states::Explore;
+            doStateExplore();;
             break;
         }
 
         return report;
 	}
 
-    void stateFollowingTrail() {
-        if (newState) {
-            action->setAction(new ActionFollowTrail(jobPheromone));
-            pheromone->removeTrails();
-            //action->setAction(new ActionHold());
-        }
-        if(findJobPoint())
+    void doStateFollowingTrail(int newPheromone=-1)
+    {
+        state = states::FollowingTrail;
+        if (newPheromone >= 0)
         {
-            state = states::FoundJobPoint;
+            currentCondition = Conditions(newPheromone, Whitelist);
+			if(currentPheromone!= newPheromone) lastPheromone = currentPheromone;
+	        currentPheromone = newPheromone;
+        }else
+        {
+            currentCondition = Conditions();
         }
+	    action->setAction(new ActionFollowTrail(currentPheromone));
+	    //pheromone->removeTrails();
+        pheromone->removeTrail(EXPLORED_PHEROMONE_ID, true);
+        pheromone->removeTrail(PATH_PHEROMONE_ID, true);
+	    //action->setAction(new ActionHold());
+        
+
+    }
+
+    void stateFollowingTrail() {
+        if(findJobPoint(currentCondition))
+        {
+            doStateFoundJobPoint();
+        }
+        float isPath = sensor->senseBelow(PATH_PHEROMONE_ID, true, SENSOR_RADIUS_MEDIUM);
+        if(isPath>PHEROMONE_FLOOR)
+        {
+            //pheromone->emit(currentPheromone, true);
+        }
+
         if(counter>10)
         {
 	        
-            float strenght = sensor->senseBelow(jobPheromone, true);
+            float strenght = sensor->senseBelow(currentPheromone, true);
             if(strenght<PHEROMONE_FLOOR)
             {
-                state = states::Explore;
+                doStateExplore();;
+
             }
             counter = 0;
         }
         counter++;
 
     }
-    void stateExplore() {
-        if (newState) {
-            action->setAction(new ActionExplore(EXPLORED_PHEROMONE_ID));
-            pheromone->setTrail(EXPLORED_PHEROMONE_ID);
-        }
-        if(findJobPoint())
+    void doStateExploreSpecific(int focusPheromone = -1)
+    {
+        doStateExplore(false, -1, true, focusPheromone);
+    }
+    
+
+    void doStateExplore(bool setTrailToLastJob=false, int lastJob=-1, bool lookingForSpecific=false, int focusPheromone=-1)
+    {
+        state = states::Explore;
+	    action->setAction(new ActionExplore(EXPLORED_PHEROMONE_ID));
+	    pheromone->setTrail(EXPLORED_PHEROMONE_ID);
+        if (setTrailToLastJob)
         {
-            state = states::FoundJobPoint;
+	        pheromone->addTrail(lastJob,true,1,PHEROMONE_DECAY_FAST);
+            pheromone->addTrail(PATH_PHEROMONE_ID, true,1,PHEROMONE_DECAY_FAST);
+        }
+
+        doFocusPheromone = lookingForSpecific;
+        if (focusPheromone != lastPheromone) lastPheromone = currentPheromone;
+        currentPheromone = focusPheromone;
+        if(doFocusPheromone)
+        {
+            currentCondition = Conditions(currentPheromone, Whitelist);
+        }else
+        {
+            currentCondition = Conditions();
+        }
+        //currentCondition = doFocusPheromone ? Conditions()
+	    
+    }
+
+    void stateExplore() { //EXP
+        
+        if(findJobPoint(currentCondition))
+        {
+            doStateFoundJobPoint();
         }
         //std::array<float, MAX_NUMBER_OF_TASKS> strenghts;
         float maxStrenght = 0;
         int maxStrenghtId = -1;
         float newStrenght = 0;
-        for (int i = 0; i < MAX_NUMBER_OF_TASKS; ++i)
+        if(doFocusPheromone)
         {
-            newStrenght = sensor->senseBelow(i, true, SENSOR_RADIUS_TINY);
-            if(newStrenght>maxStrenght)
+            maxStrenght = sensor->senseBelow(currentPheromone, true, SENSOR_RADIUS_HUGE);
+            if(maxStrenght> PHEROMONE_FLOOR*50)
             {
-                maxStrenght = newStrenght;
-                maxStrenghtId = i;
+                doStateFollowingTrail(currentPheromone);
             }
+
+
+        }else{
+
+	        for (int i = 0; i < MAX_NUMBER_OF_TASKS; ++i)
+	        {
+	            newStrenght = sensor->senseBelow(i, true, SENSOR_RADIUS_TINY);
+	            if(newStrenght>maxStrenght)
+	            {
+	                maxStrenght = newStrenght;
+	                maxStrenghtId = i;
+	            }
+	        }
+	        if(maxStrenght>PHEROMONE_FLOOR)
+	        {
+	            doStateFollowingTrail(maxStrenghtId);
+	        }
         }
-        if(maxStrenght>PHEROMONE_FLOOR)
-        {
-            state = states::FollowingTrail;
-            jobPheromone = maxStrenghtId;
-        }
+
 
         //checkForJobPoint();
         
     }
 
-    void stateFoundJobPoint() {
-        if (newState) {
-            action->setAction(new ActionGoTowardNearbyTask());
-            pheromone->setTrail(EXPLORED_PHEROMONE_ID);
-        }
-        Job* job=sensor->getJob(ignoreJobHandle);
+    void doStateFoundJobPoint()
+    {
+        state=states::FoundJobPoint;
+	    action->setAction(new ActionGoTowardNearbyTask());
+	    pheromone->setTrail(EXPLORED_PHEROMONE_ID);
+
+    }
+
+    void stateFoundJobPoint() { //
+        
+        Job* job=sensor->getJob(Conditions(ignorePheromones, Blacklist));
        
         Job::JobReport jobReport = job->doInteract(body);
         if (jobReport.successful) {
 
             pheromone->success();
-            jobHandle = jobReport.currentHandle;
-            jobPheromone = jobReport.currentPheromone;
+            //jobHandle = jobReport.currentHandle;
+            currentPheromone = jobReport.currentPheromone;
 
             //float trailStrenght = sensor->senseStrenght(jobId, true);
             float successStrenght = sensor->senseStrenght(SUCCESS_PHEROMONE_ID, true);
             if (successStrenght < TASK_SUCCESS_THRESHOLD)
             {
-                state = states::DeclareJob;
+                doStateDeclareJob(jobReport.nextPartPheromone);
+                //nextPheromone = jobReport.nextPartPheromone;
             }
             else
             {
                 if (jobReport.isNextPart)
                 {
                     //report = TaskReport(SimpleJob, jobReport.nextPartHandle);
-                    jobHandle = jobReport.nextPartHandle;
-                    jobPheromone = jobReport.nextPartPheromone;
+                    //jobHandle = jobReport.nextPartHandle;
+                    
+                    //doStateFollowingTrail(jobReport.nextPartPheromone);
+                    doStateExplore(true,currentPheromone,true, jobReport.nextPartPheromone);
                 }
                 else
                 {
-                    state = states::Explore;
-                    //report = TaskReport(FindJob, jobPheromone, jobReport.currentHandle);
+                    doStateExplore(true,currentPheromone);
+                    //report = TaskReport(FindJob, currentPheromone, jobReport.currentHandle);
                     //taskDriver->setTask(new TaskFindJob());
                 }
             }
@@ -157,30 +228,47 @@ public:
         }
     }
 
+    void doStateDeclareJob(int nextJobPheromone=-1)
+    {
+        state = states::DeclareJob;
+	    action->setAction(new ActionExplore(currentPheromone));
+	    //nextJobPheromone->setTrail(jobId, true);
+        pheromone->setTrail(PATH_PHEROMONE_ID, true, TASK_SUCCESS_THRESHOLD, PHEROMONE_DECAY_FAST);
+	    declareStrenght = TASK_SUCCESS_THRESHOLD;
+        nextPheromone = nextJobPheromone;
+    }
+
     void stateDeclareJob()
     {
-        if (newState) {
-            action->setAction(new ActionExplore(jobPheromone));
-            //nextJobPheromone->setTrail(jobId, true);
-            declareStrenght = TASK_SUCCESS_THRESHOLD;
+
+        //doStateDeclareJob();
+        if(currentPheromone>NUMBER_OF_PHEROMONE_PAIRS)
+        {
+            volatile int a =1 + 1;
         }
-        pheromone->emit(jobPheromone, true, declareStrenght);
-        declareStrenght *= PHEROMONE_DECAY * PHEROMONE_DECAY * PHEROMONE_DECAY;
+        pheromone->emit(currentPheromone, true, declareStrenght);
+        declareStrenght *= PHEROMONE_DECAY_FAST;
         if (declareStrenght < PHEROMONE_FLOOR)
         {
-            state = states::FollowingTrail;
+            //doStateFollowingTrail();
+            doStateExploreSpecific(nextPheromone);
         }
 
 
     }
 
+    void doStateDecideNextTask()
+    {
+        state = states::DecideNextTask;
+	    action->setAction(new ActionHold());
+        
+	    //action->setAction(new ActionFollowTrail(0));
+	    //nextJobPheromone->setTrail(0);
+    
+    }
+
     void stateDecideNextTask() {
-        if (newState) {
-            action->setAction(new ActionHold());
-            
-            //action->setAction(new ActionFollowTrail(0));
-            //nextJobPheromone->setTrail(0);
-        }
+        doStateDecideNextTask();
         if(findJobPoint())
         {
 
@@ -194,7 +282,7 @@ public:
 
         }else
         {
-            state = states::Explore;
+            doStateExplore();;
         }
 
     }
@@ -207,9 +295,16 @@ public:
 
 private:
 
-    int ignoreJobHandle = -1;
-    int jobPheromone =-1;
-    int jobHandle = -1;
+    std::list<int> ignorePheromones;
+    Conditions currentCondition = Conditions();
+
+    bool doFocusPheromone=false;
+
+    //int ignoreJobHandle = -1;
+    int currentPheromone =-1;
+    int nextPheromone = -1;
+    int lastPheromone = -1;
+    //int jobHandle = -1;
     int counter = 0;
     float declareStrenght = 0.0f;
     

@@ -5,7 +5,7 @@
 
 #include "Config.h"
 #include "Vector2.h"
-
+#include "Entity.h"
 
 #include <unordered_map>
 #include <unordered_set>
@@ -24,45 +24,33 @@
 
 
 
-template <class T>
+template <class T = Entity>
 class EntityMap
 {
 public:
 
-	struct Entity {
-		int x;
-		int y;
-		int handle;
-		Vector2 pos;
-		T* object;
-		//Entity(T* objectPointer, int x, int y) :		object(objectPointer), x(x), y(y) {}
-		//Entity(T* objectPointer, float x, float y) : object(objectPointer), x(x), y(y), pos(Vector2(x,y)) {}
-		Entity(T* objectPointer, Vector2 vec, int handle) : object(objectPointer), x(vec.x), y(vec.y), pos(vec), handle(handle) {}
-
-		inline int operator [](int i) const { return i ? y : x; }
-		inline int& operator [](int i) { return i ? y : x; }
-
-	};
+	
 
 	EntityMap() {}
 
 
 
 
-	std::unordered_map<int, Entity*> entityList;
+	std::unordered_map<int, T*> entityList;
 
 
 
 
-	int registerEntity(T* object, Vector2 pos) {
+	int registerEntity(T* newEntity, Vector2 pos) {
 		int handle = newId;
-		Entity* newEntity = new Entity(object, pos, handle);
+		//Entity* newEntity = new Entity(pos, handle);
 
 
 		
 		entityList[handle] = newEntity;
 
 		newId++;
+		newEntity->handle = handle;
 
 		return handle;
 	}
@@ -72,31 +60,47 @@ public:
 
 	}
 
-	const std::unordered_map<int, Entity*>& getEntities() {
+	void updateAll()
+	{
+		for (std::pair<int, T*> element : entityList)
+		{
+			element.second->update();
+
+		}
+
+
+	}
+
+	const std::unordered_map<int, T*>& getEntities() {
 		return entityList;
 	}
 
-	const Entity& getClosest(const Vector2& point, int handle_blacklist) {
+	virtual T* getClosest(const Vector2& point, const Conditions& conditions) {
 
 		float closestDistSquare = (float)(9999* 9999);
 		int closestHandle = -1;
 
 
-		for (std::pair<int, Entity*> element : entityList)
+		for (std::pair<int, T*> element : entityList)
 		{
-			
-			if (handle_blacklist ==element.second->handle) {
+			if(!element.second->followsConditions(conditions))
+			{
 				continue;
 			}
+			
 			float newDistSquare = getDistanceSquare(point, element.second->pos);
 			if (newDistSquare < closestDistSquare) {
 				closestDistSquare = newDistSquare;
 				closestHandle = element.first;
 			}
 		}
-		return *entityList[closestHandle];
+		return entityList[closestHandle];
 
 	}
+
+	
+
+	
 
 	inline float getDistanceSquare(Vector2 p1, Vector2 p2) {
 		float difX = fabs(p2.x - p1.x);

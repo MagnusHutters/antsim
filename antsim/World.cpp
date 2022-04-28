@@ -13,10 +13,10 @@ World::World(std::string name, int numAnts, int sizeX, int sizeY)
 	this->sizeX = sizeX;
 	this->sizeY = sizeY;
 	this->name = name;
-	jobMap = new EntityMap<Job>();
+	jobMap = new JobMap();
 	jobFactory = new JobFactory(jobMap);
 
-	jobFactory->createRandomSimpleJob(5);
+	jobFactory->createJobChain(2, true);
 
 	antContainer = new AntContainer(numAnts, sizeX, sizeY, pheromoneMap, jobMap);
 
@@ -89,6 +89,8 @@ void World::update() {
 
 	antContainer->updateAnts();
 	pheromoneMap->doDecayPheromones();
+
+	jobMap->updateAll();
 
 	pheromoneMap->setReadOnly();
 
