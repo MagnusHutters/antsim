@@ -9,6 +9,7 @@
 
 
 #include "ActionDriver.h"
+#include "PheromoneId.h"
 
 class ActionFollowTrail : public Action
 {
@@ -16,7 +17,7 @@ public:
 
 
 
-	ActionFollowTrail(int PheromoneId) : PheromoneId(PheromoneId)
+	ActionFollowTrail(PheromoneId PheromoneId) : pheromoneId(PheromoneId)
 	{
 
 	}
@@ -32,12 +33,12 @@ public:
 	void calcAction() {
 		//body->breakMotion();
 
-		sensorCenterStrenght = sensor->sensePrimaryCenter(PheromoneId, 45, true);
-		sensorLeftStrenght = sensor->sensePrimaryLeft(PheromoneId, 45, true);
-		sensorRightStrenght = sensor->sensePrimaryRight(PheromoneId, 45, true);
+		sensorCenterStrenght = sensor->sensePrimaryCenter(pheromoneId, 45);
+		sensorLeftStrenght = sensor->sensePrimaryLeft(pheromoneId, 45);
+		sensorRightStrenght = sensor->sensePrimaryRight(pheromoneId, 45);
 		//val3 = val1 - val2;
 		float totalValue = sensorCenterStrenght + sensorLeftStrenght + sensorRightStrenght;
-		float valueUnder = sensor->senseBelow(PheromoneId, true, SENSOR_RADIUS_SMALL);
+		float valueUnder = sensor->senseBelow(pheromoneId, SENSOR_RADIUS_SMALL);
 		if(totalValue < PHEROMONE_FLOOR || valueUnder < PHEROMONE_FLOOR)
 		{
 			lostCounter += 1;
@@ -50,7 +51,7 @@ public:
 
 		if(lostCounter>5)
 		{
-			Vector2 dir = sensor->senseDirection(PheromoneId, true);
+			Vector2 dir = sensor->senseDirection(pheromoneId);
 			body->addDesiredDirection(dir);
 		}else
 		{
@@ -65,7 +66,7 @@ public:
 
 private:
 	int lostCounter = 10;
-	int PheromoneId;
+	PheromoneId pheromoneId;
 	float sensorLeftStrenght = 0;
 	float sensorRightStrenght = 0;
 	float sensorCenterStrenght = 0;

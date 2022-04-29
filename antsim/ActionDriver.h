@@ -18,6 +18,8 @@ public:
 	virtual void init() {
 
 	}
+	virtual float getStrenght() { return 0; }
+	virtual bool getDone() { return false; }
 
 	virtual void calcAction() {
 		body->breakMotion();

@@ -26,21 +26,22 @@ public:
 	//inline void doGetComletePheromonePicture() { completePheromoneScan = true; }
 
 
-	float sensePrimaryLeft(int id, float angle, bool positive) {
+	float sensePrimaryLeft(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(angle), id, positive);
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(angle), id.id, id.positive);
 	}
-	float sensePrimaryRight(int id, float angle, bool positive) {
+	float sensePrimaryRight(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(-angle), id, positive);
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(-angle), id.id, id.positive);
 	}
-	float sensePrimaryCenter(int id, float angle, bool positive) {
+	float sensePrimaryCenter(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(0), id, positive);
+		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(0), id.id, id.positive);
 	}
-	float senseBelow(int id, bool positive, int radius = SENSOR_RADIUS_MEDIUM)
+
+	float senseBelow(const PheromoneId& pheromone, int radius = SENSOR_RADIUS_MEDIUM)
 	{
-		return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(radius),id,positive);
+		return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(radius), pheromone.id, pheromone.positive);
 	}
 
 
@@ -48,25 +49,29 @@ public:
 	inline PheromoneMapSensor getPrimaryLeft() { return getSensorFromVector(primaryLeftVector); }
 	inline PheromoneMapSensor getPrimaryCenter() { return getSensorFromVector(primaryCenterVector); }
 
-	Vector2 senseDirection(int id, bool positive);
-	float senseStrenght(int id, bool positive);
+	Vector2 senseDirection(PheromoneId pheromone);
+	float senseStrenght(PheromoneId pheromone);
 
 
 
 
 
 	Vector2 senseJob(const Conditions& conditions = Conditions()) {
-		Job* entity = jobMap->getClosest(body->body.pos, conditions);
-		const float distance = entity->pos.Distance(body->body.pos);
-		if (distance <= JOB_SENSOR_RADIUS) {
-			return entity->pos - body->body.pos;
+		auto entity = jobMap->getClosest(body->body.pos, conditions);
+		if(entity.success)
+		{
+			const float distance = entity.entity->pos.Distance(body->body.pos);
+			if (distance <= JOB_SENSOR_RADIUS) {
+				return entity.entity->pos - body->body.pos;
 			
+			}
 		}
 		return Vector2(0, 0);
 	}
-	Job* getJob(const Conditions& conditions=Conditions()) {
-		Job* entity = jobMap->getClosest(body->body.pos, conditions);
-		return entity;
+	struct _getJobResult { bool success; Job* entity; };
+	_getJobResult getJob(const Conditions& conditions=Conditions()) {
+		auto entity = jobMap->getClosest(body->body.pos, conditions);
+		return {entity.success,entity.entity};
 	}
 
 private:

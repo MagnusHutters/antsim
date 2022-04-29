@@ -73,7 +73,7 @@ void AntContainer::createAnt()
 	int y = rand() % sizeY;
 	float rot = rand() % 9999;
 	x = 100;
-	y = 100;
+	y = 200;
 
 
 	ants.push_back(new Ant(antIdCount, x, y, rot, pheromoneMap, jobMap));

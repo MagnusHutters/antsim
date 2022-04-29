@@ -36,7 +36,7 @@ public:
 
 
 
-	std::unordered_map<int, T*> entityList;
+	
 
 
 
@@ -45,6 +45,7 @@ public:
 		int handle = newId;
 		//Entity* newEntity = new Entity(pos, handle);
 
+		//throw("Test");
 
 		
 		entityList[handle] = newEntity;
@@ -55,8 +56,10 @@ public:
 		return handle;
 	}
 
+
 	void setPosition(int handle, Vector2 pos) {
 		entityList[handle]->pos = pos;
+		throw("Test");
 
 	}
 
@@ -75,11 +78,12 @@ public:
 		return entityList;
 	}
 
-	virtual T* getClosest(const Vector2& point, const Conditions& conditions) {
+	struct _getClosestResult { bool success; T* entity; };
+	virtual _getClosestResult getClosest(const Vector2& point, const Conditions& conditions) {
 
 		float closestDistSquare = (float)(9999* 9999);
 		int closestHandle = -1;
-
+		bool success = false;
 
 		for (std::pair<int, T*> element : entityList)
 		{
@@ -92,9 +96,16 @@ public:
 			if (newDistSquare < closestDistSquare) {
 				closestDistSquare = newDistSquare;
 				closestHandle = element.first;
+				success |= true;
 			}
 		}
-		return entityList[closestHandle];
+		if(success)
+		{
+			return { success, entityList[closestHandle] };
+		}else
+		{
+			return { success,nullptr };
+		}
 
 	}
 
@@ -112,7 +123,9 @@ public:
 		return (difX * difX) + (difY * difY);
 
 	}
+private:
 
+	std::unordered_map<int, T*> entityList;
 
 	int newId = 0;
 };

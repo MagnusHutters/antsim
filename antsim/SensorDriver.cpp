@@ -38,14 +38,14 @@ void SensorDriver::resetSensorResults()
 
 
 
-Vector2 SensorDriver::senseDirection(int id, bool positive) { 
-	return pheromoneMap->sensePheromonesStrenghtDirection(getSensorAtBody(SENSOR_RADIUS_HUGE), body->body.pos, id, positive);
+Vector2 SensorDriver::senseDirection(PheromoneId pheromone) { 
+	return pheromoneMap->sensePheromonesStrenghtDirection(getSensorAtBody(SENSOR_RADIUS_HUGE), body->body.pos, pheromone.id, pheromone.positive);
  
 }
 
-float SensorDriver::senseStrenght(int id, bool positive)
+float SensorDriver::senseStrenght(PheromoneId pheromone)
 {
-	return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(SENSOR_RADIUS_HUGE), id, positive);
+	return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(SENSOR_RADIUS_HUGE), pheromone.id, pheromone.positive);
 	
 }
 

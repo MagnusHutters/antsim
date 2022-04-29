@@ -111,6 +111,24 @@
     <ClCompile Include="Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TaskFindJob.cpp">
+      <Filter>Header Files\Tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionExplore.cpp">
+      <Filter>Header Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionFollowTrail.cpp">
+      <Filter>Header Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGoTowardNearbyTask.cpp">
+      <Filter>Header Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionHold.cpp">
+      <Filter>Header Files\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="PheromoneId.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
@@ -231,6 +249,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PheromoneId.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

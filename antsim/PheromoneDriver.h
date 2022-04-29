@@ -5,18 +5,19 @@
 #include "Config.h"
 #include "Pheromones2.h"
 #include "Body.h"
+#include "Conditions.h"
+#include "PheromoneId.h"
 
 class PheromoneDriver
 {
 public:
 
 	struct PheromoneJob {
-		int id;
-		bool positive;
+		PheromoneId pheromone;
 		float strenght;
 		float decay;
-		PheromoneJob(const int id, const bool positive) : id(id), positive(positive), strenght( 1), decay(1) {}
-		PheromoneJob(const int id, const bool positive, float strenght, float decay=1) : id(id), positive(positive), strenght(strenght), decay(decay) {}
+		PheromoneJob(PheromoneId pheromone) : pheromone(pheromone), strenght(1), decay(1) {}
+		PheromoneJob(PheromoneId pheromone, float strenght, float decay=1) : pheromone(pheromone), strenght(strenght), decay(decay) {}
 	};
 
 	PheromoneDriver(PheromoneMap* pheromoneMap, BodyDriver* bodyDriver) :
@@ -25,19 +26,20 @@ public:
 	{
 		
 	}
-	void setTrail(int id, bool positive=true, float strenght = 1, float strenghtDecay = 1);
-	void addTrail(int id, bool positive=true, float strenght = 1, float strenghtDecay = 1);
-	void removeTrail(int id, bool positive=true);
+	PheromoneJob getTrail(PheromoneId pheromone);
+	void setTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1);
+	void addTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1);
+	void removeTrail(PheromoneId pheromone);
 	void removeTrails();
 
 	//inline void setPheromoneTrail(int pheromoeId);
 	// void setExplore() { setPheromoneTrail(EXPLORED_PHEROMONE_ID); }
 	//inline void setPath() { setPheromoneTrail(PATH_PHEROMONE_ID); }
-	void emit(int id, bool positive);
-	void emit(int id, bool positive, float strenght);
+	void emit(PheromoneId pheromone);
+	void emit(PheromoneId pheromone, float strenght);
 	
-	inline void success() { emit(SUCCESS_PHEROMONE_ID, true); }
-	inline void failure() { emit(SUCCESS_PHEROMONE_ID, false); }
+	inline void success() { emit({SUCCESS_PHEROMONE_ID, true}); }
+	inline void failure() { emit({SUCCESS_PHEROMONE_ID, false}); }
 
 	void update();
 

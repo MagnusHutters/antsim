@@ -128,6 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActionDriver.cpp" />
+    <ClCompile Include="ActionExplore.cpp" />
+    <ClCompile Include="ActionFollowTrail.cpp" />
+    <ClCompile Include="ActionGoTowardNearbyTask.cpp" />
+    <ClCompile Include="ActionHold.cpp" />
     <ClCompile Include="Ant.cpp" />
     <ClCompile Include="AntContainer.cpp" />
     <ClCompile Include="Body.cpp" />
@@ -145,10 +149,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="PheromoneDriver.cpp" />
+    <ClCompile Include="PheromoneId.cpp" />
     <ClCompile Include="Pheromones.cpp" />
     <ClCompile Include="Pheromones2.cpp" />
     <ClCompile Include="SensorDriver.cpp" />
     <ClCompile Include="TaskDriver.cpp" />
+    <ClCompile Include="TaskFindJob.cpp" />
     <ClCompile Include="TaskList.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Graphic.cpp" />
@@ -183,6 +189,7 @@
     <ClInclude Include="observer.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PheromoneDriver.h" />
+    <ClInclude Include="PheromoneId.h" />
     <ClInclude Include="Pheromones.h" />
     <ClInclude Include="Pheromones2.h" />
     <ClInclude Include="SensorDriver.h" />

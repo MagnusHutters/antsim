@@ -86,7 +86,7 @@ void Graphic::update()
 void Graphic::drawPheromones()
 {
 	int pheromone1 = 0;
-	int pheromone2 = 1;
+	int pheromone2 = RECRUIT_PHEROMONE_ID;
 	int pheromone3 = 2;
 
 	pheromoneCounter++;

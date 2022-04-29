@@ -1,35 +1,50 @@
 #pragma once
 
 #include <list>
+#include <utility>
 
-enum blacklistWHitelist { Blacklist, Whitelist };
+#include "PheromoneId.h"
+
 
 class Conditions
 {
 public:
-	Conditions(const std::list<int>& list, blacklistWHitelist conditionType)
-		: list(list),
-		  conditionType(conditionType)
+	Conditions(std::list<PheromoneId> list)
+		: pheromoneWhitelist(std::move(list)), jobBlacklist({})
+	{
+	}
+	
+	
+	Conditions(PheromoneId pheromoneId)
+		: pheromoneWhitelist({ pheromoneId }), jobBlacklist({})
+
+	{
+	}
+	Conditions(int jobId)
+		: pheromoneWhitelist({  }), jobBlacklist({ jobId })
+
+	{
+	}
+	Conditions(std::list<int> jobBlacklist)
+		: pheromoneWhitelist({  }), jobBlacklist(std::move(jobBlacklist))
+
 	{
 	}
 
-	Conditions(int condition, blacklistWHitelist conditionType)
-		: list({ condition }),
-		conditionType(conditionType)
+	Conditions() : pheromoneWhitelist({}), jobBlacklist({})
 	{
 	}
-	Conditions()
+	
+	std::list<PheromoneId> pheromoneWhitelist;
+	std::list<int> jobBlacklist;
+	//blacklistWHitelist conditionType; //
+
+	Conditions operator+(const Conditions& conditions) const
 	{
-		conditionType = Blacklist;
-		list = {};
+		Conditions newCon = *this;
+		newCon.pheromoneWhitelist.insert(newCon.pheromoneWhitelist.end(), conditions.pheromoneWhitelist.begin(), conditions.pheromoneWhitelist.end());
+		newCon.jobBlacklist.insert(newCon.jobBlacklist.end(), conditions.jobBlacklist.begin(), conditions.jobBlacklist.end());
+		return newCon;
 	}
-	
-
-
-	
-	
-	std::list<int> list;
-	blacklistWHitelist conditionType; //
-
 };
 

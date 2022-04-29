@@ -14,10 +14,11 @@
 class JobInterface
 {
 public:
-	JobInterface(bool positive, int typeId, float maxAmount= JOB_MAX_AMOUNT)
+	JobInterface(int typeId, bool positive, float maxAmount= JOB_MAX_AMOUNT)
 		: positive(positive),
 		  typeId(typeId),
-		  max_amount(maxAmount)
+		  max_amount(maxAmount),
+		  amount(positive ? maxAmount : 0)
 	{
 	}
 
@@ -27,11 +28,11 @@ public:
 	float amount;
 	const float max_amount;
 
-	float getPriority() const
+	int getPriority() const
 	{
 		float percentage = amount / max_amount;
 		if (!positive) percentage = 1 - percentage;
-		return sqrtf(percentage);
+		return (sqrtf(percentage)* WEIGHT_SIZE);
 	}
 
 	inline bool hasCapacity(float hasCapacityAmount= PACKET_SIZE) const
@@ -42,9 +43,15 @@ public:
 	{
 		return amount >= hasAmount;
 	}
-	
 
+	bool doesMatchPheromone(PheromoneId pheromone) {
+		return (pheromone.id == typeId && pheromone.positive == positive);
+	}
 
+	PheromoneId getPheromone()
+	{
+		return { typeId,positive };
+	}
 };
 
 class Process
@@ -94,86 +101,42 @@ private:
 class Job : public Entity
 {
 public:
-	struct JobReport {
-
-		bool successful;
-		bool isNextPart;
-		int currentPheromone;
-		int currentHandle;
-		int nextPartHandle;
-		int nextPartPheromone;
-		JobReport() :
-			successful(false),
-			isNextPart(false),
-			currentPheromone(-1),
-			nextPartHandle(-1)
-		{}
-
-		JobReport(Job* job) : //Basic info for non interaction
-			successful(true),
-			isNextPart(job->haveNextJob),
-			currentPheromone(job->pheromoeId),
-			currentHandle(job->handle),
-			nextPartHandle(job->nextJobHandle),
-			nextPartPheromone((job->nextJobPheromone))
-
-		{}
-		JobReport(Job* job, bool success) : //Basic info for non interaction
-			successful(success),
-			isNextPart(job->haveNextJob),
-			currentPheromone(job->pheromoeId),
-			currentHandle(job->handle),
-			nextPartHandle(job->nextJobHandle),
-			nextPartPheromone((job->nextJobPheromone))
-
-		{}
-
-		
-	};
+	
 
 	//Job();
-	Job(Vector2 pos, int id) : pheromoeId(id), Entity(pos) {
-		
-		//handle = jobMap->registerEntity(this, pos);
-	}
-	Job(Vector2 pos, int id) : pheromoeId(id), Entity(pos) {
+	
+	Job(Vector2 pos, int typeId, bool positive) : interfaces({new JobInterface(typeId, positive)}), Entity(pos) {
 
 		//handle = jobMap->registerEntity(this, pos);
 	}
-
-
-	void setNextJob(int handle, int pheromone)
-	{
-		nextJobHandle = handle;
-		nextJobPheromone = pheromone;
-		haveNextJob = true;
-	}
-
-	const JobReport& doInteract(BodyDriver* body){
-		if(body->body.pos.Distance(pos)>JOB_INTERACT_RADIUS) { // Out of range
-			return JobReport();
-		}
-			//return JobReport(this);
-		if(canInteract())
-		{
-			return interact(body);
-		}else
-		{
-			return JobReport(this, false);
-		}
-		
-	}
+	
+	
 	struct _GetInterfaceResult { bool sucess; JobInterface* interface; };
-	_GetInterfaceResult getInterface(int typeId) const
+	_GetInterfaceResult getInterface(PheromoneId pheromone) const
 	{
 		for (const auto interface : interfaces)
 		{
-			if(interface->typeId==typeId)
+			if(interface->doesMatchPheromone(pheromone))
 			{
 				return { true,interface };
 			}
 		}
 		return { false,nullptr };
+	}
+
+	//struct weightedPheromone { float weight; exploredPheromone pheromone; };
+	struct _getAllJobInterfacesResult { std::vector<int> weights; std::vector<PheromoneId> pheromones; };
+	_getAllJobInterfacesResult getAllJobInterfaceWeights()
+	{
+		_getAllJobInterfacesResult result;
+		for (auto interface : interfaces)
+		{
+			
+			result.weights.emplace_back(interface->getPriority());
+			result.pheromones.emplace_back(interface->getPheromone());
+
+		}
+		return result;
 	}
 
 
@@ -182,7 +145,7 @@ public:
 	{
 		if(body->hasPacket)
 		{
-			auto result = getInterface(body->packet->getTypeId());
+			auto result = getInterface({ body->packet->getTypeId(),false });
 			if(result.sucess)
 			{
 				if(result.interface->hasCapacity())
@@ -211,7 +174,7 @@ public:
 
 	bool transferFromJob(BodyDriver* body, int typeId)
 	{
-		auto result = getInterface(typeId);
+		auto result = getInterface({typeId,true});
 		if(result.sucess)
 		{
 			if(result.interface->hasAmount())
@@ -231,16 +194,7 @@ public:
 			return false;
 		}
 	}
-
-	const JobReport& doGetInfo(BodyDriver* body) {
-		if (body->body.pos.Distance(pos) > JOB_INTERACT_RADIUS) { // Out of range
-			return JobReport();
-		}
-		if (!haveNextJob) {
-			return JobReport(this);
-		}
-
-	}
+	
 
 	inline virtual bool canInteract()
 	{
@@ -257,18 +211,27 @@ public:
 
 	bool followsConditions(const Conditions& conditions)
 	{
-		bool anyMatch = false;
-		for (int conditon : conditions.list)
+		bool anyPheromoneMatch = false;
+		for (const auto pheromone : conditions.pheromoneWhitelist)
 		{
-			if (conditon == pheromoeId) anyMatch = true;
+			for (auto interface : interfaces)
+			{
+				anyPheromoneMatch |= interface->doesMatchPheromone(pheromone);
+			}
 		}
-		if(conditions.conditionType==Blacklist)
+		if(conditions.pheromoneWhitelist.size()==0)
 		{
-			return !anyMatch;
-		}else
-		{
-			return anyMatch;
+			anyPheromoneMatch = true;
 		}
+
+		bool anyJobMatch = false;
+		for (int jobCondition : conditions.jobBlacklist)
+		{
+			anyJobMatch |= jobCondition == handle;
+		}
+
+		return anyPheromoneMatch && !anyJobMatch; //anyPheromoneMatch must be true and anyJobMatch must be false
+		
 	}
 
 	
@@ -278,11 +241,12 @@ public:
 	//virtual bool getReady() {
 	//	return false;
 	//}
-	int pheromoeId;
+	//int pheromoeId;
 protected:
 
 
 
+	/*
 	virtual JobReport interact(BodyDriver* body)
 	{
 		if (!canInteract()) return JobReport(this, false);
@@ -294,17 +258,17 @@ protected:
 		return JobReport(this);
 
 
-	}
+	}*/
 
 	std::list<Process*> processes;
 	std::list<JobInterface*> interfaces;
 	
-	int nextJobHandle = -1;
-	bool haveNextJob = false;
+	//int nextJobHandle = -1;
+	//bool haveNextJob = false;
 	//Vector2 pos;
 	//EntityMap<Job>* jobMap;
 	//int handle;
-	int nextJobPheromone=-1;
+	//int nextJobPheromone=-1;
 	
 
 

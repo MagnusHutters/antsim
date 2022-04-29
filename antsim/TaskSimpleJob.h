@@ -43,13 +43,13 @@ public:
 
         switch (state)
         {
-        case states::FollowingTrail:
+        case states::FindJob:
             stateFollowingTrail();
             break;
         case states::FoundJobPoint:
             stateFoundJobPoint();
             break;
-        case states::DeclareJob:
+        case states::Recruit:
             stateDeclareJob();
             break;
         case states::Lost:
@@ -61,7 +61,7 @@ public:
         return report;
     }
 
-    void stateFollowingTrail() {
+	void stateFollowingTrail() {
         if (newState) {
             action->setAction(new ActionExplore(jobId));
             pheromone->removeTrails();
@@ -71,7 +71,7 @@ public:
     }
     void stateFoundJobPoint()
 	{
-        if (newState) {
+        /*if (newState) {
             action->setAction(new ActionGoTowardNearbyTask());
         }
 
@@ -97,12 +97,12 @@ public:
                     //taskDriver->setTask(new TaskFindJob());
 	            }
             }
-        }
+        }*/
 
 	}
     void stateDeclareJob()
 	{
-        if (newState) {
+        /*if (newState) {
             action->setAction(new ActionExplore(jobId));
             //nextJobPheromone->setTrail(jobId, true);
             declareStrenght = TASK_SUCCESS_THRESHOLD;
@@ -111,14 +111,14 @@ public:
         declareStrenght *= PHEROMONE_DECAY * PHEROMONE_DECAY* PHEROMONE_DECAY;
         if(declareStrenght<PHEROMONE_FLOOR)
         {
-            state = states::FollowingTrail;
-        }
+            state = states::FindJob;
+        }*/
 
 
 	}
     void stateLost()
 	{
-        if (newState) {
+        /*if (newState) {
             action->setAction(new ActionHold());
         }
         if(findJobPoint())
@@ -129,7 +129,7 @@ public:
                 state = states::FoundJobPoint;
             }
             
-        }
+        }*/
 	}
 
     //STATES END
@@ -145,3 +145,4 @@ private:
     float declareStrenght = 0.0f;
     
 };
+

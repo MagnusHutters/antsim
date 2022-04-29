@@ -4,11 +4,11 @@
 namespace states
 {
 
-	static std::string stateNames[9] = { "None",	"FollowingTrail",	"FoundJobPoint",	"DeclareJob",	"Lost", "DeclareFailure",	"Explore",	"DecideNextTask",	"LookAround" };
-	static std::string stateShorts[9] = { "non",	"ft",				"job",				"dJb",			"los",	"dfl",				"exp",		"dec",				"lok" };
+	static std::string stateNames[9] = { "None",	"FindJob",	"FoundJobPoint",	"Recruit",	"Lost", "DeclareFailure",	"Explore",	"DecideNextTask",	"LookAround" };
+	static std::string stateShorts[9] = { "non",	"ft",				"job",				"rcrt",			"los",	"dfl",				"exp",		"dec",				"lok" };
 
 	enum State {
-		None, FollowingTrail, FoundJobPoint, DeclareJob, Lost, DeclareFailure, Explore, DecideNextTask, LookAround
+		None, FindJob, FoundJobPoint, Recruit, Lost, DeclareFailure, Explore, DecideNextTask, LookAround
 	};
 }
 
