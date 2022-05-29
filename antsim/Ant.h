@@ -11,20 +11,23 @@
 
 #include "TaskChanger.h"
 #include "PheromoneDriver.h"
-//#include "TaskFindJob.h"
+//#include "TaskPheromoneController.h"
 
+/*
 #include "ActionFollowTrail.h"
 #include "ActionExplore.h"
+#include "CentralController.h"
 #include "EntityMap.h"
-#include "Job.h"
-
+#include "Job.h"*/
+#include "MapContainer.h"
+#include "RigidBodyMap.h"
 
 
 class Ant
 {
 
 public:
-	Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap);
+	Ant(int id, int x, int y, float rot, MapContainer m);
 
 	void process();
 	void update();
@@ -36,6 +39,11 @@ public:
 		return taskDriver->getState();
 	}
 
+	void trySetJob(int jobHandle)
+	{
+		taskDriver->trySetJob(jobHandle);
+	}
+
 
 	SensorDriver* sensorDriver;
 
@@ -43,9 +51,8 @@ public:
 
 
 private:
+	friend class Logger;
 
-	EntityMap<Job>* jobMap;
-	PheromoneMap* pheromoneMap;
 	int id;
 	
 	BodyDriver* bodyDriver;
@@ -53,7 +60,7 @@ private:
 	TaskChanger* taskDriver;
 	PheromoneDriver* pheromoneDriver;
 
-
+	MapContainer m;
 	//Body;
 
 

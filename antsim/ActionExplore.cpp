@@ -24,8 +24,8 @@ void ActionExplore::calcAction()
 	//body->breakMotion();
 	if (countdown <= 0) {
 
-		direction = -sensor->senseDirection(exploredPheromone);
-		countdown = rand() % 4 + 5;
+		direction = -sensor->senseDirection(exploredPheromone,3);
+		countdown = rand() % 4 + 4;
 		if (lookFor)
 		{
 			Vector2 lookFor = sensor->senseDirection(lookForPheromone);
@@ -43,5 +43,8 @@ void ActionExplore::calcAction()
 	//body->addDesiredMotion(Vector2(1, -1) * sensorRightStrenght);
 	//body->
 	body->addDesiredDirection(direction);
+
+	//Vector2 terrain = sensor->senseTerrain();
+	//body->addDesiredDirection(-terrain*10000);
 
 }

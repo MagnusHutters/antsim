@@ -4,18 +4,18 @@
 #include "Vector2.h"
 #include "Body.h"
 #include "Pheromones2.h"
-#include "EntityMap.h"
+#include "JobMap.h"
 #include "Job.h"
 
 #include "Config.h"
-
+#include "ObstacleMap.h"
 
 
 class SensorDriver
 {
 public:
 	SensorDriver();
-	SensorDriver(BodyDriver* body, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap);
+	SensorDriver(BodyDriver* body, MapContainer m);
 
 	void doSense();
 
@@ -28,20 +28,20 @@ public:
 
 	float sensePrimaryLeft(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(angle), id.id, id.positive);
+		return m.pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(angle), id.id, id.positive);
 	}
 	float sensePrimaryRight(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(-angle), id.id, id.positive);
+		return m.pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(-angle), id.id, id.positive);
 	}
 	float sensePrimaryCenter(PheromoneId id, float angle) {
 
-		return pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(0), id.id, id.positive);
+		return m.pheromoneMap->sensePheromonesStrenght(getSensorFromAngle(0), id.id, id.positive);
 	}
 
 	float senseBelow(const PheromoneId& pheromone, int radius = SENSOR_RADIUS_MEDIUM)
 	{
-		return pheromoneMap->sensePheromonesStrenght(getSensorAtBody(radius), pheromone.id, pheromone.positive);
+		return m.pheromoneMap->sensePheromonesStrenght(getSensorAtBody(radius), pheromone.id, pheromone.positive);
 	}
 
 
@@ -49,15 +49,15 @@ public:
 	inline PheromoneMapSensor getPrimaryLeft() { return getSensorFromVector(primaryLeftVector); }
 	inline PheromoneMapSensor getPrimaryCenter() { return getSensorFromVector(primaryCenterVector); }
 
-	Vector2 senseDirection(PheromoneId pheromone);
+	Vector2 senseDirection(PheromoneId pheromone, float obstructionResponse=0);
 	float senseStrenght(PheromoneId pheromone);
 
-
-
+	Vector2 senseObstructions();
+	Vector2 senseTerrain();
 
 
 	Vector2 senseJob(const Conditions& conditions = Conditions()) {
-		auto entity = jobMap->getClosest(body->body.pos, conditions);
+		auto entity = m.jobMap->getClosest(body->body.pos, conditions);
 		if(entity.success)
 		{
 			const float distance = entity.entity->pos.Distance(body->body.pos);
@@ -68,10 +68,54 @@ public:
 		}
 		return Vector2(0, 0);
 	}
+
+	ObstacleMap* getObstacleMap()
+	{
+		return m.obstacleMap;
+	}
+
 	struct _getJobResult { bool success; Job* entity; };
+	_getJobResult getJobFromHandle(int jobHandle)
+	{
+		auto allJobs = m.jobMap->getEntities();
+		auto it = allJobs.find(jobHandle);
+		if (it == allJobs.end()) return { false, nullptr };
+
+		return { true, it->second };
+	}
+
+	_getJobResult getJobPheromone(PheromoneId pheromone)
+	{
+		auto allJobs = m.jobMap->getEntities();
+		for (auto job : allJobs)
+		{
+			auto interfaceResult = job.second->getInterface(pheromone);
+			if(interfaceResult.sucess)
+			{
+				return { true,job.second };
+			}
+		}
+
+		return { false, nullptr };
+	}
+
 	_getJobResult getJob(const Conditions& conditions=Conditions()) {
-		auto entity = jobMap->getClosest(body->body.pos, conditions);
-		return {entity.success,entity.entity};
+		auto entity = m.jobMap->getClosest(body->body.pos, conditions);
+
+		if (entity.success)
+		{
+			const float distance = entity.entity->pos.Distance(body->body.pos);
+			if (distance <= JOB_INTERACT_RADIUS) {
+				return { entity.success,entity.entity };
+
+			}
+		}
+		return {false,entity.entity};
+	}
+
+	bool checkLineOfSight(Vector2 p1, Vector2 p2)
+	{
+		return m.obstacleMap->checkLineOfSight(p1, p2);
 	}
 
 private:
@@ -82,8 +126,7 @@ private:
 	const Vector2 getSensorVectorFromAngle(float angle);
 
 	BodyDriver* body;
-	EntityMap<Job>* jobMap;
-	PheromoneMap* pheromoneMap;
+	MapContainer m;
 
 
 	

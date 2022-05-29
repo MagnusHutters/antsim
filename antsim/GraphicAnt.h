@@ -9,6 +9,7 @@
 //class Core;
 
 //#include "Core.h"
+#include "GraphicsUtility.h"
 #include "World.h"
 
 
@@ -32,20 +33,13 @@ public:
 		
 
 		
-		if (!font.loadFromFile("arial.ttf"))
-		{
-			// error...
-			while(1)
-			{
-				
-			}
-		}
+		
 		// select the font
-		text.setFont(font);
+		text.setFont(GraphicsUtility::font);
 
 		text.setString(states::stateShorts[0]);
 		text.setCharacterSize(30);
-		text.setScale(0.1, 0.1);
+		text.setScale(0.1f, 0.1f);
 		text.setOrigin(text.getLocalBounds().width, -3);
 		text.setFillColor(sf::Color::Black);
 		text.setPosition(Vector2());
@@ -92,7 +86,7 @@ private:
 	sf::CircleShape  mainBody;
 	Vector2 mainBodyOffset;
 	sf::Text text;
-	sf::Font font;
+	
 	int antId;
 
 	//Core* world;

@@ -12,19 +12,19 @@ PheromoneDriver::PheromoneJob PheromoneDriver::getTrail(PheromoneId pheromone)
 			++it;
 		}
 	}
-	return {pheromone, 0, 0};
+	return {pheromone, 0, 0, {0,0}};
 }
 
-void PheromoneDriver::setTrail(PheromoneId pheromone, float strenght, float strenghtDecay)
+void PheromoneDriver::setTrail(PheromoneId pheromone, float strenght, float strenghtDecay, Vector2 layOffset)
 {
 	removeTrails();
-	addTrail(pheromone, strenght, strenghtDecay);
+	addTrail(pheromone, strenght, strenghtDecay, layOffset);
 }
 
-void PheromoneDriver::addTrail(PheromoneId pheromone, float strenght, float strenghtDecay)
+void PheromoneDriver::addTrail(PheromoneId pheromone, float strenght, float strenghtDecay, Vector2 layOffset)
 {
 	removeTrail(pheromone);
-	trails.emplace_back(pheromone, strenght, strenghtDecay);
+	trails.emplace_back(pheromone, strenght, strenghtDecay,layOffset);
 }
 
 void PheromoneDriver::removeTrail(PheromoneId pheromone)
@@ -51,9 +51,9 @@ void PheromoneDriver::emit(PheromoneId pheromone)
 {
 	emits.emplace_back(pheromone);
 }
-void PheromoneDriver::emit(PheromoneId pheromone, float strenght)
+void PheromoneDriver::emit(PheromoneId pheromone, float strenght,Vector2 offset)
 {
-	emits.emplace_back(pheromone, strenght);
+	emits.emplace_back(pheromone, strenght,0,offset);
 }
 
 void PheromoneDriver::update()
@@ -69,7 +69,7 @@ void PheromoneDriver::update()
 		}else
 		{
 			
-			pheromoneMap->addPheromone(bodyDriver->body.pos, trail->pheromone.id, trail->pheromone.positive, trail->strenght);
+			m.pheromoneMap->addPheromone(bodyDriver->body.pos+bodyDriver->getGlobalVector(trail->offset), trail->pheromone.id, trail->pheromone.positive, trail->strenght);
 			trail++;
 		}
 
@@ -79,7 +79,7 @@ void PheromoneDriver::update()
 	
 	for (auto emit : emits)
 	{
-		pheromoneMap->addPheromone(bodyDriver->body.pos, emit.pheromone.id, emit.pheromone.positive, emit.strenght);
+		m.pheromoneMap->addPheromone(bodyDriver->body.pos + bodyDriver->getGlobalVector(emit.offset), emit.pheromone.id, emit.pheromone.positive, emit.strenght);
 
 	}
 	emits.clear();

@@ -11,5 +11,10 @@ public:
 	{
 		return id == pheromone.id && positive == pheromone.positive;
 	}
+
+	PheromoneId inverse()
+	{
+		return { id,!positive };
+	}
 };
 

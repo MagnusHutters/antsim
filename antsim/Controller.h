@@ -9,7 +9,7 @@
 #include "Command.h"
 #include "World.h"
 #include "Graphic.h"
-
+#include "Logger.h"
 
 
 class Controller
@@ -48,7 +48,7 @@ private:
 
 	Core* core;
 	Graphic* window;
-	
+	Logger* logger;
 
 	void help(Core*, std::list<std::string>)
 {

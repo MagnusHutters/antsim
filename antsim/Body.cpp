@@ -1,17 +1,19 @@
 #include "Body.h"
 #include <stdlib.h>
 #include "Config.h"
+#include "ObstacleMap.h"
 
-BodyDriver::BodyDriver(int x, int y, float rot, int id)
+BodyDriver::BodyDriver(int x, int y, float rot, int id, MapContainer m) : id(id), toMove(0), toRotate(0), m(m)
 {
-	this->id = id;
-	body = Body(x, y, rot);
 
 
 	desiredDirection = Vector2::FromAngle(rot);
 	velocity = desiredDirection;
-	toRotate = 0;
-	toMove = 0;
+
+
+	body = Body(static_cast<float>(x), static_cast<float>(y), rot);
+
+	handle = m.bodyCollosionMap->registerEntity(body.pos);
 
 
 }
@@ -25,11 +27,13 @@ void BodyDriver::breakMotion()
 
 void BodyDriver::addDesiredMotion(const Vector2& motion)
 {
+	if (motion!=motion) return;
 	desiredMotion += motion;
 }
 
 void BodyDriver::addDesiredDirection(const Vector2& motion)
 {
+	if (motion != motion) return;
 	desiredDirection += motion;
 }
 
@@ -45,8 +49,8 @@ void BodyDriver::process()
 
 
 	toMove = 1;
-	toRotate += ((((float)rand() / (float)RAND_MAX) * 2.0) - 1);
-	toRotate = toRotate * 0.95;
+	toRotate += ((((float)rand() / (float)RAND_MAX) * 2.0f) - 1);
+	toRotate = toRotate * 0.95f;
 
 
 	desiredMotion.Rotate(body.rot);
@@ -81,8 +85,27 @@ void BodyDriver::process()
 void BodyDriver::update()
 {
 
-	body.pos += velocity;
-	
+	//body.pos += velocity;
+	Vector2 newPos = body.pos + velocity;
+	newPos= m.bodyCollosionMap->checkMovement(handle, body.pos, newPos);
+
+
+	if(m.obstacleMap->isObstructed(newPos))
+	{
+		newPos = m.obstacleMap->getClosestUnobstructed(newPos,1);
+	}
+	if(newPos==Vector2(0,0))
+	{
+		newPos = Vector2::RandomWithinMap();
+	}
+
+
+	body.pos = newPos;
+
+
+
+	m.bodyCollosionMap->move(handle, newPos);
+
 	/*if (body.pos.x < 1)body.pos.x = 1;
 	if (body.pos.y < 1)body.pos.y = 1;
 	if (body.pos.x > 254)body.pos.x = 254;
@@ -94,4 +117,13 @@ void BodyDriver::update()
 	if (body.pos.y >= MAP_HEIGHT)body.pos.y -= MAP_HEIGHT;
 
 	body.rot = velocity.GetAngle();
+
+
+	if(pathCounter--<0)
+	{
+		
+		pathStep();
+		pathCounter += PATH_INTERVAL;
+	}
+
 }

@@ -40,13 +40,17 @@ public:
 		return TaskReport();
 	}
 	virtual void doTask() {}
+	virtual void trySetJob(int jobHandle)
+	{
+		//throw("Should be overloaded");
+	}
 
-	bool newState;
-	states::State _oldState_;
-	states::State state;
+	bool newState=false;
+	states::State _oldState_=states::None;
+	states::State state = states::None;
 
 protected:
-	
+	friend class Logger;
 
 	TaskReport report = TaskReport();
 
@@ -88,8 +92,14 @@ public:
 		return (int)task->state;
 	}
 
+	void trySetJob(int jobHandle)
+	{
+		task->trySetJob(jobHandle);
+	}
+
 
 private:
+	friend class Logger;
 	SensorDriver* sensor;
 	ActionDriver* action;
 	BodyDriver* body;

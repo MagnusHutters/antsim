@@ -3,6 +3,7 @@
 std::vector<Job*> JobFactory::createRandomSimpleJob(int number)
 {
 
+	/*
 	std::vector<Job*> jobList;
 	jobList.reserve(number);
 	for (int i = 0; i < number; i++)
@@ -15,5 +16,6 @@ std::vector<Job*> JobFactory::createRandomSimpleJob(int number)
 		jobMap->registerEntity(newJob, newPos);
 		jobList.push_back(newJob);
 	}
-	return jobList;
+	return jobList;*/
+	return {};
 }

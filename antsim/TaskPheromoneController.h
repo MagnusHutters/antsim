@@ -3,7 +3,7 @@
 
 #include "TaskList.h"
 #include "TaskDriver.h"
-//#include "TaskSimpleJob.h"
+//#include "TaskCentralControl.h"
 
 #include <random>
 
@@ -15,21 +15,13 @@
 #include "Conditions.h"
 
 
-class TaskFindJob : public Task {
+class TaskPheromoneController : public Task {
 
 public:
-    TaskFindJob()
-    {
-        
-        gen = std::mt19937(rd());
-        gen2 = std::mt19937(rd2());
-        randomFloat = std::uniform_real_distribution<float>(0.0, 1.0);
-    }
-    TaskFindJob(int avoidHandle) : TaskFindJob()
-    {
-        avoidJobHandle = avoidHandle;
-    }
-    
+    TaskPheromoneController();
+
+    TaskPheromoneController(int avoidHandle);
+
 
 	void init() {
         doStateExplore();
@@ -46,7 +38,7 @@ public:
         switch (state)
         {
         case states::FindJob:
-            stateFindJob();
+            stateFindTrail();
             break;
         case states::Explore:
             stateExplore();
@@ -54,8 +46,8 @@ public:
         case states::FoundJobPoint:
             stateFoundJobPoint();
             break;
-        case states::DecideNextTask:
-            stateDecideNextTask();
+        case states::FollowTrail:
+            stateFollowTrail();
             break;
         case states::LookAround:
             break;
@@ -70,9 +62,13 @@ public:
         return report;
 	}
 
-    void doStateFindJob(PheromoneId findPheromone, PheromoneId trailPheromone);
+    void doStateFindTrail(PheromoneId findPheromone, PheromoneId trailPheromone);
 
-    void stateFindJob();
+    void stateFindTrail();
+
+    void doStateFollowTrail(PheromoneId findPheromone, bool timeoutToExplore = false);
+
+    void stateFollowTrail();
 
     void doStateExplore(Conditions condition=Conditions())
     {
@@ -94,13 +90,11 @@ public:
 
     void stateFoundJobPoint();
 
-    void doStateRecruit(int nextJobPheromone=-1);
+    void doStateRecruit(PheromoneId recruitPheromone);
 
     void stateRecruit();
 
-    void doStateDecideNextTask();
-
-    void stateDecideNextTask();
+    
 
     //STATES END
 
@@ -109,7 +103,7 @@ public:
 	}
 
 private:
-
+    friend class Logger;
     std::random_device rd;
     std::random_device rd2;
     std::mt19937 gen;
@@ -120,12 +114,13 @@ private:
     Conditions currentCondition = Conditions();
 
     bool doFocusPheromone=false;
-
+    int timeout;
     //int ignoreJobHandle = -1;
     PheromoneId currentPheromone;
     PheromoneId oldPheromone;
     //int jobHandle = -1;
     int counter = 0;
     float declareStrenght = 0.0f;
-    
+    bool foundTrail;
+    bool doTimeoutToExplore;
 };

@@ -13,32 +13,8 @@
 #include <list>
 
 #include "Config.h"
+#include "PheromoneUtility.h"
 
-
-
-const struct PheromoneMapSensor {
-
-	float x, y, radius, radius2;
-	Vector2 vector;
-
-	PheromoneMapSensor() {
-		x = 0; y = 0; radius = 0; radius2 = 0;
-
-	}
-	PheromoneMapSensor(float x, float y, float radius) : x(x), y(y), radius(radius), radius2(radius* radius), vector(Vector2(x, y)) {
-
-	}
-	PheromoneMapSensor(Vector2 vector, float radius) : x(vector.x), y(vector.y), radius(radius), radius2(radius* radius), vector(vector) {
-
-	}
-	PheromoneMapSensor setX(float newX) { return PheromoneMapSensor(newX, y, radius); }
-	PheromoneMapSensor setY(float newY) { return PheromoneMapSensor(x, newY, radius); }
-	PheromoneMapSensor setPos(float newX, float newY) { return PheromoneMapSensor(newX, newY, radius); }
-	PheromoneMapSensor setPos(Vector2 vector) { return PheromoneMapSensor(vector, radius); }
-	PheromoneMapSensor setRadius(float radius) { return PheromoneMapSensor(x, y, radius); }
-
-
-};
 
 class PheromoneMap {
 public:
@@ -63,22 +39,67 @@ public:
 		return pheromones[positive][id][index];
 	}
 
+	unsigned long long getCacheKey(int x, int y, int id, int positive, int radius);
+
 	Vector2 sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id);
 	float sensePheromonesStrenght(const PheromoneMapSensor& sensor, int id, bool positive);
 
 	float sensePheromonesAverage(const PheromoneMapSensor& sensor, int id, bool positive);
 
-	Vector2 sensePheromonesStrenghtDirection(const PheromoneMapSensor& sensor, Vector2 origin, int id, bool positive);
+	Vector2 sensePheromonesStrenghtDirection(const PheromoneMapSensor& sensor, Vector2 origin, int id, bool positive, float Obstructed=0);
 
+
+	void getRectOfIndex(std::list<int>& indexList, IntCoords pos, IntCoords size);
+
+	void setObstructedRect(IntCoords pos, IntCoords size);
+
+	void cleatObstructedRect(IntCoords pos, IntCoords size);
 
 	//WRITE
+	//DECAY=================================================================================
 	void doDecayPheromones();
+	//DECAY=================================================================================
+
 	inline void addPheromone(Vector2 pos, int id, bool positive, float strenght) {
-		addPheromone(static_cast<int>(pos.x + 0.5), static_cast<int>(pos.y + 0.5), id, positive, 1);
+		addPheromone(static_cast<int>(pos.x), static_cast<int>(pos.y), id, positive, strenght);
 	}
 	void addPheromone(int x, int y, int id, bool positive, float strenght);
 
+	inline void setPheromone(Vector2 pos, int id, bool positive, float strenght) {
+		setPheromone(static_cast<int>(pos.x), static_cast<int>(pos.y), id, positive, strenght);
+	}
+	void setPheromone(int x, int y, int id, bool positive, float strenght);
+
+
+	PheromoneActiveReturn getActivePheromones(bool complete)
+	{
+		if(complete)
+		{
+			PheromoneActiveReturn toReturn{ &activeCellInfo, {} };
+			clearedCells.clear();
+			return toReturn;
+		}else
+		{
+			
+			PheromoneActiveReturn toReturn{ &toUpdateCells, std::move(clearedCells) };
+			clearedCells.clear();
+			return toReturn;
+		}
+	}
+
+	void resetToUpdate()
+	{
+		toUpdateCells.clear();
+	}
+
+	
+	std::array<float, MAP_CELLS> getObstrcuted()
+	{
+		return pheromonesIsObstructed;
+	}
+
 private:
+	friend class Logger;
 	bool readOnly = false; 
 	bool writeOnly = false;
 
@@ -92,6 +113,10 @@ private:
 	inline int bound(int index);
 
 	inline int indexFromCoord(int x, int y);
+
+
+	struct coordsFromIndexCoords { int x; int y; };
+	coordsFromIndexCoords coordsFromIndex(int index);
 	inline void setActive(int positive, int id, int index);
 
 	void createSensorCirle(int radius);
@@ -100,14 +125,33 @@ private:
 
 
 	std::array<std::array<std::array<float, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromones;
+	std::array<float, MAP_CELLS> pheromonesIsObstructed;
 	std::array<std::array<std::array<bool, MAP_CELLS>, NUMBER_OF_PHEROMONE_PAIRS>, 2> pheromonesIsActive;
 	//std::list<PheromoneMapIndex> activeCells2;
 	//std::list< std::array<float, MAP_CELLS>::iterator> activeCells;
-	std::list<float*> activeCellValues;
-	std::list<bool*> activeCellActive;
+	//std::list<float*> activeCellValues;
+	//std::list<bool*> activeCellActive;
+	//std::list<IntCoords> activeCellCoords;
+	std::list<ActivePheromoneInfo> clearedCells;
+	std::list<ActivePheromoneInfo> toUpdateCells;
+
+	std::list<ActivePheromoneInfo> activeCellInfo;
+
+	std::list<ActivePheromoneInfo>::iterator iterInfo = activeCellInfo.begin();
+
+	std::unordered_map<unsigned long long, float> getStrenghtCache;
+	std::unordered_map<unsigned long long, Vector2> getDirectionCache;
 
 	std::unordered_map<int, std::list<int>> sensorCirles;
 	std::unordered_map<int, std::vector<float>> sensorCirlesDistribution;
 	std::unordered_map<int, std::vector<Vector2>> sensorCirlesVector;
+
+
+	unsigned long currentClockTick = 0;
+
+
+	
+
+
 };
 

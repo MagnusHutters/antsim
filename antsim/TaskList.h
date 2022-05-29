@@ -1,14 +1,15 @@
 #pragma once
 #include <string>
+#include <vector>
 
 namespace states
 {
 
-	static std::string stateNames[9] = { "None",	"FindJob",	"FoundJobPoint",	"Recruit",	"Lost", "DeclareFailure",	"Explore",	"DecideNextTask",	"LookAround" };
-	static std::string stateShorts[9] = { "non",	"ft",				"job",				"rcrt",			"los",	"dfl",				"exp",		"dec",				"lok" };
+	static std::vector<std::string> stateNames = { "None",	"FindJob",	"FoundJobPoint",	"Recruit",	"Explore",	"FollowTrail",	"LookAround", "Deliver"};
+	static  std::vector<std::string>  stateShorts = { "non",	"fj",		"job",				"rcrt",		"exp",		"flw",			"lok", "del"};
 
 	enum State {
-		None, FindJob, FoundJobPoint, Recruit, Lost, DeclareFailure, Explore, DecideNextTask, LookAround
+		None, FindJob, FoundJobPoint, Recruit, Explore, FollowTrail, LookAround, Deliver
 	};
 }
 
@@ -29,7 +30,7 @@ public:
 	bool isTaskDone;
 	Tasks nextTask;
 
-	int currentJobPheromone;
+	int currentJobPheromone=-1;
 	int nextJobPheromone;
 	int currentJobHandle;
 	int nextJobHandle;

@@ -1,20 +1,25 @@
 #include "Graphic.h"
+#include "GraphicsUtility.h"
 
+#include <set>
+#include <thread>
 
 
 Graphic::Graphic(Core* core, float resolutionMultiplier) : elapsedTime(0)
 {
+	input = new Input();
+
+	GraphicsUtility* graphics_utility = new GraphicsUtility();
 	this->core = core;
 	worldSizeX = core->world->getSizeX();
 	worldSizeY = core->world->getSizeY();
 	this->resolutionMultiplier = resolutionMultiplier;
+	
 
-	windowSizeX = worldSizeX * resolutionMultiplier;
-	windowSizeY = worldSizeY * resolutionMultiplier;
-
-
-
-	window = new sf::RenderWindow(sf::VideoMode(windowSizeX, windowSizeY), "window");
+	float aspect = (float)worldSizeX / (float)worldSizeY;
+	int windowWidth = aspect * (float)WINDOW_HEIGHT;
+	window = new sf::RenderWindow(sf::VideoMode(static_cast<unsigned>(windowWidth), WINDOW_HEIGHT), "antsim");
+	window->setPosition({ 1920- windowWidth,0});
 
 	sf::View view(sf::FloatRect(0.f, 0.f, worldSizeX, worldSizeY));
 	//view.zoom(3);
@@ -33,10 +38,26 @@ Graphic::Graphic(Core* core, float resolutionMultiplier) : elapsedTime(0)
 	int size = core->world->getPheromoneSize();
 	pheromoneSize = size;
 	pheromoneTexture.create(size, size);
-	pheromoneImage.create(size, size);
+	pheromoneImage.create(size, size,{0,0,0,0});
+	
 	pheromoneSprite.setTexture(pheromoneTexture);
 	pheromoneSprite.setScale(resolutionMultiplier, resolutionMultiplier);
 
+
+	for (int i = 0; i < NUMBER_OF_PHEROMONE_PAIRS; ++i)
+	{
+		maskShapes.push_back(sf::RectangleShape({ MASK_SHAPES_SIZE,MASK_SHAPES_SIZE }));
+		maskShapes.back().setPosition(i * (MASK_SHAPES_SIZE + 2) + 2, 2);
+
+		maskTexts.push_back(sf::Text(
+			std::string(1.0f, input->keys[i].symbol) + ":" + std::to_string(input->keys[i].id),
+			GraphicsUtility::font,30
+		));
+		maskTexts.back().setPosition(i * (MASK_SHAPES_SIZE + 2) + 2, 2);
+		maskTexts.back().setScale(0.3, 0.3);
+		maskTexts.back().setFillColor(sf::Color::Black);
+		
+	}
 
 	//pheromoneTexture.update();
 
@@ -46,16 +67,50 @@ Graphic::Graphic(Core* core, float resolutionMultiplier) : elapsedTime(0)
 	
 }
 
-void Graphic::update()
+void imageSaveThread(std::string filename, sf::Texture texture)
+{
+	auto img = texture.copyToImage();
+	if (img.saveToFile(filename))
+	{
+		//std::cout << "screenshot saved to " << filename << std::endl;
+	}
+}
+
+void Graphic::update(int tick)
 {
 
+
+
+	if (tick % 100 == 0)
+	{
+
+		std::string filename = "Screenshots/screenshot_" + std::to_string(tick) + ".png";
+
+		sf::Texture texture;
+		texture.create(window->getSize().x, window->getSize().y);
+		texture.update(*window);
+
+		//std::thread thread(imageSaveThread, filename, texture);
+		imageSaveThread(filename, texture);
+		//thread.detach();
+	}
+
+	input->update();
+
+	pheromoneMask ^= input->getKeys(Input::Down);
+
+	if(input->getKeys(Input::Down))
+	{
+		pheromoneImage.create(pheromoneSize, pheromoneSize, {0,0,0,0});
+		redraw = true;
+	}
 
 	
 	sf::Time elapsed = clock.restart();
 
 	deltaTime = ((1 - deltaTimeAvgIndex) * deltaTime) + (deltaTimeAvgIndex * elapsed.asMilliseconds());
 	float fps = 1000 / deltaTime;
-	core->log.push(std::to_string(fps));
+	//core->log.push(std::to_string(fps));
 
 	elapsedTime += elapsed.asMilliseconds();
 	if (elapsedTime < FRAME_TIME) {
@@ -75,52 +130,139 @@ void Graphic::update()
 
 	window->clear(sf::Color::White);
 
+
+	drawTerrain();
 	drawPheromones();
+	drawPaths();
 	drawAnts();
 	drawJobs();
+
 	//window->draw(shape);
+
+	long tempMask = pheromoneMask;
+	for (int i = 0; i < NUMBER_OF_PHEROMONE_PAIRS; ++i)
+	{
+		long check = 1 & tempMask;
+		tempMask = tempMask >> 1;
+		if(check)
+		{
+			maskShapes[i].setFillColor(sf::Color::Green);
+		}
+		else
+		{
+			maskShapes[i].setFillColor(sf::Color::Red);
+		}
+		window->draw(maskShapes[i]);
+		window->draw(maskTexts[i]);
+
+	}
+
+
 	window->display();
+
+	
+
 }
+
+
+void Graphic::drawTerrain()
+{
+	sf::RectangleShape wander({ OBSTACLE_CELL_SIZE,OBSTACLE_CELL_SIZE });
+	wander.setFillColor(sf::Color::Black);
+	auto map = core->world->getTerrain();
+	for (int x = 0; x < OBSTACLE_MAP_WIDTH; ++x)
+	{
+		for (int y = 0; y < OBSTACLE_MAP_HEIGHT; ++y)
+		{
+			if(map[x][y])
+			{
+				wander.setFillColor(sf::Color::Black);
+			}else
+			{
+				wander.setFillColor(sf::Color::White);
+			}
+			wander.setPosition(x * OBSTACLE_CELL_SIZE, y * OBSTACLE_CELL_SIZE);
+			window->draw(wander);
+		}
+	}
+}
+
 
 
 void Graphic::drawPheromones()
 {
-	int pheromone1 = 0;
-	int pheromone2 = RECRUIT_PHEROMONE_ID;
-	int pheromone3 = 2;
+
+
+
+	//auto obstrcuted = core->world->getObstructed();
+
+
 
 	pheromoneCounter++;
 	if (pheromoneCounter > PHEROMONE_UPDATE_RATE) {
-		int size = pheromoneSize;
-		for (int x = 0; x < size; x++)
+		int pheromone1 = 0;
+		int pheromone2 = 0;
+		int pheromone3 = RECRUIT_PHEROMONE_ID;
+		
+		PheromoneActiveReturn activePheromones = core->world->getPheromoneActive(redraw);
+		redraw = false;
+		
+
+		auto activeIter = activePheromones.toUpdate->begin();
+
+		for (ActivePheromoneInfo cleared_cell : activePheromones.clearedCells)
 		{
-			for (int y = 0; y < size; y++)
-			{
-				float pheromone1Result = core->world->getPheromone(x, y, pheromone1, 1) * 0.3;
-				float pheromone2Result = core->world->getPheromone(x, y, pheromone2, 1) * 0.3;
-				float pheromone3Result = core->world->getPheromone(x, y, pheromone3, 1) * 0.3;
-				
-
-				float value1 = sinh(pheromone1Result) / cosh(pheromone1Result);
-				float value2 = sinh(pheromone2Result) / cosh(pheromone2Result);
-				float value3 = sinh(pheromone3Result) / cosh(pheromone3Result);
-				
-				//value3 = Vector2(x - 50, y - 50).GetNormalFunction(5)*100;
-				sf::Uint8 pheromone1Color = 255 - (((value1+ value2)*0.5) * 255);
-				sf::Uint8 pheromone2Color = 255 - (((value2+ value3)*0.5) * 255);
-				sf::Uint8 pheromone3Color = 255 - (((value3+ value1)*0.5) * 255);
-
-				pheromoneImage.setPixel(x, y, sf::Color(pheromone1Color, pheromone2Color, pheromone3Color));
-			}
+			pheromoneImage.setPixel(cleared_cell.x, cleared_cell.y, {0,0,0,0});
 		}
+		//core->log.push(std::to_string(activePheromones.toUpdate->size()));
+		while (activeIter != activePheromones.toUpdate->end())
+		{
+			unsigned long bit = 1 << activeIter->id;
+			unsigned long isInMask = bit & pheromoneMask;
+
+			if(isInMask)
+			{
+
+				double pheromoneStrenght = std::max((*activeIter->value)-0.1, 0.0) * 0.5;
+
+
+				int id = activeIter->id;
+				int offset = activeIter->positive;
+				float steepness = 0.5;
+				
+				sf::Color con = GraphicsUtility::createColorFromTypeId(id, pheromoneStrenght, offset);
+				sf::Color old = pheromoneImage.getPixel(activeIter->x, activeIter->y);
+				sf::Color mixedColor = { (uint8_t)((con.r + old.r*3) * 0.25),(uint8_t)((con.g + old.g*3) * 0.25) ,(uint8_t)((con.b + old.b*3) * 0.25) };
+				if(old.a==0)
+				{
+					pheromoneImage.setPixel(activeIter->x, activeIter->y, con);
+				}
+				else
+				{
+					pheromoneImage.setPixel(activeIter->x, activeIter->y, mixedColor);
+				}
+
+			}
+			//pheromoneImage.
+
+			activeIter++;
+		}
+		
+
 		pheromoneTexture.update(pheromoneImage);
 		pheromoneCounter = 0;
+		core->world->resetPheromoneToUpdate();
 	}
-
 	
 
 	
 	window->draw(pheromoneSprite);
+
+	return;
+
+	
+
+	
 }
 
 void Graphic::drawAnts()
@@ -175,31 +317,32 @@ void Graphic::drawAnts()
 
 void Graphic::drawJobs()
 {
+
+
+
 	std::unordered_map<int, Job*> jobs = core->world->getJobPositions();
-	if (jobs.size() != jobShapes.size()) {
-		jobShapes.resize(jobs.size(), sf::CircleShape(4));
-		for (int i = 0; i < jobShapes.size(); i++)
-		{
-			jobShapes[i].setFillColor(sf::Color::Magenta);
-			jobShapes[i].setOrigin(4, 4);
-		}
-	}
-	int i = 0;
-	for (std::pair<int, Job*> element : jobs) {
-		int x = element.second->pos.x* 1;
-		int y = element.second->pos.y* 1;
-		jobShapes[i].setPosition(x, y);
-		sf::Vector2f vec;
+	//jobGraphics.clear();
+	int my_var = 3;
+	std::set<int> graphicsSet;
+	std::set<int> jobsSet;
 
-		window->draw(jobShapes[i]);
-
-		i++;
-	}
-	for (int i = 0; i < jobs.size(); i++)
+	for (auto job_graphic : jobGraphics)
 	{
-		//int x = jobs[i]
-		//jobShapes[i].setPosition
+		delete(job_graphic);
+
 	}
+	jobGraphics.clear();
+	
+	for (std::pair<int, Job*> element : jobs) {
+		jobGraphics.push_back(new GraphicJob(element.second));
+	}
+
+	for (GraphicJob* job_graphic : jobGraphics)
+	{
+		job_graphic->draw(window);
+	}
+
+	
 
 }
 
@@ -239,6 +382,25 @@ void Graphic::ajustAntSize(int newSize)
 			antSensorLeft.pop_back();
 			antSensorRight.pop_back();
 
+		}
+	}
+}
+
+void Graphic::drawPaths()
+{
+	auto paths = core->world->getPaths();
+
+	for (const auto& typeId : *(paths.paths))
+	{
+		int count = 0;
+		for (const auto& path : typeId.second)
+		{
+			count++;
+			if(count>50)
+			{
+				break;
+			}
+			window->draw(path.vertexArray);
 		}
 	}
 }

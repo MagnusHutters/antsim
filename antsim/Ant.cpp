@@ -4,27 +4,20 @@
 
 
 
-Ant::Ant(int id, int x, int y, float rot, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap)
+Ant::Ant(int id, int x, int y, float rot, MapContainer m) :
+	val1(0), val2(0), val3(0), m(m)
 {
-	val1 = 0;
-	val2 = 0;
-	val3 = 0;
-	this->pheromoneMap = pheromoneMap;
-	this->id = id;
-	this->jobMap = jobMap;
+	bodyDriver = new BodyDriver(x,y,rot, id, m);
 
+	pheromoneDriver = new PheromoneDriver(m, bodyDriver);
 
-	bodyDriver = new BodyDriver(x,y,rot, id);
-
-	pheromoneDriver = new PheromoneDriver(pheromoneMap, bodyDriver);
-
-	sensorDriver = new SensorDriver(bodyDriver, this->pheromoneMap, this->jobMap);
+	sensorDriver = new SensorDriver(bodyDriver, m);
 
 	actionDriver = new ActionDriver(sensorDriver, bodyDriver);
 
 	taskDriver = new TaskChanger(sensorDriver, actionDriver, bodyDriver, pheromoneDriver);
 
-	//taskDriver->setTask(new TaskFindJob());
+	//taskDriver->setTask(new TaskPheromoneController());
 
 	//sensorDriver->setPrimarySensorPheromone(EXPLORED);
 

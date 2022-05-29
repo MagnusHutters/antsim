@@ -5,12 +5,16 @@
 //CONSTRUCTORS
 Vector2::Vector2(void) : x(0), y(0) { }
 Vector2::Vector2(float32 xValue, float32 yValue) : x(xValue), y(yValue) { }
+
+
+
 Vector2::Vector2(const Vector2& v) : x(v.x), y(v.y) { }
+
 Vector2::Vector2(const Vector2* v) : x(v->x), y(v->y) { }
 
 Vector2 Vector2::FromAngle(float32 angle)
 {
-    float32 rad = angle * PI / 180.0;
+    float32 rad = angle * PI / 180.0f;
     return Vector2(cos(rad),sin(rad));
 }
 
@@ -18,7 +22,7 @@ Vector2 Vector2::RandomUnitVector()
 {
     float32 rad = ((float)rand() / (float)RAND_MAX) * 2.0 * PI;
 
-    return Vector2(cos(rad), sin(rad));
+    return Vector2(cosf(rad), sinf(rad));
 }
 
 Vector2 Vector2::RandomWithinMap() {

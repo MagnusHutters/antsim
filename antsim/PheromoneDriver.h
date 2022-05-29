@@ -16,19 +16,20 @@ public:
 		PheromoneId pheromone;
 		float strenght;
 		float decay;
-		PheromoneJob(PheromoneId pheromone) : pheromone(pheromone), strenght(1), decay(1) {}
-		PheromoneJob(PheromoneId pheromone, float strenght, float decay=1) : pheromone(pheromone), strenght(strenght), decay(decay) {}
+		Vector2 offset;
+		PheromoneJob(PheromoneId pheromone) : pheromone(pheromone), strenght(1), decay(1), offset({0,0}) {}
+		PheromoneJob(PheromoneId pheromone, float strenght, float decay=1, Vector2 offset={0,0}) : pheromone(pheromone), strenght(strenght), decay(decay), offset(offset) {}
 	};
 
-	PheromoneDriver(PheromoneMap* pheromoneMap, BodyDriver* bodyDriver) :
-		pheromoneMap(pheromoneMap),
+	PheromoneDriver(MapContainer m, BodyDriver* bodyDriver) :
+		m(m),
 		bodyDriver(bodyDriver)
 	{
 		
 	}
 	PheromoneJob getTrail(PheromoneId pheromone);
-	void setTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1);
-	void addTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1);
+	void setTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1, Vector2 layOffset = { 0,0 });
+	void addTrail(PheromoneId pheromone, float strenght = 1, float strenghtDecay = 1, Vector2 layOffset = { 0,0 });
 	void removeTrail(PheromoneId pheromone);
 	void removeTrails();
 
@@ -36,7 +37,7 @@ public:
 	// void setExplore() { setPheromoneTrail(EXPLORED_PHEROMONE_ID); }
 	//inline void setPath() { setPheromoneTrail(PATH_PHEROMONE_ID); }
 	void emit(PheromoneId pheromone);
-	void emit(PheromoneId pheromone, float strenght);
+	void emit(PheromoneId pheromone, float strenght , Vector2 offset={0,0});
 	
 	inline void success() { emit({SUCCESS_PHEROMONE_ID, true}); }
 	inline void failure() { emit({SUCCESS_PHEROMONE_ID, false}); }
@@ -46,7 +47,8 @@ public:
 
 
 private:
-	PheromoneMap* pheromoneMap;
+	friend class Logger;
+	MapContainer m;
 	BodyDriver* bodyDriver;
 
 

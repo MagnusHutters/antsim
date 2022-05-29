@@ -31,17 +31,39 @@ public:
 
 	
 
+	/*
 	EntityMap() {}
 
 
 
-
+	bool areaIsOccupied(Vector2 pos, Vector2 size)
+	{
+		for (auto entity : entityList)
+		{
+			if (
+				pos.x <= entity.second->pos.x && entity.second->pos.x < pos.x + size.x	&&
+				pos.y <= entity.second->pos.y && entity.second->pos.y < pos.y + size.y)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
+	void deleteEntity(int handle)
+	{
+		typename std::unordered_map<int, T*>::iterator element = entityList.find(handle);
+		if(element!=entityList.end())
+		{
+			delete(element->second);
+			entityList.erase(element);
+			//delete(pointer);
+		}
+	}
 
 
-
-	int registerEntity(T* newEntity, Vector2 pos) {
+	int registerEntity(T* newEntity) {
 		int handle = newId;
 		//Entity* newEntity = new Entity(pos, handle);
 
@@ -113,7 +135,7 @@ public:
 
 	
 
-	inline float getDistanceSquare(Vector2 p1, Vector2 p2) {
+	float getDistanceSquare(Vector2 p1, Vector2 p2) {
 		float difX = fabs(p2.x - p1.x);
 		float difY = fabs(p2.y - p1.y);
 		
@@ -128,6 +150,9 @@ private:
 	std::unordered_map<int, T*> entityList;
 
 	int newId = 0;
+
+
+	*/
 };
 
 

@@ -25,11 +25,29 @@
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{f8b9cd99-cb67-4b07-af68-47ade35440aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Actions">
+    <Filter Include="Header Files\World\Ant">
+      <UniqueIdentifier>{d30a1187-66f4-4c80-b04e-550f45ef7eab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Maps">
+      <UniqueIdentifier>{4a360f2a-e9e6-4494-828a-9222cba19f12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Ant\Drivers">
+      <UniqueIdentifier>{66407dda-94ac-4117-a3de-2927a8ba2842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Ant\Tasks">
+      <UniqueIdentifier>{946f84f2-803c-40f9-880d-d430ec871782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Ant\Actions">
       <UniqueIdentifier>{601aa6b3-ec3b-4205-a4e8-ef4773da8ce9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Tasks">
-      <UniqueIdentifier>{946f84f2-803c-40f9-880d-d430ec871782}</UniqueIdentifier>
+    <Filter Include="Header Files\World\Factories">
+      <UniqueIdentifier>{387e00af-4cbc-4d15-a884-3567a3ca4855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\World\Utility">
+      <UniqueIdentifier>{591b8e27-46c8-4a76-97aa-7f7ea8c9de7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Old">
+      <UniqueIdentifier>{162cc311-56b3-41f3-bf3b-3d21628c0c35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,22 +129,64 @@
     <ClCompile Include="Packet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TaskFindJob.cpp">
-      <Filter>Header Files\Tasks</Filter>
+    <ClCompile Include="TaskPheromoneController.cpp">
+      <Filter>Header Files\World\Ant\Tasks</Filter>
     </ClCompile>
     <ClCompile Include="ActionExplore.cpp">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClCompile>
     <ClCompile Include="ActionFollowTrail.cpp">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClCompile>
     <ClCompile Include="ActionGoTowardNearbyTask.cpp">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClCompile>
     <ClCompile Include="ActionHold.cpp">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClCompile>
     <ClCompile Include="PheromoneId.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraohicJob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PheromoneUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsUtility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObstacleMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CentralController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionGoToPoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PathArchive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,98 +221,140 @@
     <ClInclude Include="World.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="Ant.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Graphic.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Pheromones.h">
-      <Filter>Header Files\World</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Body.h">
-      <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="AntContainer.h">
       <Filter>Header Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="SensorDriver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pheromones2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ActionDriver.h">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionHold.h">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionFollowTrail.h">
-      <Filter>Header Files\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Job.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="JobFactory.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClInclude>
     <ClInclude Include="TaskDriver.h">
-      <Filter>Header Files\Tasks</Filter>
+      <Filter>Header Files\World\Ant\Tasks</Filter>
     </ClInclude>
-    <ClInclude Include="TaskFindJob.h">
-      <Filter>Header Files\Tasks</Filter>
+    <ClInclude Include="TaskPheromoneController.h">
+      <Filter>Header Files\World\Ant\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="ActionExplore.h">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClInclude>
     <ClInclude Include="ActionGoTowardNearbyTask.h">
-      <Filter>Header Files\Actions</Filter>
+      <Filter>Header Files\World\Ant\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="TaskSimpleJob.h">
-      <Filter>Header Files\Tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="PheromoneDriver.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TaskCentralControl.h">
+      <Filter>Header Files\World\Ant\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="TaskChanger.h">
-      <Filter>Header Files\Tasks</Filter>
+      <Filter>Header Files\World\Ant\Tasks</Filter>
     </ClInclude>
     <ClInclude Include="TaskList.h">
-      <Filter>Header Files\Tasks</Filter>
+      <Filter>Header Files\World\Ant\Tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GraphicAnt.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="JobMap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GraphicJob.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsUtility.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CentralController.h">
+      <Filter>Header Files\World</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Header Files\World</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionGoToPoint.h">
+      <Filter>Header Files\World\Ant\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Ant.h">
+      <Filter>Header Files\World\Ant</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Header Files\World\Ant</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionMap.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleMap.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyMap.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="PheromoneDriver.h">
+      <Filter>Header Files\World\Ant\Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorDriver.h">
+      <Filter>Header Files\World\Ant\Drivers</Filter>
+    </ClInclude>
+    <ClInclude Include="MapContainer.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="JobMap.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityMap.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="PathArchive.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="Pheromones2.h">
+      <Filter>Header Files\World\Maps</Filter>
+    </ClInclude>
+    <ClInclude Include="JobFactory.h">
+      <Filter>Header Files\World\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainFactory.h">
+      <Filter>Header Files\World\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinder.h">
+      <Filter>Header Files\World\Ant</Filter>
+    </ClInclude>
+    <ClInclude Include="PheromoneUtility.h">
+      <Filter>Header Files\World\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PheromoneId.h">
+      <Filter>Header Files\World\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Header Files\World\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Pheromones.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Conditions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PheromoneId.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

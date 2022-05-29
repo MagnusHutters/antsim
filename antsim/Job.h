@@ -14,11 +14,11 @@
 class JobInterface
 {
 public:
-	JobInterface(int typeId, bool positive, float maxAmount= JOB_MAX_AMOUNT)
+	JobInterface(int typeId, bool positive, float amount)
 		: positive(positive),
 		  typeId(typeId),
-		  max_amount(maxAmount),
-		  amount(positive ? maxAmount : 0)
+		  max_amount(JOB_MAX_AMOUNT),
+		  amount(amount)
 	{
 	}
 
@@ -32,7 +32,7 @@ public:
 	{
 		float percentage = amount / max_amount;
 		if (!positive) percentage = 1 - percentage;
-		return (sqrtf(percentage)* WEIGHT_SIZE);
+		return static_cast<int>(sqrtf(percentage) * WEIGHT_SIZE);
 	}
 
 	inline bool hasCapacity(float hasCapacityAmount= PACKET_SIZE) const
@@ -62,7 +62,19 @@ public:
 		  inputs({{input1,1},{input2,1}})
 	{
 	}
-	int process(int number) const
+
+	Process(JobInterface* input1, JobInterface* output)
+		: output({ output,1 }),
+		inputs({ {input1,1} })
+	{
+	}
+
+	Process(JobInterface* terminus, float amount=1.0f)
+		: output({ terminus,terminus->positive ? amount : 0 }),
+		inputs({ {terminus,terminus->positive ? 0 : amount} })
+	{
+	}
+	int process(int number)
 	{
 		int count;
 		for (count = 0; count < number; ++count)
@@ -71,7 +83,7 @@ public:
 		}
 		return count;
 	}
-	int process() const
+	int process()
 	{
 		bool haveSources = true;
 		for (auto input : inputs)
@@ -80,18 +92,27 @@ public:
 		}
 		if(haveSources)
 		{
-			for (auto input : inputs)
+			if(output.first->amount < output.first->max_amount - output.second)
 			{
-				input.first->amount -= input.second;
+				for (auto input : inputs)
+				{
+					input.first->amount -= input.second;
+				}
+				output.first->amount += output.second;
+				totalProducts+=1;
+				return 1;
 			}
-			output.first->amount += output.second;
-			return 1;
+			
 		}
 		return 0;
 	}
 
+	int getTotal();
+
 private:
 
+	int totalProducts = 0;
+	friend class Logger;
 	
 	std::pair<JobInterface*, float> output;
 	std::list<std::pair<JobInterface*, float>> inputs; //Input : Multiplier
@@ -105,12 +126,88 @@ public:
 
 	//Job();
 	
-	Job(Vector2 pos, int typeId, bool positive) : interfaces({new JobInterface(typeId, positive)}), Entity(pos) {
+	Job(Vector2 pos) : Entity(pos) {
 
 		//handle = jobMap->registerEntity(this, pos);
 	}
+
+	static Job* createSource(Vector2 pos, int typeId, bool endless=false, float amount=1.0f, int startAmunt= JOB_MAX_AMOUNT)
+	{
+		Job* job = new Job(pos);
+		//int variance = rand() % 10;
+		JobInterface* newInterface=job->addOutputInterface(typeId, static_cast<float>(startAmunt));
+		if(endless)
+		{
+			job->processes.push_back(new Process(newInterface, amount));
+		}
+		return job;
+	}
+
+	static Job* createSink(Vector2 pos, int typeId, bool endless = false)
+	{
+		Job* job = new Job(pos);
+		JobInterface* newInterface = job->addInputInterface(typeId);
+		if (endless)
+		{
+			job->processes.push_back(new Process(newInterface));
+		}
+		return job;
+	}
+
+	static Job* createIntermediary(Vector2 pos, int input1, int output)
+	{
+		Job* job = new Job(pos);
+		
+		JobInterface* input1Interface = job->addInputInterface(input1,0);
+		JobInterface* outputInterface = job->addOutputInterface(output,0);
+
+		job->processes.push_back(new Process(input1Interface, outputInterface));
+		
+		return job;
+	}
+	static Job* createIntermediary(Vector2 pos, int input1, int input2, int output)
+	{
+		Job* job = new Job(pos);
+
+		JobInterface* input1Interface = job->addInputInterface(input1);
+		JobInterface* input2Interface = job->addInputInterface(input2);
+		JobInterface* outputInterface = job->addOutputInterface(output,0);
+
+		job->processes.push_back(new Process(input1Interface, input2Interface, outputInterface));
+
+		return job;
+	}
+
+
+	JobInterface* addOutputInterface(int typeId, float amount = JOB_MAX_AMOUNT)
+	{
+		auto* job = new JobInterface(typeId, true, amount);
+		interfaces.push_back(job);
+		return job;
+	}
+	JobInterface* addInputInterface(int typeId, float amount = 0)
+	{
+		auto job = new JobInterface(typeId, false, amount);
+		interfaces.push_back(job);
+		return job;
+	}
 	
-	
+	std::list<float> getAmounts()
+	{
+		std::list<float> list;
+		for (auto interface : interfaces)
+		{
+			list.push_back(interface->amount);
+		}
+		return list;
+	}
+
+	std::list<JobInterface*> getInterfaces()
+	{
+		return interfaces;
+	}
+
+
 	struct _GetInterfaceResult { bool sucess; JobInterface* interface; };
 	_GetInterfaceResult getInterface(PheromoneId pheromone) const
 	{
@@ -139,6 +236,31 @@ public:
 		return result;
 	}
 
+	JobInterface* getOutput()
+	{
+		for (auto interface : interfaces)
+		{
+			if (interface->positive)
+			{
+				return interface;
+			}
+
+		}
+		return nullptr;
+	}
+
+	float getOutputLevel() {
+		for (auto interface : interfaces)
+		{
+			if(interface->positive)
+			{
+				return interface->amount;
+			}
+		
+		}
+		return 0;
+	}
+
 
 	
 	bool transferToJob(BodyDriver* body)
@@ -153,6 +275,8 @@ public:
 					result.interface->amount += PACKET_SIZE;
 					delete(body->packet);
 					body->hasPacket = false;
+
+					body->endPath();
 					return true;
 				}
 				else
@@ -183,6 +307,8 @@ public:
 				body->hasPacket = true;
 				result.interface->amount -= PACKET_SIZE;
 
+				body->startPath();
+
 				return true;
 			}else
 			{
@@ -205,7 +331,7 @@ public:
 	{
 		for (auto process : processes)
 		{
-			process->process();
+			process->process(1);
 		}
 	}
 
@@ -244,7 +370,7 @@ public:
 	//int pheromoeId;
 protected:
 
-
+	friend class Logger;
 
 	/*
 	virtual JobReport interact(BodyDriver* body)

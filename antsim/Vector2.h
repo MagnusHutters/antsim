@@ -8,7 +8,7 @@
 #include "Config.h"
 
 
-#define PI 3.14159265
+#define PI 3.14159265f
 
 
 
@@ -59,7 +59,7 @@ public:
 		float preExpansion = -(1 / (2 * (1 - (correlation * correlation))));
 		float exponent = expf(expansion * preExpansion);
 		
-		float divider = 2 * PI * stdDeviation * stdDeviation * sqrtf(1 - (correlation * correlation));
+		float divider = 2 * PI * stdDeviation * stdDeviation * sqrtf(1.0f - (correlation * correlation));
 
 		float result = (1 / divider) * exponent;
 		return result;
@@ -108,6 +108,7 @@ public:
 	inline float32& operator [](int i) { return i ? y : x; }
 
 	operator sf::Vector2f() const { return sf::Vector2f(x, y); }
+	//operator sf::Vertex() const { return sf::Vertex({x,y}); }
 };
 
 #endif

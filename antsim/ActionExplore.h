@@ -15,17 +15,17 @@ class ActionExplore : public Action
 {
 public:
 
-	ActionExplore(int id) : exploredPheromone({id,true}), lookFor(false)
+	ActionExplore(int id) : exploredPheromone({id,true}), lookFor(false), lookForPheromone({-1, true})
 	{
 
 	}
 
-	ActionExplore(int id, bool doLookFor, PheromoneId pheromone) : exploredPheromone({ id,true }), lookForPheromone(pheromone), lookFor(doLookFor)
+	ActionExplore(PheromoneId pheromoneTrail, bool doLookFor, PheromoneId pheromone) : exploredPheromone(pheromoneTrail), lookForPheromone(pheromone), lookFor(doLookFor)
 	{
 
 	}
 
-	ActionExplore(PheromoneId PheromoneId) : exploredPheromone(PheromoneId), lookFor(false)
+	ActionExplore(PheromoneId pheromoneTrail) : exploredPheromone(pheromoneTrail), lookFor(false)
 	{
 
 	}

@@ -2,15 +2,10 @@
 #include "AntContainer.h"
 #include <stdlib.h>
 
-AntContainer::AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap)
+AntContainer::AntContainer(int numAnts, int sizeX, int sizeY, MapContainer m) :
+	sizeX(sizeX), sizeY(sizeY), antIdCount(0), antCount(0), m(m)
 {
-	this->sizeX = sizeX;
-	this->sizeY = sizeY;
-	this->pheromoneMap = pheromoneMap;
-	antIdCount = 0;
-	antCount = 0;
-	this->jobMap = jobMap;
-
+	srand(RANDOM_SEED);
 	setNumAnts(numAnts);
 
 }
@@ -71,12 +66,12 @@ void AntContainer::createAnt()
 	
 	int x = rand() % sizeX;
 	int y = rand() % sizeY;
-	float rot = rand() % 9999;
-	x = 100;
-	y = 200;
+	float rot = static_cast<float>(rand() % 9999);
+	//x = 200;
+	//y = 100;
 
 
-	ants.push_back(new Ant(antIdCount, x, y, rot, pheromoneMap, jobMap));
+	ants.push_back(new Ant(antIdCount, x, y, rot, m));
 	antIdCount++;
 	
 }

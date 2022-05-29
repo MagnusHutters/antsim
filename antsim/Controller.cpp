@@ -21,30 +21,24 @@
 
 
 #include "Config.h"
+#include "Timer.h"
 
 
-
-
-
-
-
-
-
-Controller::Controller()
+Controller::Controller() : core(new Core())
 {
-	core = new Core();
-
-	srand(time(NULL));
+	srand(RANDOM_SEED);
 
 
 	core->world = new World("main", NUM_ANTS, MAP_WIDTH, MAP_HEIGHT);
 
+
+	logger = new Logger(core);
 	
-	com = new Commandline();
+	//com = new Commandline();
 	//core->commandExecuter = new Command();
 	
 
-	window = new Graphic(core, 3.5);
+	window = new Graphic(core, 1.75);
 
 	
 
@@ -55,7 +49,7 @@ Controller::Controller()
 
 
 
-	com->write("0");
+	//com->write("0");
 
 
 
@@ -70,7 +64,7 @@ void Controller::worldThread()
 	
 
 
-	while (1) {
+	while (2) {
 
 	}
 }
@@ -82,20 +76,41 @@ void Controller::worldThread()
 void Controller::start()
 {
 	
-	
+	int clockTick = 1;
 
 	while (doShutdown==false) {
 
 
 
-		doConsole();
+		logger->Update();
 
-		core->world->update();
-		window->update();
+		//doConsole();
+
+		Timer<> clock1;
+		Timer<> clock2;
+
+		clock1.tick();
+		core->world->update(clockTick);
+		clock1.tock();
+		clock2.tick();
+
+		window->update(clockTick);
+		clock2.tock();
+
+
+		/*
+		core->log.push(
+			std::string("World dt: ")
+			+ std::to_string((clock1.duration<>()).count())
+			+ std::string("\tGraphics dt: ")
+			+ std::to_string((clock2.duration<>()).count())
+
+		);*/
 
 
 
-		//std::this_thread::sleep_for(std::chrono::milliseconds(30));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		clockTick++;
 	}
 
 
@@ -107,8 +122,9 @@ void Controller::start()
 
 void Controller::doConsole()
 {
+	
 
-
+	/*
 	if (com->has_command()) {
 		auto command = com->get_command();
 		com->write(command);
@@ -131,6 +147,7 @@ void Controller::doConsole()
 		com->write(message);
 		core->world->worldLog.pop();
 	}
+	*/
 
 	//com->write("this is a message written with com.write");
 

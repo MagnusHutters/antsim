@@ -52,16 +52,18 @@ public:
 
 	void calcAction();
 	void doAction();
+	Action* getAction() { return action; }
 
-
+	
 protected:
+	friend class Logger;
 	SensorDriver* sensor;
 	BodyDriver* body;
 
 
 	Action* nextAction;
-
 	Action* action;
+	
 	bool isNewAction = false;
 
 };

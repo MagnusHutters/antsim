@@ -267,7 +267,7 @@ void Commandline::io_thread_main() {
         } else {
         }
     }
-    // after all this, we have to output all that remains in the buffer, so we dont "lose" information
+    // after all this, we have to TypePriority all that remains in the buffer, so we dont "lose" information
     std::lock_guard<std::mutex> guard(m_to_write_mutex);
     while (!m_to_write.empty()) {
         auto to_write = m_to_write.front();

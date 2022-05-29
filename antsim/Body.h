@@ -1,5 +1,8 @@
 #pragma once
+#include "MapContainer.h"
 #include "Packet.h"
+#include "PathArchive.h"
+#include "RigidBodyMap.h"
 #include "Vector2.h"
 
 
@@ -43,7 +46,7 @@ public:
 
 
 	BodyDriver();
-	BodyDriver(int x, int y, float rot, int id);
+	BodyDriver(int x, int y, float rot, int id, MapContainer m);
 
 
 	void breakMotion();
@@ -52,6 +55,30 @@ public:
 	void setDesiredMotion(const Vector2& motion);
 	void setDesiredDirection(const Vector2& motion);
 
+	Vector2 getGlobalVector(Vector2 localVector)
+	{
+		return localVector.Rotate(body.rot);
+	}
+
+
+	void startPath()
+	{
+
+		m.pathArchive->startPath(id, packet->getTypeId(),body.pos);
+		onPath = true;
+	}
+	void endPath()
+	{
+		m.pathArchive->endPath(id,body.pos);
+		onPath = false;
+	}
+	void pathStep()
+	{
+		if(onPath)
+		{
+			m.pathArchive->stepPath(id, body.pos);
+		}
+	}
 
 
 	void process();
@@ -62,8 +89,12 @@ public:
 
 	Packet* packet;
 	bool hasPacket=false;
-private:
+	MapContainer m;
 
+	int handle;
+
+private:
+	friend class Logger;
 
 	int id;
 
@@ -71,8 +102,12 @@ private:
 
 	bool doBreak = false;
 	bool doWander = true;
-	float maxSpeed = 1.0, steerStrenght = 0.4, wanderStrenght = 0.10;
+	float maxSpeed = 1.5f, steerStrenght = 0.4f, wanderStrenght = 0.05f;
 	Vector2 velocity, desiredDirection;
 	float toMove, toRotate;
+
+	int pathCounter = 0;
+	bool onPath;
+	
 };
 

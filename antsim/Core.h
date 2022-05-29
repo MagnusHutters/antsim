@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 //#include "Command.h"
+#include <set>
+
 #include "World.h"
 
 
@@ -28,6 +30,8 @@ public:
 	std::queue<std::string> log;
 	//Command* commandExecuter;
 	World* world;
+
+	std::set<int> pheromonesToDraw{ 0,1,2,3,4,5,6,7,8,9,10 };
 
 
 private:

@@ -5,12 +5,11 @@
 #include <list>
 
 
+
 //Predefines
 class Ant;
 
 #include "Ant.h"
-#include "EntityMap.h"
-#include "Job.h"
 
 
 class AntContainer
@@ -19,7 +18,7 @@ class AntContainer
 
 
 public:
-	AntContainer(int numAnts, int sizeX, int sizeY, PheromoneMap* pheromoneMap, EntityMap<Job>* jobMap);
+	AntContainer(int numAnts, int sizeX, int sizeY, MapContainer m);
 
 
 
@@ -35,6 +34,20 @@ public:
 	void setNumAnts(int numAnts);
 	void createAnts(int numAnts);
 	void deleteAnts(int numAnts);
+	std::list<Ant*> getAvailableAnts()
+	{
+		std::list<Ant*> returnList;
+		for (Ant* ant : ants)
+		{
+			int state = ant->getState();
+
+			if(state==states::FindJob || state==states::None)
+			{
+				returnList.push_back(ant);
+			}
+		}
+		return returnList;
+	}
 
 
 	std::vector<Ant*> ants;
@@ -46,9 +59,9 @@ private:
 	int sizeX, sizeY;
 	int antIdCount;
 	int antCount;
-	
-	EntityMap<Job>* jobMap;
-	PheromoneMap* pheromoneMap;
+
+
+	MapContainer m;
 
 
 
