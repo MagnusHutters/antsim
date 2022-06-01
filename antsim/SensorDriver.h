@@ -106,6 +106,8 @@ public:
 		{
 			const float distance = entity.entity->pos.Distance(body->body.pos);
 			if (distance <= JOB_INTERACT_RADIUS) {
+				entity.entity->haveInteracted();
+
 				return { entity.success,entity.entity };
 
 			}

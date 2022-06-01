@@ -52,6 +52,8 @@ public:
 protected:
 	friend class Logger;
 
+	Conditions currentCondition;
+
 	TaskReport report = TaskReport();
 
 	bool findJobPoint(const Conditions& conditions = Conditions()) {

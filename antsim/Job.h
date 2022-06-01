@@ -107,7 +107,10 @@ public:
 		return 0;
 	}
 
-	int getTotal();
+	int getTotal()
+	{
+		return totalProducts;
+	}
 
 private:
 
@@ -205,6 +208,11 @@ public:
 	std::list<JobInterface*> getInterfaces()
 	{
 		return interfaces;
+	}
+
+	void haveInteracted()
+	{
+		interactions++;
 	}
 
 
@@ -307,7 +315,7 @@ public:
 				body->hasPacket = true;
 				result.interface->amount -= PACKET_SIZE;
 
-				body->startPath();
+				body->startPath(handle);
 
 				return true;
 			}else
@@ -385,7 +393,7 @@ protected:
 
 
 	}*/
-
+	int interactions = 0;
 	std::list<Process*> processes;
 	std::list<JobInterface*> interfaces;
 	

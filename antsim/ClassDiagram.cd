@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Controller" Collapsed="true">
+    <Position X="17.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAgAgQEAAAAiAIAEAQAgIAAAAAAIAkAAAAAAAgA=</HashCode>
+      <FileName>Controller.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAEAAAAAAAAAAAAAAgCAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Core.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logger" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAAAAAAISAAAAQAAACAAAIAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Timer&lt;DT, ClockT&gt;" Collapsed="true">
+    <Position X="19.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAIAAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector2" Collapsed="true">
+    <Position X="21" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAIAAIACAABBAAAEAAgBQBAGAEIQABAAADgAAAgAQA=</HashCode>
+      <FileName>Vector2.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Commandline" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AyAQDMkIIwAACAAAKMkAAAgQQCEADGiIESiIAJABAkA=</HashCode>
+      <FileName>commandline.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphicJob" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAAAAAAAAgAAIABAIAAAAAAACIBAEAAAAAAAA=</HashCode>
+      <FileName>GraphicJob.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphicAnt" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAgAAIAAAAAAAgAAACIBAEAAAAAAAA=</HashCode>
+      <FileName>GraphicAnt.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GraphicsUtility" Collapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAACAAgAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>GraphicsUtility.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Input" Collapsed="true">
+    <Position X="17.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAACAAYAAAABAAAIAAAEAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphic" Collapsed="true">
+    <Position X="22.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASSBAAgAQEAIAABQAACAkAALAFgAFCIAIACCkCEQAg=</HashCode>
+      <FileName>Graphic.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AntContainer" Collapsed="true">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAAAABAAAAAAgAAQAAAAAAAAAAAQAkgCAAIABBgI=</HashCode>
+      <FileName>AntContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CentralController" Collapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAgAAAIAEAAA=</HashCode>
+      <FileName>CentralController.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Conditions" Collapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAABAAAAAAAAAAAAAAAAAgAAAAABA=</HashCode>
+      <FileName>Conditions.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entity" Collapsed="true">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABiAAEEAAA=</HashCode>
+      <FileName>Entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JobInterface" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAFCAAAAAAAAAAAAAAAAAAAAAhBAAEAgAIAAAAAA=</HashCode>
+      <FileName>Job.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Process" Collapsed="true">
+    <Position X="19.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAIACAAAABAAAAQAAAAAAAQ=</HashCode>
+      <FileName>Job.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Job" Collapsed="true">
+    <Position X="6.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAASAAgAAACABCAAAAAAESAhAAAAAAAAkEEAA=</HashCode>
+      <FileName>Job.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="World">
+    <Position X="22.75" Y="5.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="World::_getPaths" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>World.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>EACBABAAEDAIAAAkAEAEAAAAAAikAInIEADAAJdFAgA=</HashCode>
+      <FileName>World.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ant" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>6AAAAAAAAAAQAHAAAIAAAAIAAAAAAACAAgAgAACEAgA=</HashCode>
+      <FileName>Ant.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Pathfinder" Collapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAABAEIAAgAAAAIBECAAIAAAAAAAAAAQAAABYAAEA=</HashCode>
+      <FileName>Pathfinder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Body" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAIACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Body.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BodyDriver" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UgAYAAgkAAAAgQQACAAAEAIEIQAAAAAAQgRCIGDEAhg=</HashCode>
+      <FileName>Body.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PheromoneDriver" Collapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAIAAIIAIAAAAAAEAAAACAAAIAAAAIAAhAAgAAEAIA=</HashCode>
+      <FileName>PheromoneDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SensorDriver" Collapsed="true">
+    <Position X="22.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAgKgAAAMEgCwAIBAAIAAAABSIgYAwQEkIwAABCQAQ=</HashCode>
+      <FileName>SensorDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskChanger" Collapsed="true">
+    <Position X="12.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAKAAAAACAAAA=</HashCode>
+      <FileName>TaskChanger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Task" Collapsed="true">
+    <Position X="1.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAFDAMAAAAAAAAAAAAAIAAAAQAQAAIECEAAABAAAIA=</HashCode>
+      <FileName>TaskDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskDriver" Collapsed="true">
+    <Position X="14" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAAFBAQAAAAAAAAAgAAAIAAAAQAAAACACIAAAABAAAA=</HashCode>
+      <FileName>TaskDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskPheromoneController" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhUhAAAEUCACAAAAAkYQAESAAAAAMJCAACICAgABA=</HashCode>
+      <FileName>TaskPheromoneController.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskReport" Collapsed="true">
+    <Position X="15.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAQAAAAAAAAAAAgAAADAACAAAAAAAAIAAABAAAAAA=</HashCode>
+      <FileName>TaskList.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskCentralControl" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAQAAAEAAAAAABIAAIAQAAAACABIBCAAQICAAAAE=</HashCode>
+      <FileName>TaskCentralControl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Action" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABQAAAAAAAAAAAAEAAAAAABQAAAAIACAAAAAAAAAQ=</HashCode>
+      <FileName>ActionDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionDriver" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAABBAAAAAAAAAAAQAAwBAAAAQAAIAAACAAAAAAAAAA=</HashCode>
+      <FileName>ActionDriver.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionExplore" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAQAQAAAAAIBACAAIAAAAABAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>ActionExplore.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionFollowTrail" Collapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAMQAAAAAAEAIAAAAAAAAAAAAAAAAIgAAAAAABAQAA=</HashCode>
+      <FileName>ActionFollowTrail.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionGoToPoint" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAQADAAAAAAAAAAAAAAAAIAAAAQAAAAAAA=</HashCode>
+      <FileName>ActionGoToPoint.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionGoTowardNearbyTask" Collapsed="true">
+    <Position X="7.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAAAAAAAAAAA=</HashCode>
+      <FileName>ActionGoTowardNearbyTask.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActionHold" Collapsed="true">
+    <Position X="9.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>ActionHold.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CollisionMap" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>CollisionMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityMap&lt;T&gt;" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EntityMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JobMap" Collapsed="true">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAEAAAAAICIAAgAAAEAAAACAAAAAAACAAAAAAAECAA=</HashCode>
+      <FileName>JobMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MapContainer" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAIBAAAA=</HashCode>
+      <FileName>MapContainer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObstacleMap" Collapsed="true">
+    <Position X="17.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEAAIBAAAKABAQAAAAAAIAQAAAABAIIAAAAAAAAA=</HashCode>
+      <FileName>ObstacleMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Path" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABCEAAAAAIYAAAAAAAAAAAAAAACAAAEAIAAAAAA=</HashCode>
+      <FileName>PathArchive.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PathArchive" Collapsed="true">
+    <Position X="22.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAIAAIAAAAAAAIAAAAIAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>PathArchive.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PheromoneMap" Collapsed="true">
+    <Position X="17.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>jAgAEBAAACSYUCIIoBAQAAAAIIAQAgAACACjCgkgCCA=</HashCode>
+      <FileName>Pheromones2.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RigidBodyMap" Collapsed="true">
+    <Position X="21" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwEEAAAAAAIIACQQAAwAAAAAAAAAAAgAAAAAAAAAAQ=</HashCode>
+      <FileName>RigidBodyMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="JobFactory" Collapsed="true">
+    <Position X="19.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAgAAQAAAAQAAIBABACAAAALAgEAAAAEAAA=</HashCode>
+      <FileName>JobFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TerrainFactory" Collapsed="true">
+    <Position X="17.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAEAAAAABAAAAAAAAAJgAABAAEAAA=</HashCode>
+      <FileName>TerrainFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Packet" Collapsed="true">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAIAAAACA=</HashCode>
+      <FileName>Packet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PheromoneId" Collapsed="true">
+    <Position X="15.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>PheromoneId.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ActivePheromoneInfo" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAgAAAACAAAABgIAAAAgA=</HashCode>
+      <FileName>PheromoneUtility.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="eventpp::internal_::CallbackListBase&lt;ReturnType(Args...), PoliciesType&gt;" Collapsed="true">
+    <Position X="3.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAUAgABAAABENBAACAACAAEAAoAAAQkgAQAAIoA=</HashCode>
+      <FileName>callbacklist.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="eventpp::CallbackList&lt;Prototype_, Policies_&gt;" Collapsed="true">
+    <Position X="3.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>callbacklist.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="observe::SharedEvent&lt;...Args&gt;" Collapsed="true">
+    <Position X="0.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>_event.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="observe::Event&lt;...Args&gt;" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAIAAAkAAAAAAAIgAAAEAAAAAwAAAEAAA=</HashCode>
+      <FileName>_event.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="observe::Observer" Collapsed="true">
+    <Position X="15.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAECAAAAAAEAAAAAAAAAAAAAAAAAAAwAAAACAA=</HashCode>
+      <FileName>_observer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="KeyMap" Collapsed="true">
+    <Position X="15.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PheromoneMapSensor" Collapsed="true">
+    <Position X="21" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAACACAAAAAAAAAAGAAABAAAAQAAAAIBgAAAAAAA=</HashCode>
+      <FileName>PheromoneUtility.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IntCoords" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>PheromoneUtility.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PheromoneActiveReturn" Collapsed="true">
+    <Position X="19.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>PheromoneUtility.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="float32" Collapsed="true">
+    <Position X="12.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Vector2.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="actions" Collapsed="true">
+    <Position X="12.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAI=</HashCode>
+      <FileName>ActionDriver.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="states::State" Collapsed="true">
+    <Position X="14" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAwAAAAAAAAAAAgAAAAhAAAQAAAAACAAAAAEAAAA=</HashCode>
+      <FileName>TaskList.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="tasklist::Tasks" Collapsed="true">
+    <Position X="15.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAEAgAA=</HashCode>
+      <FileName>TaskList.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

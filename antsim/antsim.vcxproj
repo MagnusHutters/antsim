@@ -73,7 +73,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\magnu\AppData\Roaming\SFML-2.5.1\include</AdditionalIncludeDirectories>
@@ -197,7 +197,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityMap.h" />
-    <ClInclude Include="event.h" />
+    <ClInclude Include="_event.h" />
     <ClInclude Include="GraphicJob.h" />
     <ClInclude Include="GraphicAnt.h" />
     <ClInclude Include="GraphicsUtility.h" />
@@ -208,7 +208,7 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MapContainer.h" />
-    <ClInclude Include="observer.h" />
+    <ClInclude Include="_observer.h" />
     <ClInclude Include="ObstacleMap.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PathArchive.h" />
@@ -227,7 +227,7 @@
     <ClInclude Include="TaskCentralControl.h" />
     <ClInclude Include="TerrainFactory.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="value.h" />
+    <ClInclude Include="_value.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="World.h" />
@@ -242,6 +242,9 @@
     <Font Include="ARIALNBI.TTF" />
     <Font Include="ARIALNI.TTF" />
     <Font Include="ariblk.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

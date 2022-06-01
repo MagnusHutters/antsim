@@ -1,3 +1,4 @@
+/*
 #pragma once
 
 #include <observe/event.h>
@@ -73,3 +74,4 @@ namespace observe {
       ->DependentObservableValue<typename std::invoke_result<F, const D &...>::type, D...>;
 
 }  // namespace observe
+*/

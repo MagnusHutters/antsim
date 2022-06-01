@@ -156,7 +156,7 @@ public:
 private:
 
 
-    Conditions currentCondition;
+    
     Vector2 targetPos;
 
     int currentJobHandle=-10;

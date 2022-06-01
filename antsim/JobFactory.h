@@ -31,15 +31,17 @@ public:
 
 	std::set<int> createDynamicSuply(int number)
 	{
+		std::set<int> newSuplires;
 		for (int i = 0; i < number; ++i)
 		{
 			int toSuply = getFreePheromone();
 			keepSuplied.insert(toSuply);
+			newSuplires.insert(toSuply);
 
 			m.jobMap->registerEntity(Job::createSource(getValidJobPos(), toSuply, false));
 
 		}
-		return keepSuplied;
+		return newSuplires;
 	}
 
 

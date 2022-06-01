@@ -97,7 +97,7 @@ void Graphic::update(int tick)
 
 	input->update();
 
-	pheromoneMask ^= input->getKeys(Input::Down);
+	//pheromoneMask ^= input->getKeys(Input::Down);
 
 	if(input->getKeys(Input::Down))
 	{
@@ -113,8 +113,13 @@ void Graphic::update(int tick)
 	//core->log.push(std::to_string(fps));
 
 	elapsedTime += elapsed.asMilliseconds();
-	if (elapsedTime < FRAME_TIME) {
+	if (elapsedTime < FRAME_TIME ) {
+		if ((tick + 2) % 100 != 0) {
+		}else
+		{
+			
 		return;
+		}
 	}
 	else {
 		elapsedTime -= FRAME_TIME;
@@ -140,21 +145,23 @@ void Graphic::update(int tick)
 	//window->draw(shape);
 
 	long tempMask = pheromoneMask;
-	for (int i = 0; i < NUMBER_OF_PHEROMONE_PAIRS; ++i)
-	{
-		long check = 1 & tempMask;
-		tempMask = tempMask >> 1;
-		if(check)
+	if ((tick+2) % 100 != 0) {
+		for (int i = 0; i < NUMBER_OF_PHEROMONE_PAIRS; ++i)
 		{
-			maskShapes[i].setFillColor(sf::Color::Green);
-		}
-		else
-		{
-			maskShapes[i].setFillColor(sf::Color::Red);
-		}
-		window->draw(maskShapes[i]);
-		window->draw(maskTexts[i]);
+			long check = 1 & tempMask;
+			tempMask = tempMask >> 1;
+			if (check)
+			{
+				maskShapes[i].setFillColor(sf::Color::Green);
+			}
+			else
+			{
+				maskShapes[i].setFillColor(sf::Color::Red);
+			}
+			window->draw(maskShapes[i]);
+			window->draw(maskTexts[i]);
 
+		}
 	}
 
 

@@ -37,10 +37,11 @@ World::World(std::string name, int numAnts, int sizeX, int sizeY)
 	jobFactory = new JobFactory(mapContainer);
 
 	//jobFactory->createJobChain(2, true);
-	terrainFactory->tryCreateTerrain(2, false,true);
+	terrainFactory->tryCreateTerrain(0, false,true);
 	terrainFactory->tryCreateTerrain(900, true,true);
-	terrainFactory->tryCreateTerrain(100, true, false);
+	terrainFactory->tryCreateTerrain(1, true, false);
 	//terrainFactory->progressTerrain(10000);
+	//jobFactory->createDynamicSuplyChainPyramid(3);
 	jobFactory->createDynamicSuplyChainPyramid(1);
 
 	jobFactory->createJobChain();

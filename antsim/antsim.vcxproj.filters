@@ -209,13 +209,13 @@
     <ClInclude Include="commandline.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="value.h">
+    <ClInclude Include="_value.h">
       <Filter>Header Files\Event System</Filter>
     </ClInclude>
-    <ClInclude Include="event.h">
+    <ClInclude Include="_event.h">
       <Filter>Header Files\Event System</Filter>
     </ClInclude>
-    <ClInclude Include="observer.h">
+    <ClInclude Include="_observer.h">
       <Filter>Header Files\Event System</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
@@ -296,9 +296,6 @@
     <ClInclude Include="Ant.h">
       <Filter>Header Files\World\Ant</Filter>
     </ClInclude>
-    <ClInclude Include="Body.h">
-      <Filter>Header Files\World\Ant</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionMap.h">
       <Filter>Header Files\World\Maps</Filter>
     </ClInclude>
@@ -356,6 +353,9 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Header Files\World\Ant\Drivers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="arial.ttf">
@@ -385,5 +385,8 @@
     <Font Include="ariblk.ttf">
       <Filter>Resource Files</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

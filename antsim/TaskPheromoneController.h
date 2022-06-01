@@ -62,7 +62,11 @@ public:
         return report;
 	}
 
+private:
+
+
     void doStateFindTrail(PheromoneId findPheromone, PheromoneId trailPheromone);
+
 
     void stateFindTrail();
 
@@ -102,7 +106,7 @@ public:
 
 	}
 
-private:
+//private:
     friend class Logger;
     std::random_device rd;
     std::random_device rd2;
@@ -111,7 +115,7 @@ private:
     std::uniform_real_distribution<float> randomFloat;
 
     std::list<int> ignorePheromones;
-    Conditions currentCondition = Conditions();
+    //Conditions currentCondition = Conditions();
 
     bool doFocusPheromone=false;
     int timeout;

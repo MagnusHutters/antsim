@@ -61,10 +61,10 @@ public:
 	}
 
 
-	void startPath()
+	void startPath(int handle)
 	{
 
-		m.pathArchive->startPath(id, packet->getTypeId(),body.pos);
+		m.pathArchive->startPath(id, packet->getTypeId(),body.pos, handle);
 		onPath = true;
 	}
 	void endPath()

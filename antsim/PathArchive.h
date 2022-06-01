@@ -16,7 +16,7 @@ public:
 		
 	}
 
-	Path(int typeId, Vector2 startPoint) : typeId(typeId), oldPoint(startPoint), color(GraphicsUtility::createColorFromTypeId(typeId-1)), vertexArray(sf::VertexArray(sf::LineStrip))
+	Path(int typeId, Vector2 startPoint, int handle) : typeId(typeId), oldPoint(startPoint), color(GraphicsUtility::createColorFromTypeId(typeId-1)), vertexArray(sf::VertexArray(sf::LineStrip)), handle(handle)
 	{
 		points.push_back(startPoint);
 		vertexArray.append({ startPoint,color });
@@ -38,6 +38,7 @@ public:
 
 
 	int typeId;
+	int handle;
 	sf::Color color;
 	sf::VertexArray vertexArray;
 private:
@@ -55,9 +56,9 @@ private:
 class PathArchive
 {
 public:
-	void startPath(int antId, int typeId, Vector2 point)
+	void startPath(int antId, int typeId, Vector2 point, int handle)
 	{
-		activePaths[antId] = Path(typeId, point);
+		activePaths[antId] = Path(typeId, point, handle);
 	}
 	void stepPath(int antId, Vector2 point)
 	{

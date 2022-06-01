@@ -2,12 +2,12 @@
 
 
 
-#define RANDOM_SEED 4
-#define ANT_CONTROLLER	0 //0:Ant, 1:Central
+#define RANDOM_SEED 5
+#define ANT_CONTROLLER	1 //0:Ant, 1:Central
 //MAP
 
-#define NUM_ANTS 200
-#define MAP_WIDTH 384
+#define NUM_ANTS 100
+#define MAP_WIDTH 384 // 256 384 512 768
 #define MAP_HEIGHT 256
 #define MAP_CELLS MAP_WIDTH*MAP_HEIGHT
 

@@ -1,6 +1,6 @@
 #include "Controller.h"
 #include <SFML/Graphics.hpp>
-#include "event.h"
+//#include "event.h"
 #include "commandline.h"
 #include <queue>
 #include "Core.h"
@@ -84,7 +84,7 @@ void Controller::start()
 
 		logger->Update();
 
-		//doConsole();
+		doConsole();
 
 		Timer<> clock1;
 		Timer<> clock2;
